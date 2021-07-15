@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Field, FormSpy } from 'react-final-form';
+import React from 'react';
+import { FormSpy } from 'react-final-form';
 // import { OnChange } from "react-final-form-listeners";
 
 type ICondition = {
@@ -33,15 +33,13 @@ const isEqual = (values: any, m: any) => {
 };
 
 export const ConditionalField: React.FC<ConditionalFieldProps> = ({ conditions, children }) => {
-  const child = children as React.ReactElement;
-  const { name } = (child.props || {}) as any;
+  const { name } = ((children as React.ReactElement).props || {}) as any;
+  // const visibleRef = useRef(true);
 
   return (
     <FormSpy subscription={{ values: true }}>
       {({ values, form }) => {
-        const visibleConds = conditions.filter(
-          (m) => m.visible === true || m.visible === undefined,
-        );
+        const visibleConds = conditions.filter((m) => !m.becomes);
 
         const visible =
           visibleConds.length === 0 ||
@@ -66,9 +64,12 @@ export const ConditionalField: React.FC<ConditionalFieldProps> = ({ conditions, 
           return children;
         }
 
-        setTimeout(() => {
-          name && form.change(name, undefined);
-        }, 0);
+        /* 这里可以通过 FormControlField Unmount 实现
+        // // fix setState Warning
+        // setTimeout(() => {
+        //   name && form.change(name, undefined);
+        // }, 0);
+        */
 
         return null;
       }}

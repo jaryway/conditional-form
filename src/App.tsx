@@ -3,6 +3,7 @@ import { Form as AntForm, Checkbox, Input, Button, Select, Space } from 'antd';
 
 import FormControl from './components/form-control';
 import { ConditionalField } from './components/conditional-field';
+import SchemaField from './SchemaField';
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -83,6 +84,38 @@ const App = () => (
                 </Select>
               </FormControl>
             </ConditionalField>
+
+            <SchemaField
+              schema={{
+                componentName: 'Page',
+                props: {
+                  conditions: [{ when: 'gift_c', is: true, visible: true }],
+                },
+                children: [
+                  {
+                    componentName: 'TextField',
+                    props: {
+                      label: 'Text2',
+                      fieldId: 'text2',
+
+                      placeholder: '请输入',
+                    },
+                  },
+                ],
+              }}
+            />
+
+            <SchemaField
+              schema={{
+                componentName: 'TextField',
+                props: {
+                  label: 'xxxx',
+                  fieldId: 'fieldId',
+                  conditions: [{ when: 'gift', is: ['Apple', 'Pear'], visible: true }],
+                  placeholder: '请输入',
+                },
+              }}
+            />
 
             <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
               <Space>

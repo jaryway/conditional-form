@@ -1,8 +1,9 @@
-import React, { FC, cloneElement, isValidElement } from 'react';
+import React, { FC, cloneElement, isValidElement, useEffect } from 'react';
 import { Form, FormItemProps } from 'antd';
-import { Field } from 'react-final-form';
+import { Field, useForm } from 'react-final-form';
 import AsyncValidator, { RuleItem } from 'async-validator';
 import { getValidateState, useFieldForErrors } from '../../utils';
+// import WithUnmountField from './WithUnmountField';
 // import { RuleObject } from "rc-field-form/lib/interface";
 // import { Rule } from "antd/lib/form";
 
@@ -10,8 +11,6 @@ import { getValidateState, useFieldForErrors } from '../../utils';
 
 const composeValidators = (rules: RuleItem[], name: string) => {
   if (!rules || !rules.length) return undefined;
-
-  // console.log('composeValidators');
 
   return async (value: any) => {
     return await rules.reduce(async (error: Promise<any> | undefined, rule) => {
@@ -46,6 +45,12 @@ interface FormControlProps extends Omit<FormItemProps<any>, 'children' | 'rules'
   rules?: RuleItem[];
   type?: 'checkbox' | 'radio';
 }
+// const render = (children: any, input: any) => {
+//   if (isValidElement(children)) return cloneElement(children, { ...input });
+//   if (typeof children === 'function') return children({ ...input });
+//   return children;
+// };
+// const requiredFuc = (value: any) => (value ? undefined : 'Required');
 
 const FormControl: FC<FormControlProps> = ({
   label,
@@ -58,7 +63,13 @@ const FormControl: FC<FormControlProps> = ({
 }) => {
   const isRequired = _isRequired(required, rules);
   const { meta } = useFieldForErrors(name || '');
-  // console.log('meta.error', meta.error);
+  const form = useForm();
+  useEffect(() => {
+    return () => {
+      name && form.change(name, undefined);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Form.Item
