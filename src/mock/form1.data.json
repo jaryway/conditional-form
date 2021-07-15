@@ -1,0 +1,356 @@
+{
+  "engineVersion": "3.0.0",
+  "version": "0.0.1",
+  "componentName": "Page",
+  "id": "page_id",
+  "props": {},
+  "children": [
+    {
+      "componentName": "Form",
+      "id": "form_id",
+      "props": {},
+      "children": [
+        {
+          "componentName": "TableField",
+          "id": "tableField_ockkf0fn79j",
+          "props": {
+            "label": "申请设备明细（可附页）",
+            "placeholder": "申请设备明细（可附页）",
+            "labelColSpan": 4,
+            "fieldId": "tableField_d39j"
+          },
+          "children": [
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fnm9k",
+              "props": {
+                "label": "设备类型",
+                "placeholder": "请输入设备类型",
+                "labelColSpan": 4,
+                "fieldId": "textField_dddk"
+              }
+            },
+            {
+              "componentName": "CheckboxField",
+              "id": "checkboxField_gfvs14",
+              "props": {
+                "label": "计算机密级",
+                "labelColSpan": 4,
+                "fieldId": "checkboxField_gfvs14",
+                "dataSourceType": "custom",
+                "dataSource": [
+                  { "text": "机密", "value": "机密" },
+                  { "text": "秘密", "value": "秘密" },
+                  { "text": "内部", "value": "内部" },
+                  { "text": "互联网", "value": "互联网" }
+                ]
+              }
+            },
+            {
+              "componentName": "NumberField",
+              "id": "numberField_ock2f0fnm9o",
+              "props": {
+                "label": "数量",
+                "placeholder": "请输入数量",
+                "labelColSpan": 4,
+                "fieldId": "numberField_dddo"
+              }
+            },
+            {
+              "componentName": "OrganizationSelectField",
+              "id": "organizationSelectField_pl87s13",
+              "props": {
+                "label": "责任人",
+                "placeholder": "请输入责任人",
+                "labelColSpan": 4,
+                "fieldId": "organizationSelectField_g789s13",
+                "type": ["USER"]
+              }
+            },
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fnm9q",
+              "props": {
+                "label": "使用范围",
+                "placeholder": "请输入使用范围",
+                "labelColSpan": 4,
+                "fieldId": "textField_dddq"
+              }
+            }
+          ]
+        },
+        {
+          "componentName": "ColumnsLayout",
+          "id": "columnsLayout_gv87s13",
+          "props": {
+            "columnGap": 16,
+            "rowGap": 16,
+            "fieldId": "columnsLayout_gv87s13"
+          },
+
+          "children": [
+            {
+              "componentName": "Column",
+              "id": "column_lv87s13s",
+              "props": {
+                "span": 8,
+                "fieldId": "column_lv87s13s"
+              },
+              "children": [
+                {
+                  "componentName": "TextField",
+                  "id": "textField_lv87s13s",
+                  "props": {
+                    "label": "申请部门",
+                    "placeholder": "请输入申请部门",
+                    "labelColSpan": 4,
+                    "fieldId": "textField_gv89s13s"
+                  }
+                }
+              ]
+            },
+            {
+              "componentName": "Column",
+              "id": "column_lv87s14s",
+              "props": {
+                "span": 8,
+                "fieldId": "column_lv87s14s"
+              },
+              "children": [
+                {
+                  "componentName": "TextField",
+                  "id": "textField_lv87s1ss",
+                  "props": {
+                    "label": "申请人",
+                    "placeholder": "请输入申请人",
+                    "labelColSpan": 4,
+                    "fieldId": "textField_lv87s14s"
+                  }
+                }
+              ]
+            },
+            {
+              "componentName": "Column",
+              "id": "column_gv8715s",
+              "props": {
+                "span": 8,
+                "fieldId": "column_lv8715s"
+              },
+              "children": [
+                {
+                  "componentName": "DateField",
+                  "id": "dateField_ockkf0fnm8h",
+                  "props": {
+                    "label": "申请日期",
+                    "placeholder": "请输入申请日期",
+                    "labelColSpan": 4,
+                    "fieldId": "dateField_dddd",
+                    "format": "YYYY-MM-DD",
+                    "disabledDate": { "start": null, "end": null, "type": "duration" }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+
+        {
+          "componentName": "TextField",
+          "id": "textField_ock2f0fnm9i",
+          "props": {
+            "label": "申请原因",
+            "placeholder": "请输入申请原因",
+            "labelColSpan": 4,
+            "fieldId": "textField_dddi"
+          }
+        },
+
+        {
+          "componentName": "TableField",
+          "id": "tableField_oc3kf0fnm9j",
+          "props": {
+            "label": "信息管理部填写配发执行记录（可附表）",
+            "placeholder": "信息管理部填写配发执行记录（可附表）",
+            "labelColSpan": 4,
+            "fieldId": "tableField_dddj"
+          },
+          "children": [
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fno9k",
+              "props": {
+                "label": "设备类型",
+                "placeholder": "请输入设备类型",
+                "labelColSpan": 4,
+                "fieldId": "textField_dodk"
+              }
+            },
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fnn9k",
+              "props": {
+                "label": "品牌类型",
+                "placeholder": "请输入品牌类型",
+                "labelColSpan": 4,
+                "fieldId": "textField_dndk"
+              }
+            },
+            {
+              "componentName": "CheckboxField",
+              "id": "checkboxField_gtvs14",
+              "props": {
+                "label": "密级",
+                "labelColSpan": 4,
+                "fieldId": "checkboxField_qfvs14",
+                "dataSourceType": "custom",
+                "dataSource": [
+                  { "text": "机密", "value": "机密" },
+                  { "text": "秘密", "value": "秘密" },
+                  { "text": "内部", "value": "内部" },
+                  { "text": "互联网", "value": "互联网" }
+                ]
+              }
+            },
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fna9k",
+              "props": {
+                "label": "编号",
+                "placeholder": "请输入编号",
+                "labelColSpan": 4,
+                "fieldId": "textField_dadk"
+              }
+            },
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fnb9k",
+              "props": {
+                "label": "容量",
+                "placeholder": "请输入容量",
+                "labelColSpan": 4,
+                "fieldId": "textField_dbdk"
+              }
+            },
+            {
+              "componentName": "TextField",
+              "id": "textField_ock2f0fnc9k",
+              "props": {
+                "label": "序列号",
+                "placeholder": "请输入序列号",
+                "labelColSpan": 4,
+                "fieldId": "textField_dcdk"
+              }
+            }
+          ]
+        },
+
+        {
+          "componentName": "TextField",
+          "id": "textField_oc12f0fnr9k",
+          "props": {
+            "label": "授权使用范围",
+            "placeholder": "（填写连接的计算机编号、使用人员等）",
+            "labelColSpan": 4,
+            "fieldId": "textField_drdk"
+          }
+        },
+        {
+          "componentName": "TextField",
+          "id": "textField_gfv21s13",
+          "props": {
+            "label": "执行人",
+            "placeholder": "请输入执行人",
+            "labelColSpan": 4,
+            "fieldId": "textField_gfv12s13"
+          }
+        },
+        {
+          "componentName": "DateField",
+          "id": "dateField_ockkf0fn38h",
+          "props": {
+            "label": "配发日期",
+            "placeholder": "请输入配发日期",
+            "labelColSpan": 4,
+            "fieldId": "dateField_d3dd",
+            "format": "YYYY-MM-DD",
+            "disabledDate": { "start": null, "end": null, "type": "duration" }
+          }
+        },
+
+        {
+          "componentName": "TextField",
+          "id": "textField_ock2f0fnr9k",
+          "props": {
+            "label": "签收",
+            "placeholder": "请输入签收",
+            "labelColSpan": 4,
+            "fieldId": "textField_dudk"
+          }
+        },
+        {
+          "componentName": "DateField",
+          "id": "dateField_ockkf0fnmoh",
+          "props": {
+            "label": "签收日期",
+            "placeholder": "请输入签收日期",
+            "labelColSpan": 4,
+            "fieldId": "dateField_d12d",
+            "format": "YYYY-MM-DD",
+            "disabledDate": { "start": null, "end": null, "type": "duration" }
+          }
+        },
+        {
+          "componentName": "SelectField",
+          "id": "selectField_ockkf0f474h",
+          "props": {
+            "label": "申请部门领导审批",
+            "placeholder": "请选择申请部门领导审批",
+            "labelColSpan": 4,
+            "fieldId": "selectField_ockkf1f474h",
+            "validation": [
+              { "type": "required", "message": "必填项" },
+              { "type": "minLength", "message": "必填项", "param": 50 }
+            ],
+            "dataSourceType": "custom",
+            "dataSource": [
+              { "text": "同意", "value": "同意" },
+              { "text": "不同意", "value": "不同意" }
+            ]
+          }
+        },
+        {
+          "componentName": "SelectField",
+          "id": "selectField_ockkf0f475h",
+          "props": {
+            "label": "信息管理部审批",
+            "placeholder": "请选择信息管理部审批",
+            "labelColSpan": 4,
+            "fieldId": "selectField_ockkf1f475h",
+            "validation": [{ "type": "required", "message": "必填项" }],
+            "dataSourceType": "custom",
+            "dataSource": [
+              { "text": "同意", "value": "同意" },
+              { "text": "不同意", "value": "不同意" }
+            ]
+          }
+        },
+        {
+          "componentName": "SelectField",
+          "id": "selectField_ockkf0f476h",
+          "props": {
+            "label": "主管领导或定密责任人审批",
+            "placeholder": "请选择主管领导或定密责任人审批",
+            "labelColSpan": 4,
+            "fieldId": "selectField_ockkf1f476h",
+            "validation": [{ "type": "required", "message": "必填项" }],
+            "dataSourceType": "custom",
+            "dataSource": [
+              { "text": "同意", "value": "同意" },
+              { "text": "不同意", "value": "不同意" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

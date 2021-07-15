@@ -1,5 +1,5 @@
 // import { Field, VirtualField, FormPathPattern, FormPath, ValidatePatternRules } from '@formily/react';
-import { Input } from 'antd';
+import { Input, Checkbox } from 'antd';
 import React, { FC, createElement, Fragment } from 'react';
 import { Field } from 'react-final-form';
 import { ConditionalField } from './components/conditional-field';
@@ -129,6 +129,8 @@ const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath
     },
     fields: {
       TextField: Input,
+      CheckboxField: Checkbox.Group,
+      BooleanField: Checkbox,
     },
   };
   // const formRegistry = useContext(RegistryComponentsContext);
@@ -167,9 +169,6 @@ const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath
 
   const renderSchemaChildren = (): any => {
     return schema.children?.map((child: any, idx: number) => {
-      // const rootPath: Array<string | number> = jsonPath ? [jsonPath] : [];
-      // const childJsonPath = rootPath.concat(['children', idx]).join('.');
-
       return (
         <SchemaField
           key={child.id + idx}
@@ -246,11 +245,10 @@ const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath
   // 处理字段组件
   const fieldComponentType = formRegistry.fields[schema.componentName];
   if (fieldComponentType) {
-    const { conditions, label, fieldId, placeholder } = schema.props || {};
-    const _formItemProps = { label, name: fieldId };
-    const _fieldProps = { placeholder };
-
-    // console.log('conditions, label, fieldId', conditions, label, fieldId);
+    const { conditions, label, fieldId, placeholder, options } = schema.props || {};
+    const _formItemProps: any = { label, name: fieldId };
+    const _fieldProps: any = { placeholder, options };
+    if (schema.componentName === 'BooleanField') _formItemProps.type = 'checkbox';
 
     const component = createElement(
       formRegistry.formItemComponent,

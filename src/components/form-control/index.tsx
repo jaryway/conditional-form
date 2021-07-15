@@ -45,11 +45,7 @@ interface FormControlProps extends Omit<FormItemProps<any>, 'children' | 'rules'
   rules?: RuleItem[];
   type?: 'checkbox' | 'radio';
 }
-// const render = (children: any, input: any) => {
-//   if (isValidElement(children)) return cloneElement(children, { ...input });
-//   if (typeof children === 'function') return children({ ...input });
-//   return children;
-// };
+
 // const requiredFuc = (value: any) => (value ? undefined : 'Required');
 
 const FormControl: FC<FormControlProps> = ({
