@@ -83,6 +83,7 @@ const FormControl: FC<FormControlProps> = ({
           type={type}
         >
           {({ input }) => {
+            console.log('inputinputinput', name, input.value);
             if (isValidElement(children)) return cloneElement(children, { ...input });
             if (typeof children === 'function') return children({ ...input });
             return children;

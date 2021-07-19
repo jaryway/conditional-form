@@ -99,7 +99,7 @@ export interface ISchema<
       | ICascadeDateField
       | IEditorField
       | IOrganizationSelectField
-    )
+    ),
 > {
   engineVersion?: string;
   version?: string;
@@ -364,9 +364,8 @@ export interface IConfigContext extends IAbstractSchemaForm {
   uploadRequest?: (options: any) => Promise<any>;
 }
 
-export interface ISchemaFormContext {
+interface IAbstractSchemaFormContext {
   schema: ISchema; // 表单配置数据
-  mode: 'view' | 'design' | 'description';
   value?: any; // 表单的值
   isMobile?: boolean;
   readOnly?: boolean; // 表单是否只读
@@ -374,25 +373,53 @@ export interface ISchemaFormContext {
   tinymceScriptSrc?: string; // 富文本的 js 文件地址
   valueRender?: (schema: ISchema, value: any) => any; // 配置值渲染器
   organizationSelectComponent?: React.JSXElementConstructor<any> | React.FunctionComponent<any>;
-  // forceUpate?: () => void;
-  // onChange?: (v: any) => void; // 值发生变化
 }
 
-export interface ISchemaForm extends IAbstractSchemaForm, ISchemaFormContext {
-  // schema: ISchema;
-  // value?: any; // 表单值
-  extra?: React.ReactNode; // 在表单前面的内容，children 在表单后面
-  style?: React.CSSProperties;
-  formRef?: React.RefObject<ActionType>;
-  onSubmit?: (v: any) => void;
-  onValidateFailed?: (errors: any) => void;
-  forceUpate?: () => void; // 强制更新表单，当表单关联关系发生变化的时候需要
+interface INormalSchemaFormContext extends IAbstractSchemaFormContext {
+  mode: 'normal';
+  descriptionMode: undefined;
 }
+
+interface IDesignSchemaFormContext extends IAbstractSchemaFormContext {
+  mode: 'design';
+  descriptionMode: undefined;
+}
+
+interface IDescriptionSchemaFormContext extends IAbstractSchemaFormContext {
+  mode: 'description';
+  descriptionMode: 'disabled' | 'text';
+}
+
+export type ISchemaFormContext =
+  | INormalSchemaFormContext
+  | IDesignSchemaFormContext
+  | IDescriptionSchemaFormContext;
+
+// s.type = 'case_1';
+// s.field = 'disabled';
+// // s.mode = 'description';
+// var s: ISchemaFormContext = { mode: 'normal', descriptionMode: 'disabled' };
+// if (s.mode === 'design') s.descriptionMode='disabled';
+
+export type ISchemaForm = IAbstractSchemaForm &
+  ISchemaFormContext & {
+    // schema: ISchema;
+    // value?: any; // 表单值
+    extra?: React.ReactNode; // 在表单前面的内容，children 在表单后面
+    style?: React.CSSProperties;
+    formRef?: React.RefObject<ActionType>;
+    onSubmit?: (v: any) => void;
+    onValidateFailed?: (errors: any) => void;
+    forceUpate?: () => void; // 强制更新表单，当表单关联关系发生变化的时候需要
+  };
 
 // export type MixinConnectedComponent<T extends string> = React.FC<ISchemaFieldComponent> &
 //   {
 //     [key in T]: React.FC<ISchemaFieldComponent>;
 //   };
+export interface IFieldContext {
+  schema: ISchema;
+}
 
 export interface ISchemaFormComponent {
   schema: ISchema;
@@ -401,13 +428,45 @@ export interface ISchemaFormComponent {
 }
 
 export interface IRegistryComponents {
-  fields: {
-    [key: string]: React.JSXElementConstructor<any>;
-  };
-  virtualFields: {
-    [key: string]: React.JSXElementConstructor<any>;
-  };
+  // fields: {
+  //   [key: string]: React.JSXElementConstructor<any>;
+  // };
+  // virtualFields: {
+  //   [key: string]: React.JSXElementConstructor<any>;
+  // };
+  // previewComponent?: string | React.JSXElementConstructor<any>;
+  // formComponent: string | React.JSXElementConstructor<any>;
+  // formItemComponent: React.JSXElementConstructor<any>;
   previewComponent?: string | React.JSXElementConstructor<any>;
-  formComponent: string | React.JSXElementConstructor<any>;
-  formItemComponent: React.JSXElementConstructor<any>;
+  rootComponent?: string | React.JSXElementConstructor<any>;
+  formComponent?: string | React.JSXElementConstructor<any>;
+  formItemComponent?: React.JSXElementConstructor<any>;
+
+  virtualFields?: {
+    Form: React.JSXElementConstructor<any>;
+    PageSection: React.JSXElementConstructor<any>;
+    ColumnsLayout: React.JSXElementConstructor<any>;
+    Column: React.JSXElementConstructor<any>;
+    [k: string]: React.JSXElementConstructor<any>;
+  };
+  fields?: {
+    TableField: React.JSXElementConstructor<any>;
+    TextField: React.JSXElementConstructor<any>;
+    TextareaField: React.JSXElementConstructor<any>;
+    NumberField: React.JSXElementConstructor<any>;
+    BooleanField: React.JSXElementConstructor<any>;
+    RadioField: React.JSXElementConstructor<any>;
+    CheckboxField: React.JSXElementConstructor<any>;
+    SelectField: React.JSXElementConstructor<any>;
+    MultiSelectField: React.JSXElementConstructor<any>;
+    CascadeSelectField: React.JSXElementConstructor<any>;
+    DateField: React.JSXElementConstructor<any>;
+    UploadField: React.JSXElementConstructor<any>;
+    CascadeDateField: React.JSXElementConstructor<any>;
+    EditorField: React.JSXElementConstructor<any>;
+    OrganizationSelectField: React.JSXElementConstructor<any>;
+    RichText: React.JSXElementConstructor<any>;
+    CustomField: React.JSXElementConstructor<any>;
+    [k: string]: React.JSXElementConstructor<any>;
+  };
 }

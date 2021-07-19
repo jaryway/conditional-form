@@ -4227,6 +4227,11 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
 
+depath@^1.0.6:
+  version "1.0.6"
+  resolved "http://192.10.169.216:4873/depath/-/depath-1.0.6.tgz#b628da8e8e731797bec8ee1ff09225be6637d9b9"
+  integrity sha1-tijajo5zF5e+yO4f8JIlvmY32bk=
+
 depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"

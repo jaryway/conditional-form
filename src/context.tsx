@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IRegistryComponents, ISchemaFormContext } from './interface';
+import { IFieldContext, IRegistryComponents, ISchemaFormContext } from './interface';
 
 interface ISchemaEngineContext {
   /**
@@ -11,3 +11,4 @@ interface ISchemaEngineContext {
 export const SchemaEngineContext = createContext<ISchemaEngineContext>({} as any);
 export const SchemaFormContext = createContext<ISchemaFormContext>({} as any);
 export const RegistryComponentsContext = createContext<IRegistryComponents>({} as any);
+export const FieldContext = createContext<IFieldContext>({} as any);

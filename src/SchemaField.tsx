@@ -1,9 +1,10 @@
-// import { Field, VirtualField, FormPathPattern, FormPath, ValidatePatternRules } from '@formily/react';
+import React, { FC, createElement, Fragment, useContext } from 'react';
 import { Input, Checkbox } from 'antd';
-import React, { FC, createElement, Fragment } from 'react';
 import { Field } from 'react-final-form';
 import { ConditionalField } from './components/conditional-field';
-import FormControl from './components/form-control';
+// import FormControl from './components/form-control';
+import { RegistryComponentsContext, SchemaFormContext } from './context';
+import { ISchema } from './interface';
 
 // import defaultFormats from '@formily/validator/lib/formats';
 // import { each } from '@formily/shared';
@@ -117,27 +118,24 @@ import FormControl from './components/form-control';
 //   return ((schema?.props || {}) as any).value;
 // };
 
-const PageComponent: FC<any> = ({ children }) => {
-  return <div className="page">PageComponent{children}</div>;
-};
+const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) => {
+  const { ...context } = useContext(SchemaFormContext);
+  const registryComponents = useContext(RegistryComponentsContext);
 
-const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath, ...rest }) => {
-  const formRegistry: any = {
-    formItemComponent: FormControl,
-    virtualFields: {
-      Page: PageComponent,
-    },
-    fields: {
-      TextField: Input,
-      CheckboxField: Checkbox.Group,
-      BooleanField: Checkbox,
-    },
-  };
-  // const formRegistry = useContext(RegistryComponentsContext);
+  // if (context.mode === 'design') {
+  //   const s = context.descriptionMode = 'disabled';
+  // }
+
   // const { permissions = {}, readOnly } = useContext(SchemaFormContext);
   // const path = FormPath.parse(rest.path);
   const schemaProps = schema.props || ({} as any);
-  const childCount = rest.childCount;
+  // const childCount = rest.childCount;
+  // console.log('registryComponents', names.concat(schemaProps.fieldId));
+  const name = names.concat(schemaProps.fieldId).join('.');
+  const isReadOnly = true || context.mode === 'description';
+  const descriptionMode = context.mode === 'description' && context.descriptionMode;
+  // const previewTextProps=descriptionMode==='disabled'?{disabled:true,readOnly:true}:{children:<p>{context.valueRender(value)}</p>}
+
   // const htmlDataProperties = getHtmlDataProperties(rest);
 
   // 1、获取 Field 相关属性 fieldProps
@@ -168,67 +166,22 @@ const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath
   /********** end **********/
 
   const renderSchemaChildren = (): any => {
-    return schema.children?.map((child: any, idx: number) => {
+    return schema.children?.map((childSchema: ISchema, idx: number) => {
+      const childPath = path.concat(childSchema.props.fieldId as string);
+
       return (
         <SchemaField
-          key={child.id + idx}
-          schema={child}
-          // jsonPath={childJsonPath}
-          childCount={schema.children.length}
-          // path={path.concat(child.props.fieldId as string)}
+          key={childSchema.id + idx}
+          path={childPath}
+          names={names}
+          schema={childSchema}
         />
       );
     });
   };
 
-  // const renderFieldDelegate = (callback: (props: any) => React.ReactElement) => {
-  //   return (
-  //     <Field name="name" subscription={{}}>
-  //       {/* {({ state, mutators, form }) => {
-  //         const nextProps = {
-  //           ...state,
-  //           // ...htmlDataProperties,
-  //           form,
-  //           schema,
-  //           mutators,
-  //           jsonPath,
-  //         };
-  //         return <div>{callback(nextProps)}</div>;
-  //       }} */}
-  //       {({ input, meta, ...rest }) => {
-  //         callback({ ...input, ...rest, meta });
-  //       }}
-  //     </Field>
-  //   );
-  // };
-
-  // const renderVirtualFieldDelegate = (
-  //   callback: (props: ISchemaVirtualFieldComponent) => React.ReactElement,
-  // ) => {
-  //   return (
-  //     <VirtualField path={path} visible={visible}>
-  //       {({ state, form }) => {
-  //         const nextProps = {
-  //           ...state,
-  //           ...htmlDataProperties,
-  //           form,
-  //           schema,
-  //           jsonPath,
-  //           children: renderSchemaChildren(),
-  //           childCount,
-  //         } as ISchemaVirtualFieldComponent;
-
-  //         return (
-  //           <SchemaFieldPropsContext.Provider value={nextProps}>
-  //             {callback(nextProps)}
-  //           </SchemaFieldPropsContext.Provider>
-  //         );
-  //       }}
-  //     </VirtualField>
-  //   );
-  // };
-
-  const virtualFieldComponentType = formRegistry.virtualFields[schema.componentName];
+  // 处理布局组件
+  const virtualFieldComponentType = registryComponents.virtualFields?.[schema.componentName];
   if (virtualFieldComponentType) {
     const { conditions } = schema.props || {};
 
@@ -243,15 +196,27 @@ const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath
   }
 
   // 处理字段组件
-  const fieldComponentType = formRegistry.fields[schema.componentName];
+  let fieldComponentType: any = registryComponents.fields?.[schema.componentName];
   if (fieldComponentType) {
-    const { conditions, label, fieldId, placeholder, options } = schema.props || {};
-    const _formItemProps: any = { label, name: fieldId };
-    const _fieldProps: any = { placeholder, options };
+    const { conditions, label, placeholder, options } = schema.props || {};
+    const _formItemProps: any = { label, name, path };
+    const _fieldProps: any = { placeholder, options, ...rest };
+
     if (schema.componentName === 'BooleanField') _formItemProps.type = 'checkbox';
 
+    // if (isReadOnly) {
+    //   fieldComponentType = (p: any) => {
+    //     console.log('xxxxxxxxxxxxxxxxxx', rest, p);
+    //     const FieldComponent = fieldComponentType;
+    //     return <FieldComponent {...p} />;
+    //   };
+    //   // _fieldProps.children = context?.valueRender?.(schema, context.value);
+    // }
+
+    console.log('xxxxxxxxxxxxxxxxxx', rest);
+
     const component = createElement(
-      formRegistry.formItemComponent,
+      registryComponents.formItemComponent || Fragment,
       _formItemProps,
       createElement(fieldComponentType, _fieldProps),
     );
@@ -262,32 +227,6 @@ const SchemaField: FC<any> = ({ children, schema, editable: __editable, jsonPath
 
     return component;
   }
-
-  // if (children && (typeof children === 'function' || isValidElement(children))) {
-  //   return renderFieldDelegate((props) => {
-  //     const {
-  //       mutators,
-  //       value,
-  //       displayName,
-  //       display,
-  //       visible,
-  //       unmounted,
-  //       mounted,
-  //       name,
-  //       ...restProps
-  //     } = props;
-  //     const _fieldProps = { ...restProps, name, value, schema, mutators, children: undefined };
-  //     const _formItemProps = { ...props };
-
-  //     return createElement(
-  //       formRegistry.formItemComponent,
-  //       _formItemProps,
-  //       typeof children === 'function'
-  //         ? children(_fieldProps)
-  //         : cloneElement(children as React.ReactElement, _fieldProps),
-  //     );
-  //   });
-  // }
 
   return <Fragment />;
 };
