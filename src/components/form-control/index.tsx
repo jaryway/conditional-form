@@ -78,9 +78,9 @@ const FormControl: FC<FormControlProps> = ({
       {name ? (
         <Field
           name={name}
+          type={type}
           // validate={requiredFuc}
           validate={composeValidators(rules || [], name)}
-          type={type}
         >
           {({ input }) => {
             console.log('inputinputinput', name, input.value);

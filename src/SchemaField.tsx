@@ -213,12 +213,20 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
     //   // _fieldProps.children = context?.valueRender?.(schema, context.value);
     // }
 
-    console.log('xxxxxxxxxxxxxxxxxx', rest);
+    // console.log('xxxxxxxxxxxxxxxxxx', rest);
 
     const component = createElement(
       registryComponents.formItemComponent || Fragment,
       _formItemProps,
-      createElement(fieldComponentType, _fieldProps),
+      createElement(
+        fieldComponentType,
+        // (props: any) => {
+        //   const FieldComponent = fieldComponentType as any;
+        //   console.log('sssssssss', _formItemProps.type === 'checkbox' ? props.checked : props.value);
+        //   return <FieldComponent {...props} />;
+        // }
+        _fieldProps,
+      ),
     );
 
     // 如果有条件加上条件组件
