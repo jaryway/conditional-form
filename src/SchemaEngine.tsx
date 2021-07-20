@@ -6,6 +6,7 @@ import SchemaField from './SchemaField';
 import { RegistryComponentsContext, SchemaEngineContext, SchemaFormContext } from './context';
 import { ISchema, IRegistryComponents, ISchemaForm, ISchemaFormContext } from './interface';
 import FormControl from './components/form-control';
+import { defaultValueRender } from './defaultValueRender';
 
 // const EngineVersion = '3.0.0';
 // interface IRegistryComponents {
@@ -93,6 +94,7 @@ const SchemaEngine: FC<ISchemaEngine> = ({
                       descriptionMode,
                       schema: rootSchema,
                       value: values,
+                      valueRender: defaultValueRender,
                     } as ISchemaFormContext
                   }
                 >

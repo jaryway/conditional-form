@@ -132,7 +132,7 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
   // const childCount = rest.childCount;
   // console.log('registryComponents', names.concat(schemaProps.fieldId));
   const name = names.concat(schemaProps.fieldId).join('.');
-  const isReadOnly = true || context.mode === 'description';
+  const isReadOnly = context.mode === 'description';
   const descriptionMode = context.mode === 'description' && context.descriptionMode;
   // const previewTextProps=descriptionMode==='disabled'?{disabled:true,readOnly:true}:{children:<p>{context.valueRender(value)}</p>}
 
@@ -196,22 +196,32 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
   }
 
   // 处理字段组件
-  let fieldComponentType: any = registryComponents.fields?.[schema.componentName];
+  const fieldComponentType: any = registryComponents.fields?.[schema.componentName];
   if (fieldComponentType) {
     const { conditions, label, placeholder, options } = schema.props || {};
     const _formItemProps: any = { label, name, path };
     const _fieldProps: any = { placeholder, options, ...rest };
 
     if (schema.componentName === 'BooleanField') _formItemProps.type = 'checkbox';
+    let fieldComponent = fieldComponentType;
 
-    // if (isReadOnly) {
-    //   fieldComponentType = (p: any) => {
-    //     console.log('xxxxxxxxxxxxxxxxxx', rest, p);
-    //     const FieldComponent = fieldComponentType;
-    //     return <FieldComponent {...p} />;
-    //   };
-    //   // _fieldProps.children = context?.valueRender?.(schema, context.value);
-    // }
+    if (isReadOnly) {
+      if (descriptionMode === 'text') {
+        fieldComponent = ({ value, checked, ...props }: any) => {
+          const v = _formItemProps.type === 'checkbox' ? checked : value;
+          const child = context?.valueRender?.(schema, v);
+          return (
+            <span {...props} className="ant-form-text">
+              {child}
+            </span>
+          );
+        };
+      } else {
+        _fieldProps.readOnly = true;
+        _fieldProps.disabled = true;
+      }
+      // _fieldProps.children = context?.valueRender?.(schema, context.value);
+    }
 
     // console.log('xxxxxxxxxxxxxxxxxx', rest);
 
@@ -219,7 +229,7 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
       registryComponents.formItemComponent || Fragment,
       _formItemProps,
       createElement(
-        fieldComponentType,
+        fieldComponent,
         // (props: any) => {
         //   const FieldComponent = fieldComponentType as any;
         //   console.log('sssssssss', _formItemProps.type === 'checkbox' ? props.checked : props.value);
