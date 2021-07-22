@@ -4,6 +4,8 @@
   "componentName": "Page",
   "id": "page_id",
   "props": {},
+  "form":{},
+  "schema":{}, 
   "children": [
     {
       "componentName": "Form",

@@ -118,7 +118,12 @@ import { ISchema } from './interface';
 //   return ((schema?.props || {}) as any).value;
 // };
 
-const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) => {
+interface ISchemaFieldProps<Decorator = any, Component = any> {
+  schema: ISchema;
+  names?: string[];
+}
+
+const SchemaField: FC<ISchemaFieldProps> = ({ children, schema, names = [], ...rest }) => {
   const { ...context } = useContext(SchemaFormContext);
   const registryComponents = useContext(RegistryComponentsContext);
 
@@ -131,7 +136,7 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
   const schemaProps = schema.props || ({} as any);
   // const childCount = rest.childCount;
   // console.log('registryComponents', names.concat(schemaProps.fieldId));
-  const name = names.concat(schemaProps.fieldId).join('.');
+  const name = names.concat(schemaProps.fieldId as string).join('.');
   const isReadOnly = context.mode === 'description';
   const descriptionMode = context.mode === 'description' && context.descriptionMode;
   // const previewTextProps=descriptionMode==='disabled'?{disabled:true,readOnly:true}:{children:<p>{context.valueRender(value)}</p>}
@@ -167,12 +172,12 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
 
   const renderSchemaChildren = (): any => {
     return schema.children?.map((childSchema: ISchema, idx: number) => {
-      const childPath = path.concat(childSchema.props.fieldId as string);
+      // const childPath = path.concat(childSchema.props.fieldId as string);
 
       return (
         <SchemaField
           key={childSchema.id + idx}
-          path={childPath}
+          // path={childPath}
           names={names}
           schema={childSchema}
         />
@@ -198,8 +203,8 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
   // 处理字段组件
   const fieldComponentType: any = registryComponents.fields?.[schema.componentName];
   if (fieldComponentType) {
-    const { conditions, label, placeholder, options } = schema.props || {};
-    const _formItemProps: any = { label, name, path };
+    const { conditions, label, placeholder, options, rules } = schema.props || {};
+    const _formItemProps: any = { label, name, rules };
     const _fieldProps: any = { placeholder, options, ...rest };
 
     if (schema.componentName === 'BooleanField') _formItemProps.type = 'checkbox';
@@ -220,23 +225,12 @@ const SchemaField: FC<any> = ({ children, schema, path, names = [], ...rest }) =
         _fieldProps.readOnly = true;
         _fieldProps.disabled = true;
       }
-      // _fieldProps.children = context?.valueRender?.(schema, context.value);
     }
-
-    // console.log('xxxxxxxxxxxxxxxxxx', rest);
 
     const component = createElement(
       registryComponents.formItemComponent || Fragment,
       _formItemProps,
-      createElement(
-        fieldComponent,
-        // (props: any) => {
-        //   const FieldComponent = fieldComponentType as any;
-        //   console.log('sssssssss', _formItemProps.type === 'checkbox' ? props.checked : props.value);
-        //   return <FieldComponent {...props} />;
-        // }
-        _fieldProps,
-      ),
+      createElement(fieldComponent, _fieldProps),
     );
 
     // 如果有条件加上条件组件

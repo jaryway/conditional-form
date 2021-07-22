@@ -103,7 +103,7 @@ const SchemaEngine: FC<ISchemaEngine> = ({
                     {
                       ...formSchema.props,
                       schema: formSchema,
-                      path: `children.0`,
+                      // path: `children.0`,
                       onSubmit: rest.handleSubmit,
                     } as any,
                     isValidElement(extra)
@@ -115,7 +115,7 @@ const SchemaEngine: FC<ISchemaEngine> = ({
                       <SchemaField
                         key={schema.id + i}
                         schema={schema}
-                        path={`children.0.children.${i}`}
+                        // path={`children.0.children.${i}`}
                       />
                     )),
                     isValidElement(children)

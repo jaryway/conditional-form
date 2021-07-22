@@ -129,6 +129,7 @@ export interface IBase {
   labelCol?: any;
   wrapperCol?: any;
   options?: Array<string | { value: string; label: string; defaultChecked?: boolean }>;
+  placeholder?: string; // 占位提示
 
   labelAlign?: 'top' | 'middle' | 'bottom'; // 标签对齐方式
   labelTextAlign?: 'left' | 'right'; // 标签的文本对齐方式
@@ -136,6 +137,7 @@ export interface IBase {
   validationType?: IValidationType;
   validation?: Array<IValidation>;
   conditions?: Array<ICondition>;
+  rules?: any[];
 
   formula?: {
     data: Array<{
@@ -270,7 +272,7 @@ export interface IDateField extends ITextField {
   format?: 'YYYY' | 'YYYY-MM' | 'YYYY-MM-DD' | 'YYYY-MM-DD HH:mm' | 'YYYY-MM-DD HH:mm:ss';
 }
 // 日期区间
-export interface ICascadeDateField extends IBase {
+export interface ICascadeDateField extends Omit<IBase, 'placeholder'> {
   label: string; // 标签文本
   placeholder?: [string, string];
   value?: [Date?, Date?];

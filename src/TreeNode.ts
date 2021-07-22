@@ -97,10 +97,16 @@ const resetNodesParent = (nodes: TreeNode[], parent: TreeNode) => {
 };
 
 const resetNodeParent = (node: TreeNode, parent: TreeNode) => {
-  const tree = new TreeNode({} as any);
+
+
+
 
   return resetNodesParent([node], parent)[0];
 };
+
+function init(){
+  const tree = new TreeNode({} as any);
+}
 
 export class TreeNode {
   parent!: TreeNode;

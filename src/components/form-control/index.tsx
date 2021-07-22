@@ -28,8 +28,8 @@ const composeValidators = (rules: RuleItem[], name: string) => {
 };
 
 const _isRequired = (required: any, rules: any) => {
-  if (required === undefined) return false;
-  if (required) return true;
+  if (required !== undefined) return required;
+  // if (required) return true;
   if (!rules) return false;
 
   return rules.some((rule: any) => {
@@ -66,6 +66,8 @@ const FormControl: FC<FormControlProps> = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log('rules', rules, isRequired);
 
   return (
     <Form.Item
