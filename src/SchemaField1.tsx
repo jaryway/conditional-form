@@ -1,5 +1,6 @@
 import React, { FC, createElement, Fragment, useContext, useMemo } from 'react';
-import { Input, Checkbox, Card, Select, Switch, Form, DatePicker, Radio } from 'antd';
+import { Input, Upload, Button, Card, Select, Switch, Form, DatePicker, Radio } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import { Field } from 'react-final-form';
 import { ConditionalField } from './components/conditional-field';
 // import FormControl from './components/form-control';
@@ -8,16 +9,26 @@ import { ISchema } from './interface';
 import { Schema } from './json-schema/schema';
 import { isFn } from './json-schema/utils';
 import FormControl from './components/form-control';
-// import { JsxElement } from 'typescript';
+import FormGrid from './components/form-grid'; // import { JsxElement } from 'typescript';
+
+console.log('Upload', Upload);
+const MyUpload = (props: any) => (
+  <Upload {...props}>
+    <Button icon={<UploadOutlined />}>Upload</Button>
+  </Upload>
+);
 
 const components: { [k: string]: React.JSXElementConstructor<any> } = {
-  FormItem: Form.Item,
+  // FormItem: Form.Item,
+  FormItem: FormControl,
+  FormGrid,
   Select,
   Input,
   Switch,
   Card,
   'DatePicker.RangePicker': DatePicker.RangePicker,
   'Radio.Group': Radio.Group,
+  Upload: MyUpload,
 };
 
 interface ISchemaFieldProps<Decorator = any, Component = any> {
@@ -31,27 +42,16 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, names = [], ...props }) 
     return schema;
   }, [props.schema]);
 
-  console.log('schema', !fieldSchema, fieldSchema);
-
-  const getBasePath = () => {
-    // if (props.onlyRenderProperties) {
-    //   return props.basePath || parent?.address.concat(props.name);
-    // }
-    // return props.basePath || parent?.address;
-    <Radio.Group options={[{ value: 'ssss', label: 'xxxxx' }]}></Radio.Group>;
-    return '';
-  };
+  const { enum: options, title: label, name, conditions } = (fieldSchema || {}) as any;
 
   const renderProperties = (field?: any) => {
     return (
       <Fragment>
         {fieldSchema.mapProperties((item, name, index) => {
-          // const base = ''; //field?.address || basePath;
           let schema: Schema = item;
           return <SchemaField key={`${index}-${name}`} schema={schema as any} />;
         })}
         {fieldSchema['x-content']}
-        121
       </Fragment>
     );
   };
@@ -59,24 +59,36 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, names = [], ...props }) 
   const render = () => {
     const decorator = components[fieldSchema['x-decorator']];
     const component = components[fieldSchema['x-component']];
-    const { enum: options } = fieldSchema['x-component-props'] || {};
 
-    console.log('options', options, fieldSchema);
-
-    return createElement(
+    const returnComponent = createElement(
       decorator,
-      { ...fieldSchema['x-component-props'], name: fieldSchema.name, label: fieldSchema.title },
+      { ...fieldSchema['x-component-props'], name, label },
       createElement(component || 'div', { ...fieldSchema['x-component-props'], options }),
     );
+
+    if (conditions && conditions.length)
+      return <ConditionalField conditions={conditions}>{returnComponent}</ConditionalField>;
+
+    return returnComponent;
   };
 
   if (!fieldSchema) return <Fragment />;
 
   if (fieldSchema.type === 'object' || fieldSchema.type === 'void') {
-    return <Card data-type={fieldSchema.type}>{renderProperties()}</Card>;
+    const component = components[fieldSchema['x-component']];
+    const returnComponent = createElement(
+      component || Card,
+      { ...fieldSchema['x-component-props'], id: fieldSchema.name },
+      renderProperties(),
+    );
+
+    if (conditions && conditions.length)
+      return <ConditionalField conditions={conditions}>{returnComponent}</ConditionalField>;
+
+    return returnComponent;
   }
 
-  return render();
+  return <Fragment>{render()}</Fragment>;
 };
 
 export default SchemaField;

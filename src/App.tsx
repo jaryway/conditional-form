@@ -1,12 +1,31 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Form } from 'react-final-form';
 import { Form as AntForm, Button, Space, Divider, Radio, Input } from 'antd';
+// import { FormGrid } from '@formily/antd';
 
 // import FormControl from './components/form-control';
 // import { ConditionalField } from './components/conditional-field';
 import SchemaEngine from './SchemaEngine';
 import SchemaField from './SchemaField';
 import SchemaField1 from './SchemaField1';
+import FormGrid from './components/form-grid';
+const { GridColumn } = FormGrid;
+const Cell:FC<any> = ({ children }) => {
+  return (
+    <div
+      style={{
+        backgroundColor: '#AAA',
+        color: '#FFF',
+        height: 30,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 10px',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -90,296 +109,338 @@ const App = () => {
     ),
   );
 
-  const [form] = AntForm.useForm();
+  const [form1] = AntForm.useForm();
 
   return (
     <>
-      <SchemaField1
-        schema={
-          {
-            type: 'object',
-            properties: {
-              v7hxqah4mlg: {
-                title: 'Input',
-                type: 'string',
-                'x-decorator': 'FormItem',
-                'x-component': 'Input',
-                'x-component-props': {},
-                'x-decorator-props': {},
-                required: true,
-                _designableId: 'v7hxqah4mlg',
-                'x-index': 0,
-              },
-              fw13hnhvyyu: {
-                title: 'Select',
-                'x-decorator': 'FormItem',
-                'x-component': 'Select',
-                'x-component-props': {},
-                'x-decorator-props': {},
-                _designableId: 'fw13hnhvyyu',
-                'x-index': 1,
-              },
-              zffe7kcvdcz: {
-                type: 'void',
-                'x-component': 'FormGrid',
-                'x-component-props': {},
-                _designableId: 'zffe7kcvdcz',
-                properties: {
-                  umt0swqdbo6: {
-                    type: 'void',
-                    'x-component': 'Card',
-                    'x-component-props': {
-                      title: 'Title',
-                    },
-                    _designableId: 'umt0swqdbo6',
+      {/* <FormGrid maxColumns={3} minColumns={2}>
+        <GridColumn gridSpan={4}>
+          <Cell>1</Cell>
+        </GridColumn>
+        <GridColumn>
+          <Cell>2</Cell>
+        </GridColumn>
+        <GridColumn>
+          <Cell>3</Cell>
+        </GridColumn>
+        <GridColumn>
+          <Cell>4</Cell>
+        </GridColumn>
+        <GridColumn>
+          <Cell>5</Cell>
+        </GridColumn>
+        <GridColumn>
+          <Cell>6</Cell>
+        </GridColumn>
+      </FormGrid> */}
+      <Form
+        initialValues={{ gift_c: 'true', fruit01: ['Apple'] }}
+        onSubmit={onSubmit || (() => {})}
+        render={({ form, submitting, values, ...rest }) => {
+          return (
+            <AntForm
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 10 }}
+              style={{ marginTop: 24 }}
+              initialValues={{ ...state, schema }}
+              onValuesChange={(cv: any, { schema: s, ...v }: any) => {
+                setState(v);
+              }}
+            >
+              <SchemaField1
+                schema={
+                  {
+                    type: 'object',
                     properties: {
-                      '32rm69l1m1j': {
-                        type: 'void',
-                        'x-component': 'FormGrid',
-                        'x-component-props': {
-                          style: {
-                            display: 'flex',
-                          },
-                        },
-                        _designableId: '32rm69l1m1j',
-                        properties: {
-                          DDDDDDDD: {
-                            type: '[string,string]',
-                            title: 'DateRangePicker',
-                            'x-decorator': 'FormItem',
-                            'x-component': 'DatePicker.RangePicker',
-                            'x-component-props': {},
-                            'x-decorator-props': {},
-                            name: 'DDDDDDDD',
-                            _designableId: 'hiswn0ljl3x',
-                            'x-index': 0,
-                          },
-                          si6lgjx9eag: {
-                            title: 'Select',
-                            'x-decorator': 'FormItem',
-                            'x-component': 'Select',
-                            'x-component-props': {},
-                            'x-decorator-props': {},
-                            enum: [
-                              {
-                                children: [],
-                                label: '选项 1',
-                                value: '5bdhyv2dzd6',
-                                c: 'xcxcx',
-                                ddd: 'dd',
-                              },
-                            ],
-                            _designableId: 'si6lgjx9eag',
-                            'x-index': 1,
-                          },
-                        },
+                      v7hxqah4mlg: {
+                        title: 'Input',
+                        type: 'string',
+                        'x-decorator': 'FormItem',
+                        'x-component': 'Input',
+                        'x-component-props': {},
+                        'x-decorator-props': {},
+                        required: true,
+                        _designableId: 'v7hxqah4mlg',
                         'x-index': 0,
                       },
-                      nrzni8sfhmn: {
-                        type: 'boolean',
-                        title: 'Switch',
+                      fw13hnhvyyu: {
+                        title: 'Select',
                         'x-decorator': 'FormItem',
-                        'x-component': 'Switch',
+                        'x-component': 'Select',
                         'x-component-props': {},
                         'x-decorator-props': {},
-                        _designableId: 'nrzni8sfhmn',
+                        conditions: [{ when: 'v7hxqah4mlg', is: 'xxx', visible: true }],
+                        _designableId: 'fw13hnhvyyu',
                         'x-index': 1,
                       },
-                      zfv2g7ri00x: {
-                        type: 'Array<object>',
-                        title: 'Upload',
-                        'x-decorator': 'FormItem',
-                        'x-component': 'Upload',
-                        'x-component-props': {
-                          textContent: 'Upload',
+                      zffe7kcvdcz: {
+                        type: 'void',
+                        'x-component': 'FormGrid',
+                        'x-component-props': {},
+                        _designableId: 'zffe7kcvdcz',
+                        conditions: [{ when: 'v7hxqah4mlg', is: 'xxx', visible: true }],
+                        properties: {
+                          umt0swqdbo6: {
+                            type: 'void',
+                            'x-component': 'Card',
+                            'x-component-props': {
+                              title: 'Title',
+                            },
+                            _designableId: 'umt0swqdbo6',
+
+                            properties: {
+                              '32rm69l1m1j': {
+                                type: 'void',
+                                'x-component': 'FormGrid',
+                                'x-component-props': {
+                                  style: {
+                                    display: 'flex',
+                                  },
+                                },
+                                _designableId: '32rm69l1m1j',
+                                properties: {
+                                  DDDDDDDD: {
+                                    type: '[string,string]',
+                                    title: 'DateRangePicker',
+                                    'x-decorator': 'FormItem',
+                                    'x-component': 'DatePicker.RangePicker',
+                                    'x-component-props': {},
+                                    'x-decorator-props': {},
+                                    name: 'DDDDDDDD',
+                                    _designableId: 'hiswn0ljl3x',
+                                    'x-index': 0,
+                                  },
+                                  si6lgjx9eag: {
+                                    title: 'Select',
+                                    'x-decorator': 'FormItem',
+                                    'x-component': 'Select',
+                                    'x-component-props': {},
+                                    'x-decorator-props': {},
+                                    enum: [
+                                      {
+                                        children: [],
+                                        label: '选项 1',
+                                        value: '5bdhyv2dzd6',
+                                        c: 'xcxcx',
+                                        ddd: 'dd',
+                                      },
+                                    ],
+                                    _designableId: 'si6lgjx9eag',
+                                    'x-index': 1,
+                                  },
+                                },
+                                'x-index': 0,
+                              },
+                              nrzni8sfhmn: {
+                                type: 'boolean',
+                                title: 'Switch',
+                                'x-decorator': 'FormItem',
+                                'x-component': 'Switch',
+                                'x-component-props': {},
+                                'x-decorator-props': {},
+                                _designableId: 'nrzni8sfhmn',
+                                'x-index': 1,
+                              },
+                              zfv2g7ri00x: {
+                                type: 'Array<object>',
+                                title: 'Upload',
+                                'x-decorator': 'FormItem',
+                                'x-component': 'Upload',
+                                'x-component-props': {
+                                  textContent: 'Upload',
+                                },
+                                'x-decorator-props': {},
+                                _designableId: 'zfv2g7ri00x',
+                                'x-index': 2,
+                              },
+                              bbmqypy4ybb: {
+                                type: 'boolean',
+                                title: 'Switch',
+                                'x-decorator': 'FormItem',
+                                'x-component': 'Switch',
+                                'x-component-props': {},
+                                'x-decorator-props': {},
+                                _designableId: 'bbmqypy4ybb',
+                                'x-index': 3,
+                              },
+                            },
+                            'x-index': 0,
+                          },
                         },
-                        'x-decorator-props': {},
-                        _designableId: 'zfv2g7ri00x',
                         'x-index': 2,
                       },
-                      bbmqypy4ybb: {
-                        type: 'boolean',
-                        title: 'Switch',
+                      d4ca2w22oi6: {
+                        title: '手机号',
+                        type: 'string',
                         'x-decorator': 'FormItem',
-                        'x-component': 'Switch',
+                        'x-component': 'Input',
                         'x-component-props': {},
                         'x-decorator-props': {},
-                        _designableId: 'bbmqypy4ybb',
+                        _designableId: 'd4ca2w22oi6',
                         'x-index': 3,
                       },
-                    },
-                    'x-index': 0,
-                  },
-                },
-                'x-index': 2,
-              },
-              d4ca2w22oi6: {
-                title: 'Input',
-                type: 'string',
-                'x-decorator': 'FormItem',
-                'x-component': 'Input',
-                'x-component-props': {},
-                'x-decorator-props': {},
-                _designableId: 'd4ca2w22oi6',
-                'x-index': 3,
-              },
-              tpd8nt1fnby: {
-                type: 'string | number',
-                title: 'Radio Group',
-                'x-decorator': 'FormItem',
-                'x-component': 'Radio.Group',
-                enum: [
-                  {
-                    children: [],
-                    label: '选项1',
-                    value: 1,
-                  },
-                  {
-                    children: [],
-                    label: '选项2',
-                    value: true,
-                  },
-                  {
-                    children: [],
-                  },
-                  {
-                    children: [],
-                    label: '选项 4',
-                    value: 'rm08xp81xro',
-                  },
-                  {
-                    children: [],
-                    label: '选项 5',
-                    value: 'qo89oct6hcj',
-                  },
-                ],
-                'x-component-props': {},
-                'x-decorator-props': {},
-                _designableId: 'tpd8nt1fnby',
-                'x-index': 4,
-              },
-              '77k3tbbh7lu': {
-                type: 'Array<string>',
-                title: 'Transfer',
-                'x-decorator': 'FormItem',
-                'x-component': 'Transfer',
-                'x-component-props': {
-                  oneWay: false,
-                  showSearch: true,
-                  showSearchAll: true,
-                },
-                'x-decorator-props': {
-                  tooltip: 'xcvzxcv',
-                  addonBefore: 'ddsdsd',
-                  addonAfter: 'ssdsdsd',
-                  labelCol: 7,
-                },
-                _designableId: '77k3tbbh7lu',
-                'x-index': 5,
-              },
-              '4l24pvy2gra': {
-                type: 'string',
-                title: 'Select',
-                'x-decorator': 'FormItem',
-                'x-component': 'Select',
-                'x-component-props': {},
-                'x-decorator-props': {},
-                _designableId: '4l24pvy2gra',
-                'x-index': 6,
-              },
-              contacts: {
-                type: 'array',
-                required: true,
-                title: '联系人信息',
-                'x-decorator': 'FormItem',
-                'x-component': 'ArrayItems',
-                items: {
-                  type: 'object',
-                  'x-component': 'ArrayItems.Item',
-                  properties: {
-                    sort: {
-                      type: 'void',
-                      'x-decorator': 'FormItem',
-                      'x-component': 'ArrayItems.SortHandle',
-                    },
-                    popover: {
-                      type: 'void',
-                      title: '完善联系人信息',
-                      'x-decorator': 'Editable.Popover',
-                      'x-component': 'FormLayout',
-                      'x-component-props': {
-                        layout: 'vertical',
+                      tpd8nt1fnby: {
+                        type: 'string | number',
+                        title: 'Radio Group',
+                        'x-decorator': 'FormItem',
+                        'x-component': 'Radio.Group',
+                        enum: [
+                          {
+                            children: [],
+                            label: '选项1',
+                            value: 1,
+                          },
+                          {
+                            children: [],
+                            label: '选项2',
+                            value: true,
+                          },
+                          {
+                            children: [],
+                          },
+                          {
+                            children: [],
+                            label: '选项 4',
+                            value: 'rm08xp81xro',
+                          },
+                          {
+                            children: [],
+                            label: '选项 5',
+                            value: 'qo89oct6hcj',
+                          },
+                        ],
+                        'x-component-props': {},
+                        'x-decorator-props': {},
+                        _designableId: 'tpd8nt1fnby',
+                        'x-index': 4,
                       },
-                      'x-reactions': [
-                        {
-                          fulfill: {
-                            schema: {
-                              title: '{{$self.query(".name").value() }}',
+                      '77k3tbbh7lu': {
+                        type: 'Array<string>',
+                        title: 'Transfer',
+                        'x-decorator': 'FormItem',
+                        'x-component': 'Transfer',
+                        'x-component-props': {
+                          oneWay: false,
+                          showSearch: true,
+                          showSearchAll: true,
+                        },
+                        'x-decorator-props': {
+                          tooltip: 'xcvzxcv',
+                          addonBefore: 'ddsdsd',
+                          addonAfter: 'ssdsdsd',
+                          labelCol: 7,
+                        },
+                        _designableId: '77k3tbbh7lu',
+                        'x-index': 5,
+                      },
+                      '4l24pvy2gra': {
+                        type: 'string',
+                        title: 'Select',
+                        'x-decorator': 'FormItem',
+                        'x-component': 'Select',
+                        'x-component-props': {},
+                        'x-decorator-props': {},
+                        _designableId: '4l24pvy2gra',
+                        'x-index': 6,
+                      },
+                      contacts: {
+                        type: 'array',
+                        required: true,
+                        title: '联系人信息',
+                        'x-decorator': 'FormItem',
+                        'x-component': 'ArrayItems',
+                        items: {
+                          type: 'object',
+                          'x-component': 'ArrayItems.Item',
+                          properties: {
+                            sort: {
+                              type: 'void',
+                              'x-decorator': 'FormItem',
+                              'x-component': 'ArrayItems.SortHandle',
+                            },
+                            popover: {
+                              type: 'void',
+                              title: '完善联系人信息',
+                              'x-decorator': 'Editable.Popover',
+                              'x-component': 'FormLayout',
+                              'x-component-props': {
+                                layout: 'vertical',
+                              },
+                              'x-reactions': [
+                                {
+                                  fulfill: {
+                                    schema: {
+                                      title: '{{$self.query(".name").value() }}',
+                                    },
+                                  },
+                                },
+                              ],
+                              properties: {
+                                name: {
+                                  type: 'string',
+                                  title: '姓名',
+                                  required: true,
+                                  'x-decorator': 'FormItem',
+                                  'x-component': 'Input',
+                                  'x-component-props': {
+                                    style: {
+                                      width: 300,
+                                    },
+                                  },
+                                },
+                                email: {
+                                  type: 'string',
+                                  title: '邮箱',
+                                  'x-decorator': 'FormItem',
+                                  'x-component': 'Input',
+                                  'x-validator': [{ required: true }, 'email'],
+                                  'x-component-props': {
+                                    style: {
+                                      width: 300,
+                                    },
+                                  },
+                                },
+                                phone: {
+                                  type: 'string',
+                                  title: '手机号',
+                                  'x-decorator': 'FormItem',
+                                  'x-component': 'Input',
+                                  'x-validator': [{ required: true }, 'phone'],
+                                  'x-component-props': {
+                                    style: {
+                                      width: 300,
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            remove: {
+                              type: 'void',
+                              'x-decorator': 'FormItem',
+                              'x-component': 'ArrayItems.Remove',
                             },
                           },
                         },
-                      ],
-                      properties: {
-                        name: {
-                          type: 'string',
-                          title: '姓名',
-                          required: true,
-                          'x-decorator': 'FormItem',
-                          'x-component': 'Input',
-                          'x-component-props': {
-                            style: {
-                              width: 300,
-                            },
-                          },
-                        },
-                        email: {
-                          type: 'string',
-                          title: '邮箱',
-                          'x-decorator': 'FormItem',
-                          'x-component': 'Input',
-                          'x-validator': [{ required: true }, 'email'],
-                          'x-component-props': {
-                            style: {
-                              width: 300,
-                            },
-                          },
-                        },
-                        phone: {
-                          type: 'string',
-                          title: '手机号',
-                          'x-decorator': 'FormItem',
-                          'x-component': 'Input',
-                          'x-validator': [{ required: true }, 'phone'],
-                          'x-component-props': {
-                            style: {
-                              width: 300,
-                            },
+                        properties: {
+                          addition: {
+                            type: 'void',
+                            title: '新增联系人',
+                            'x-component': 'ArrayItems.Addition',
                           },
                         },
                       },
                     },
-                    remove: {
-                      type: 'void',
-                      'x-decorator': 'FormItem',
-                      'x-component': 'ArrayItems.Remove',
-                    },
-                  },
-                },
-                properties: {
-                  addition: {
-                    type: 'void',
-                    title: '新增联系人',
-                    'x-component': 'ArrayItems.Addition',
-                  },
-                },
-              },
-            },
-            _designableId: 'aevkxu4nwas',
-          } as any
-        }
+                    _designableId: 'aevkxu4nwas',
+                  } as any
+                }
+              />
+            </AntForm>
+          );
+        }}
       />
+      <Divider type="horizontal" />
       <AntForm
-        form={form}
+        form={form1}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 10 }}
         style={{ marginTop: 24 }}
@@ -410,7 +471,7 @@ const App = () => {
           <Button
             type="primary"
             onClick={() => {
-              setSchema(form.getFieldValue('schema'));
+              setSchema(form1.getFieldValue('schema'));
             }}
           >
             Update
