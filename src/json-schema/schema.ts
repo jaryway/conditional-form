@@ -393,6 +393,31 @@ export class Schema<
     });
   };
 
+  reduceProperties = <P, R>(
+    callback?: (
+      buffer: P,
+      schema: Schema<
+        Decorator,
+        Component,
+        DecoratorProps,
+        ComponentProps,
+        Pattern,
+        Display,
+        Validator,
+        Message
+      >,
+      key: SchemaKey,
+      index: number,
+    ) => R,
+    predicate?: P,
+  ): R => {
+    let results: any = predicate;
+    Schema.getOrderProperties(this, 'properties').forEach(({ schema, key }, index) => {
+      results = callback && callback(results, schema, key, index);
+    });
+    return results;
+  };
+
   static getOrderProperties = (
     schema: ISchema = {},
     propertiesName: keyof ISchema = 'properties',

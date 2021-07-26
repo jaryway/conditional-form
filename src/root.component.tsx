@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, FC } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { UseAPIProvider } from '@ahooksjs/use-request';
-import { ConfigProvider, Tree, Spin } from 'antd';
+// import { UseAPIProvider } from '@ahooksjs/use-request';
+import { ConfigProvider, Spin } from 'antd';
 // import { ConfigProvider as FreConfigProvider } from "@fregata/ui";
 // import { ConfigContext } from "@fregata/ui/lib/config-provider/context";
 // import {

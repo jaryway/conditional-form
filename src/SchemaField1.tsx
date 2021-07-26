@@ -10,6 +10,7 @@ import { Schema } from './json-schema/schema';
 import { isFn } from './json-schema/utils';
 import FormControl from './components/form-control';
 import FormGrid from './components/form-grid'; // import { JsxElement } from 'typescript';
+import { ArrayTable } from './components/arrary-table';
 
 console.log('Upload', Upload);
 const MyUpload = (props: any) => (
@@ -29,6 +30,7 @@ const components: { [k: string]: React.JSXElementConstructor<any> } = {
   'DatePicker.RangePicker': DatePicker.RangePicker,
   'Radio.Group': Radio.Group,
   Upload: MyUpload,
+  'ArrayTable.Column': ArrayTable.Column,
 };
 
 interface ISchemaFieldProps<Decorator = any, Component = any> {
@@ -77,7 +79,7 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, names = [], ...props }) 
   if (fieldSchema.type === 'object' || fieldSchema.type === 'void') {
     const component = components[fieldSchema['x-component']];
     const returnComponent = createElement(
-      component || Card,
+      component || 'div',
       { ...fieldSchema['x-component-props'], id: fieldSchema.name },
       renderProperties(),
     );
