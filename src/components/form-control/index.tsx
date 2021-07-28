@@ -10,7 +10,7 @@ const composeValidators = (rules: RuleItem[], name: string) => {
   if (!rules || !rules.length) return undefined;
 
   return async (value: any) => {
-    return await rules.reduce(async (error: Promise<any> | undefined, rule) => {
+    return await rules.reduce(async (error, rule) => {
       const cloneRule = { ...rule };
       const validator = new AsyncValidator({ [name]: [cloneRule] });
       return (
@@ -20,7 +20,7 @@ const composeValidators = (rules: RuleItem[], name: string) => {
           return message;
         }))
       );
-    }, undefined);
+    }, undefined as Promise<any> | undefined);
   };
 };
 

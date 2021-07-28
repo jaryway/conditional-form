@@ -582,23 +582,19 @@ function createForm(config) {
     }, []);
   };
 
-  var runFieldLevelValidation = function runFieldLevelValidation(field, setError) {
+  var runFieldLevelValidation = function runFieldLevelValidation(name, setError) {
     var promises = [];
-    var validators = getValidators(field);
-
-    // console.log('validators',name,state.fields[name],validators);
+    var validators = getValidators(state.fields[name]);
 
     if (validators.length) {
       var error;
       validators.forEach(function (validator) {
-        var errorOrPromise = validator(getIn(state.formState.values, field.name), state.formState.values, validator.length === 0 || validator.length === 3 ? publishFieldState(state.formState, state.fields[field.name]) : undefined);
-        console.log('gessssstIn','name');
+        var errorOrPromise = validator(getIn(state.formState.values, name), state.formState.values, validator.length === 0 || validator.length === 3 ? publishFieldState(state.formState, state.fields[name]) : undefined);
+
         if (errorOrPromise && isPromise(errorOrPromise)) {
-          // state.fields[name].validating = true;
-          field.validating = true
+          state.fields[name].validating = true;
           var promise = errorOrPromise.then(function (error) {
-            // if(state.fields[name]) state.fields[name].validating = false;
-            field.validating = false
+            state.fields[name].validating = false;
             setError(error);
           }); // errors must be resolved, not rejected
 
@@ -656,7 +652,7 @@ function createForm(config) {
     var promises = [].concat(runRecordLevelValidation(function (errors) {
       recordLevelErrors = errors || {};
     }), fieldKeys.reduce(function (result, name) {
-      return result.concat(runFieldLevelValidation(fields[name], function (error) {
+      return result.concat(runFieldLevelValidation(name, function (error) {
         fieldLevelErrors[name] = error;
       }));
     }, []));

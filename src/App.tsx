@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { Form as AntForm, Button, Space, Divider, Radio, Input } from 'antd';
 // import { FormGrid } from '@formily/antd';
 
@@ -13,6 +13,9 @@ import SchemaField1 from './SchemaField1';
 import FormGrid from './components/form-grid';
 import { ArrayTable } from './components/arrary-table';
 import { Schema } from './json-schema/schema';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
+import { ConditionalField } from './components/conditional-field';
+import { MutableState } from 'final-form';
 
 // const valid = new AsyncValidator({
 //   v2: [
@@ -43,6 +46,30 @@ const Cell: FC<any> = ({ children }) => {
 };
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
+const promisedValidate = (value: any) => new Promise((resolve) => resolve(undefined));
+
+const compose = async (...promises: Promise<any>[]) => {
+  return new Promise<void>(async (resolve, reject) => {
+    for (let index = 0; index < promises.length; index++) {
+      const promise = promises[index];
+      // console.log('vvvvvvvvvvvv');
+      const errors = await promise.catch((ex) => ex);
+      if (errors) {
+        reject(errors);
+        return;
+      }
+    }
+
+    return resolve();
+  }).catch((ex) => ex);
+
+  // await promises.reduce(async (error, cur) => {
+  //   console.log('45454545');
+  //   return (await error) || (await cur);
+  // }, undefined as Promise<any> | undefined);
+};
+
+compose(Promise.resolve('true'), Promise.resolve('0')).then((t) => console.log('xxxxxxxxx', t));
 
 const onSubmit = async (values: any) => {
   await sleep(300);
@@ -151,6 +178,151 @@ const App = () => {
         </GridColumn>
       </FormGrid> */}
       <Form
+        mutators={{
+          setFieldData: (args: any[], state: MutableState<any>) => {
+            const [name, data] = args;
+            const field = state.fields[name];
+            if (field) {
+              field.data = { ...field.data, ...data };
+            }
+          },
+        }}
+        initialValues={{ isGift: true }}
+        onSubmit={onSubmit || (() => {})}
+        render={({ form, submitting, values, ...rest }) => {
+          // form.mutators.setFieldData("")
+          console.log(
+            'getRegisteredFields',
+            form.getState(),
+            form.getFieldState('giftMessage')?.data,
+          );
+
+          return (
+            <AntForm
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 10 }}
+              style={{ marginTop: 24 }}
+              initialValues={{ ...state, schema }}
+              onValuesChange={(cv: any, { schema: s, ...v }: any) => {
+                // setState(v);
+              }}
+            >
+              <AntForm.Item label="is gift">
+                <Field name="isGift" type="checkbox">
+                  {({ input, meta }) => {
+                    return <Checkbox {...input} />;
+                  }}
+                </Field>
+              </AntForm.Item>
+              <AntForm.Item label="is money">
+                <Field name="isMoney" type="checkbox">
+                  {({ input }) => {
+                    return <Checkbox {...input} />;
+                  }}
+                </Field>
+              </AntForm.Item>
+
+              <ConditionalField
+                name="giftMessage"
+                conditions={[{ when: 'isGift', is: true, visible: true }]}
+              >
+                <AntForm.Item label="gift message">
+                  <Field
+                    name="giftMessage"
+                    subscription={{ value: true }}
+                    validate={async (v, va, meta) => {
+                      await sleep(100);
+                      // if (meta) meta.data = { ...meta?.data, warning: true };
+                      return new Promise<void>((res, rej) => {
+                        if (v === 'xxx') rej('xxxxxxx');
+                        res();
+                      })
+                        .then(() => {
+                          if (meta?.data?.warning)
+                            form.mutators.setFieldData('giftMessage', { warning: false });
+                        })
+                        .catch((ex) => {
+                          // console.log('metametametameta', meta);
+                          // if (meta?.data?.warning) return <div />;
+                          if (!meta?.data?.warning)
+                            form.mutators.setFieldData('giftMessage', { warning: true });
+                          return ex;
+                        });
+
+                      // return 'xxx';
+                    }}
+                  >
+                    {({ input }) => {
+                      return <Input {...input} />;
+                    }}
+                  </Field>
+                </AntForm.Item>
+              </ConditionalField>
+
+              <ConditionalField
+                name="money"
+                conditions={[
+                  { when: 'isMoney', is: true, becomes: 100 },
+                  { when: 'isMoney', is: false, becomes: 0 },
+                  { when: 'isMoney', is: false, becomes: 10 },
+                ]}
+              >
+                <AntForm.Item label="money">
+                  <Field
+                    name="money"
+                    // validate={(value) => {
+                    //   return value === 'xxxx' ? undefined : 'error';
+                    // }}
+                    validate={promisedValidate}
+                  >
+                    {({ input, meta }) => {
+                      return <Input {...input} />;
+                    }}
+                  </Field>
+                </AntForm.Item>
+              </ConditionalField>
+              <ConditionalField
+                name="money1"
+                conditions={[{ when: 'giftMessage', is: 'xxx', visible: true }]}
+              >
+                <AntForm.Item label="money1">
+                  <Field name="money1">
+                    {({ input, meta }) => {
+                      return <Input {...input} />;
+                    }}
+                  </Field>
+                </AntForm.Item>
+              </ConditionalField>
+
+              <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
+                <Space>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={() => {
+                      form.submit();
+                    }}
+                    loading={submitting}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    htmlType="reset"
+                    onClick={() => {
+                      form.reset();
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </Space>
+              </AntForm.Item>
+            </AntForm>
+          );
+        }}
+      />
+      <Divider type="horizontal" />
+
+      {/* <Form
         initialValues={{ gift_c: 'true', fruit01: ['Apple'] }}
         onSubmit={onSubmit || (() => {})}
         render={({ form, submitting, values, ...rest }) => {
@@ -467,9 +639,9 @@ const App = () => {
             </AntForm>
           );
         }}
-      />
+      /> */}
       <Divider type="horizontal" />
-      <AntForm
+      {/* <AntForm
         form={form1}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 10 }}
@@ -507,7 +679,7 @@ const App = () => {
             Update
           </Button>
         </AntForm.Item>
-      </AntForm>
+      </AntForm> */}
 
       <Divider type="horizontal" />
 

@@ -24,10 +24,12 @@ export const showErrorOnBlur: ShowErrorFunc = ({
 
 export const getValidateState = (meta: FieldMetaState<any> = {}) => {
   //   console.log('getValidateState', meta);
-  const { touched, error, modified, validating } = meta;
+  const { touched, error, modified, validating, data } = meta;
+  if ((touched || modified) && validating) return 'validating';
+  if ((touched || modified) && data?.warning) return 'warning';
+
   if (showErrorOnChange({ meta })) return 'error';
   if ((touched || modified) && !error) return 'success';
-  if ((touched || modified) && validating) return 'validating';
 
   return undefined;
 };

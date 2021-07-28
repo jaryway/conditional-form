@@ -1,8 +1,8 @@
 import React, { FC, Fragment } from 'react';
 import { FormSpy, Field } from 'react-final-form';
-import { OnChange } from 'react-final-form-listeners';
+import { OnChange, ExternallyChanged } from 'react-final-form-listeners';
 
-type ICondition = {
+export type ICondition = {
   /**
    * Property that represents the name of the field to watch
    */
@@ -25,18 +25,18 @@ interface VisibleFieldProps {
   name: string;
 }
 
-const isEqual = (values: any, m: any) => {
-  const value = (values || {})[m.when];
-  const val2 = m.is;
+// const isEqual = (values: any, m: any) => {
+//   const value = (values || {})[m.when];
+//   const val2 = m.is;
 
-  if (Array.isArray(value)) {
-    if (Array.isArray(val2)) return val2.every((n: string) => value.some((v) => v === n));
+//   if (Array.isArray(value)) {
+//     if (Array.isArray(val2)) return val2.every((n: string) => value.some((v) => v === n));
 
-    return value.some((v) => v === val2);
-  }
+//     return value.some((v) => v === val2);
+//   }
 
-  return value === val2;
-};
+//   return value === val2;
+// };
 
 const equal = (when: any, is: any) => {
   if (Array.isArray(when)) {
@@ -46,6 +46,10 @@ const equal = (when: any, is: any) => {
 
   return when === is;
 };
+const delay = async (callback: () => void) => {
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  callback();
+};
 
 const BecomesField: FC<any> = ({ name, when, is, becomes }) => (
   <Field name={name} subscription={{}}>
@@ -54,7 +58,7 @@ const BecomesField: FC<any> = ({ name, when, is, becomes }) => (
       { input: { onChange } },
     ) => (
       <FormSpy subscription={{}}>
-        {({ form }) => (
+        {() => (
           <OnChange name={when}>
             {(value) => {
               if (equal(value, is)) {
@@ -67,28 +71,28 @@ const BecomesField: FC<any> = ({ name, when, is, becomes }) => (
     )}
   </Field>
 );
-
 BecomesField.displayName = 'BecomesField';
 
 const VisibleField: React.FC<VisibleFieldProps> = ({ name, conditions, children }) => {
-  const conds = (conditions || []).filter((m) => !m.becomes || m.visible);
+  const conds = (conditions || []).filter((m) => m.visible);
 
   if (!conds.length) return <Fragment>{children}</Fragment>;
 
   return (
     <FormSpy subscription={{ values: true }}>
       {({ form }) => {
-        const match = conds.filter((m) => {
-          const when = form.getFieldState(m.when);
-          return equal(when, m.is);
+        const match = conds.some((m) => {
+          const state = form.getFieldState(m.when);
+          return equal(state?.value, m.is);
         });
 
-        return match ? children : <Field name={name} value={undefined} />;
+        !match && delay(() => form.change(name, undefined));
+
+        return match ? children : null;
       }}
     </FormSpy>
   );
 };
-
 VisibleField.displayName = 'VisibleField';
 
 export const ConditionalField: React.FC<ConditionalFieldProps> = ({
@@ -96,12 +100,10 @@ export const ConditionalField: React.FC<ConditionalFieldProps> = ({
   name,
   children,
 }) => {
-  // const { name } = ((children as React.ReactElement).props || {}) as any;
-  // const visibleConditions = conditions.filter((m) => !m.becomes || m.visible);
-  const becomes = conditions.filter((m) => m.becomes);
+  // 当 a.value === x 时，b.visible = false，当字段 a 的值变成 x 时，显示或隐藏字段 b 
+  // 当 a.value === x 时，b.value = becomes，当字段 a 的值变成 x 时，更新字段 b 的值为 becomes
 
-  // 当 a.value===x 时，b.visible=false，当组件 a 的值变成 x 时，组件 b 显示或隐藏
-  // 当 a.value===x 时，b.value=becomes，当组件 a 的值变成 x 时，组件 b 的值变成 becomes
+  const becomes = conditions.filter((m) => m.becomes !== undefined);
 
   return (
     <Fragment>
