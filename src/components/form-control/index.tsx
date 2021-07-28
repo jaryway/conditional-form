@@ -80,6 +80,8 @@ const FieldFormItem: FC<any> = ({ rules, name, type, ...rest }) => {
     <Field
       name={name}
       type={type}
+      // initialValue={''}
+      // component="input"
       // validate={requiredFuc}
       validate={composeValidators(rules || [], name)}
     >

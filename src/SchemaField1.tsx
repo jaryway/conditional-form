@@ -69,7 +69,11 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, names = [], ...props }) 
     );
 
     if (conditions && conditions.length)
-      return <ConditionalField conditions={conditions}>{returnComponent}</ConditionalField>;
+      return (
+        <ConditionalField name={name} conditions={conditions}>
+          {returnComponent}
+        </ConditionalField>
+      );
 
     return returnComponent;
   };
@@ -85,7 +89,11 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, names = [], ...props }) 
     );
 
     if (conditions && conditions.length)
-      return <ConditionalField conditions={conditions}>{returnComponent}</ConditionalField>;
+      return (
+        <ConditionalField name={name} conditions={conditions}>
+          {returnComponent}
+        </ConditionalField>
+      );
 
     return returnComponent;
   }

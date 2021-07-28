@@ -3,6 +3,8 @@ import { Form } from 'react-final-form';
 import { Form as AntForm, Button, Space, Divider, Radio, Input } from 'antd';
 // import { FormGrid } from '@formily/antd';
 
+import AsyncValidator from 'async-validator';
+
 // import FormControl from './components/form-control';
 // import { ConditionalField } from './components/conditional-field';
 import SchemaEngine from './SchemaEngine';
@@ -11,6 +13,17 @@ import SchemaField1 from './SchemaField1';
 import FormGrid from './components/form-grid';
 import { ArrayTable } from './components/arrary-table';
 import { Schema } from './json-schema/schema';
+
+// const valid = new AsyncValidator({
+//   v2: [
+//     {
+//       validator(rule, value, callback) {
+//         callback();
+//       },
+//     },
+//   ],
+// });
+
 const { GridColumn } = FormGrid;
 const Cell: FC<any> = ({ children }) => {
   return (

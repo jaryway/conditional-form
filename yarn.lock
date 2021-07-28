@@ -1276,6 +1276,11 @@
   resolved "http://192.10.169.216:4873/@formily%2fpath/-/path-2.0.0-beta.81.tgz#54ecfe499daa8514d49f56d8cd2626bbbf8cb7e5"
   integrity sha1-VOz+SZ2qhRTUn1bYzSYmu7+Mt+U=
 
+"@formily/path@^2.0.0-beta.82":
+  version "2.0.0-beta.82"
+  resolved "http://192.10.169.216:4873/@formily%2fpath/-/path-2.0.0-beta.82.tgz#f11632577d21d2cd98f6dfffe20f1ef5f03eaf56"
+  integrity sha1-8RYyV30h0s2Y9t//4g8e9fA+r1Y=
+
 "@formily/react@2.0.0-beta.81":
   version "2.0.0-beta.81"
   resolved "http://192.10.169.216:4873/@formily%2freact/-/react-2.0.0-beta.81.tgz#ff915f47b1aa370e0fbb0e1090c628512f3f025b"
@@ -9798,7 +9803,7 @@ react-error-overlay@^6.0.9:
 
 react-final-form-listeners@^1.0.3:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-final-form-listeners/-/react-final-form-listeners-1.0.3.tgz#88e0bd6af06edc9a74b81ddad2ce0ded53f3331e"
+  resolved "http://192.10.169.216:4873/react-final-form-listeners/-/react-final-form-listeners-1.0.3.tgz#88e0bd6af06edc9a74b81ddad2ce0ded53f3331e"
   integrity sha1-iOC9avBu3Jp0uB3a0s4N7VPzMx4=
   dependencies:
     "@babel/runtime" "^7.12.5"

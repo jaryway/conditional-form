@@ -1,4 +1,14 @@
-import { ISchema, SchemaKey, SchemaTypes, SchemaEnum, SchemaProperties } from './types';
+import {
+  ISchema,
+  SchemaKey,
+  SchemaTypes,
+  SchemaEnum,
+  SchemaProperties,
+  ISchemaTransformerOptions,
+  IFieldFactoryProps,
+  ICondition,
+} from './types';
+import { transformSchemaToFieldProps } from './transformer';
 
 export class Schema<
   Decorator = any,
@@ -152,6 +162,8 @@ export class Schema<
   ['x-read-only']?: boolean;
 
   ['x-read-pretty']?: boolean;
+
+  ['x-conditions']?: ICondition[];
 
   _isJSONSchemaObject = true;
 
@@ -416,6 +428,10 @@ export class Schema<
       results = callback && callback(results, schema, key, index);
     });
     return results;
+  };
+
+  toFieldProps = (options?: ISchemaTransformerOptions): IFieldFactoryProps<any, any> => {
+    return transformSchemaToFieldProps(this, options as any);
   };
 
   static getOrderProperties = (

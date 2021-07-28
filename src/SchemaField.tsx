@@ -195,7 +195,11 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, schema, names = [], ...r
     });
 
     if (conditions && conditions.length)
-      return <ConditionalField conditions={conditions}>{component}</ConditionalField>;
+      return (
+        <ConditionalField name={name} conditions={conditions}>
+          {component}
+        </ConditionalField>
+      );
 
     return component;
   }
@@ -235,7 +239,11 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, schema, names = [], ...r
 
     // 如果有条件加上条件组件
     if (conditions && conditions.length)
-      return <ConditionalField conditions={conditions}>{component}</ConditionalField>;
+      return (
+        <ConditionalField name={name} conditions={conditions}>
+          {component}
+        </ConditionalField>
+      );
 
     return component;
   }

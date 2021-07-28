@@ -12,6 +12,7 @@ const RecursionField: FC<any> = (props) => {
     const schema = new Schema(props.schema as any);
     return schema;
   }, [props.schema]);
+
   const fieldProps = useMemo(() => {
     //   fieldSchema.toFieldProps
     return fieldSchema['x-component-props'];

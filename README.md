@@ -1,4 +1,17 @@
-# Getting Started with Create React App
+### TODO
+
+#### 解析 json-schema
+
+- [ ] 1. rff 与 antd 结合，实现表单功能;
+- [ ] 2. 实现按条件显示；
+- [ ] 3. 结合 json-schema 实现单个组件显示；
+- [ ] 4. json-schema 实现实例化，具备父级、子级递归功能；
+- [ ] 5. 将 json-schema 属性转成 rrf 组件属性；
+- [ ] 6. 完善数据验证；
+
+#### 生成 json-schema（表单设计器）
+
+- 新版
 
 ### 底层框架的实现逻
 
