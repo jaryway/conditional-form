@@ -14,8 +14,9 @@ import FormGrid from './components/form-grid';
 import { ArrayTable } from './components/arrary-table';
 import { Schema } from './json-schema/schema';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
-import { ConditionalField } from './components/conditional-field';
+import ConditionalField from './components/conditional-field';
 import { MutableState } from 'final-form';
+import FinalField from './components/final-field';
 
 // const valid = new AsyncValidator({
 //   v2: [
@@ -191,11 +192,11 @@ const App = () => {
         onSubmit={onSubmit || (() => {})}
         render={({ form, submitting, values, ...rest }) => {
           // form.mutators.setFieldData("")
-          console.log(
-            'getRegisteredFields',
-            form.getState(),
-            form.getFieldState('giftMessage')?.data,
-          );
+          // console.log(
+          //   'getRegisteredFields',
+          //   form.getState(),
+          //   form.getFieldState('giftMessage')?.data,
+          // );
 
           return (
             <AntForm
@@ -222,6 +223,17 @@ const App = () => {
                 </Field>
               </AntForm.Item>
 
+              <FinalField
+                validate={(value, allValue) => {
+                  return !value ? '必填项' : undefined;
+                }}
+                name="automan"
+                title="奥特曼"
+                decorator={[AntForm.Item, { help: 'xxxx' }]}
+                component={[Input, {}]}
+                conditions={[{ when: 'isGift', is: true, visible: true }]}
+              />
+
               <ConditionalField
                 name="giftMessage"
                 conditions={[{ when: 'isGift', is: true, visible: true }]}
@@ -233,6 +245,7 @@ const App = () => {
                     validate={async (v, va, meta) => {
                       await sleep(100);
                       // if (meta) meta.data = { ...meta?.data, warning: true };
+                      // 验证发生错误的是，状态是 warning，同时添加 errors
                       return new Promise<void>((res, rej) => {
                         if (v === 'xxx') rej('xxxxxxx');
                         res();
@@ -294,7 +307,43 @@ const App = () => {
                 </AntForm.Item>
               </ConditionalField>
 
-              <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
+              <FinalField
+                // validate={(value, allValue) => {
+                //   return !value ? '必填项' : undefined;
+                // }}
+                // name="automan"
+                // title="奥特曼"
+                decorator={[AntForm.Item, { wrapperCol: { offset: 6, span: 16 } }]}
+                component={[
+                  () => {
+                    return (
+                      <Space>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          onClick={() => {
+                            form.submit();
+                          }}
+                          loading={submitting}
+                        >
+                          Submit
+                        </Button>
+                        <Button
+                          htmlType="reset"
+                          onClick={() => {
+                            form.reset();
+                          }}
+                        >
+                          Reset
+                        </Button>
+                      </Space>
+                    );
+                  },
+                  {},
+                ]}
+                conditions={[{ when: 'isGift', is: true, visible: true }]}
+              />
+              {/* <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
                 <Space>
                   <Button
                     type="primary"
@@ -315,7 +364,7 @@ const App = () => {
                     Reset
                   </Button>
                 </Space>
-              </AntForm.Item>
+              </AntForm.Item> */}
             </AntForm>
           );
         }}

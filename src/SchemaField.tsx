@@ -1,7 +1,7 @@
 import React, { FC, createElement, Fragment, useContext } from 'react';
 import { Input, Checkbox } from 'antd';
 import { Field } from 'react-final-form';
-import { ConditionalField } from './components/conditional-field';
+import ConditionalField  from './components/conditional-field';
 // import FormControl from './components/form-control';
 import { RegistryComponentsContext, SchemaFormContext } from './context';
 import { ISchema } from './interface';

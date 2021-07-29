@@ -1,6 +1,6 @@
 import { isFn } from '@formily/shared';
 import React, { FC, Fragment, useContext, createElement } from 'react';
-import { ConditionalField } from '../../components/conditional-field';
+import ConditionalField from '../../components/conditional-field';
 import { FieldContext } from '../context';
 
 // const isVoidField=(node:any)=>{

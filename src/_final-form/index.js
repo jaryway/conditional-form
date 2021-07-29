@@ -592,7 +592,7 @@ function createForm(config) {
       var error;
       validators.forEach(function (validator) {
         var errorOrPromise = validator(getIn(state.formState.values, field.name), state.formState.values, validator.length === 0 || validator.length === 3 ? publishFieldState(state.formState, state.fields[field.name]) : undefined);
-        console.log('gessssstIn','name');
+        // console.log('gessssstIn','name');
         if (errorOrPromise && isPromise(errorOrPromise)) {
           // state.fields[name].validating = true;
           field.validating = true

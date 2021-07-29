@@ -2,7 +2,7 @@ import React, { FC, createElement, Fragment, useContext, useMemo } from 'react';
 import { Input, Upload, Button, Card, Select, Switch, Form, DatePicker, Radio } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Field } from 'react-final-form';
-import { ConditionalField } from './components/conditional-field';
+import ConditionalField from './components/conditional-field';
 // import FormControl from './components/form-control';
 import { RegistryComponentsContext, SchemaFormContext } from './context';
 import { ISchema } from './interface';

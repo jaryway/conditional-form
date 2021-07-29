@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { FormSpy, Field } from 'react-final-form';
-import { OnChange, ExternallyChanged } from 'react-final-form-listeners';
+import { OnChange } from 'react-final-form-listeners';
 
 export type ICondition = {
   /**
@@ -86,7 +86,7 @@ const VisibleField: React.FC<VisibleFieldProps> = ({ name, conditions, children 
           return equal(state?.value, m.is);
         });
 
-        !match && delay(() => form.change(name, undefined));
+        !match && name && delay(() => form.change(name, undefined));
 
         return match ? children : null;
       }}
@@ -95,12 +95,8 @@ const VisibleField: React.FC<VisibleFieldProps> = ({ name, conditions, children 
 };
 VisibleField.displayName = 'VisibleField';
 
-export const ConditionalField: React.FC<ConditionalFieldProps> = ({
-  conditions,
-  name,
-  children,
-}) => {
-  // 当 a.value === x 时，b.visible = false，当字段 a 的值变成 x 时，显示或隐藏字段 b 
+const ConditionalField: React.FC<ConditionalFieldProps> = ({ conditions, name, children }) => {
+  // 当 a.value === x 时，b.visible = false，当字段 a 的值变成 x 时，显示或隐藏字段 b
   // 当 a.value === x 时，b.value = becomes，当字段 a 的值变成 x 时，更新字段 b 的值为 becomes
 
   const becomes = conditions.filter((m) => m.becomes !== undefined);
@@ -110,58 +106,22 @@ export const ConditionalField: React.FC<ConditionalFieldProps> = ({
       <VisibleField name={name} conditions={conditions}>
         {children}
       </VisibleField>
-      {becomes.map((m, i) => {
-        return (
-          <BecomesField
-            key={`becomes-${i}`}
-            name={name}
-            when={m.when}
-            is={m.is}
-            becomes={m.becomes}
-          />
-        );
-      })}
+      {name &&
+        becomes.map((m, i) => {
+          return (
+            <BecomesField
+              key={`becomes-${i}`}
+              name={name}
+              when={m.when}
+              is={m.is}
+              becomes={m.becomes}
+            />
+          );
+        })}
     </Fragment>
   );
-
-  // return (
-  //   <FormSpy subscription={{ values: true }}>
-  //     {({ values, form }) => {
-  //       const visibleConds = conditions.filter((m) => !m.becomes || m.visible);
-
-  //       const visible =
-  //         visibleConds.length === 0 ||
-  //         visibleConds.some((m) => {
-  //           return isEqual(values, m);
-  //         });
-
-  //       // 实现当某个字段为某个值时，把当前字段的值改成某个值
-  //       const [becomesCondition] = conditions.filter((m) => {
-  //         if (!m.becomes) return false;
-  //         return isEqual(values, m);
-  //       });
-
-  //       if (visible) {
-  //         if (becomesCondition) {
-  //           setTimeout(() => {
-  //             name && form.change(name, becomesCondition.becomes);
-  //           }, 0);
-  //         }
-
-  //         return children;
-  //       }
-
-  //       /* 这里可以通过 FormControlField Unmount 实现
-  //       // // fix setState Warning
-  //       // setTimeout(() => {
-  //       //   name && form.change(name, undefined);
-  //       // }, 0);
-  //       */
-
-  //       return null;
-  //     }}
-  //   </FormSpy>
-  // );
 };
 
 ConditionalField.displayName = 'ConditionalField';
+
+export default ConditionalField;

@@ -4,7 +4,7 @@
 
 - [x] 1. rff 与 antd 结合，实现表单功能;
 - [x] 2. 实现按条件显示；
-- [ ] 3. 将 FormItem、Input、final-form.field 结合成一个组件；
+- [x] 3. 将 FormItem、Input、final-form.field 结合成一个组件；
 - [ ] 4. json-schema 实现实例化，具备父级、子级递归功能；
 - [ ] 5. 将 json-schema 属性转成 rrf 组件属性；
 - [ ] 6. 完善数据验证；
