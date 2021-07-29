@@ -167,7 +167,7 @@ export class Schema<
 
   _isJSONSchemaObject = true;
 
-  version = '1.0';
+  version = '1.2';
 
   constructor(
     json: ISchema<
@@ -243,7 +243,7 @@ export class Schema<
     >,
   ) => {
     for (const key in properties) {
-      console.log('454545-p', key, properties[key]);
+      // console.log('454545-p', key, properties[key]);
       this.addProperty(key, properties[key]);
     }
     return this;
@@ -401,6 +401,7 @@ export class Schema<
     ) => T,
   ): T[] => {
     return Schema.getOrderProperties(this).map(({ schema, key }, index) => {
+     
       return (callback && callback(schema, key, index)) as T;
     });
   };
@@ -440,6 +441,7 @@ export class Schema<
   ) => {
     const orderProperties = [];
     const unorderProperties = [];
+    // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
     for (const key in schema[propertiesName]) {
       const item = schema[propertiesName][key];
       const index = item['x-index'];

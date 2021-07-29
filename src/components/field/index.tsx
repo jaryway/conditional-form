@@ -128,6 +128,7 @@ const FinalField: FC<FinalFieldProps> = ({
     const fieldName = Path.parse(getBaseName())
       .concat(name as string)
       .toString();
+      console.log('xxxxxxxxx',fieldName);
     return (
       <Field
         type={type}

@@ -181,6 +181,8 @@ const getBaseProps = (schema: Schema, options: ISchemaFieldFactoryOptions, state
   const componentType = findComponent('component', schema['x-component'], options);
   const componentProps = schema['x-component-props'] || state?.component?.[1];
 
+  // console.log('xdsdsdsdsdsdsdsd', componentType, decoratorType);
+
   if (isValid(schema.default)) {
     props.initialValue = schema.default;
   }
@@ -275,6 +277,8 @@ export const transformSchemaToFieldProps = (
   const required = getRequired(schema);
   // const reactions = getReactions(schema, options);
   const props = getBaseProps(schema, options);
+
+  // console.log('transformSchemaToFieldProps', schema, props, options);
 
   props.required = required;
   props.name = schema.name;
