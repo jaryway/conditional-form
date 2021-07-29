@@ -1,6 +1,7 @@
-import React, { createContext, createElement, FC, Fragment, ReactNode } from 'react';
+import React, { createContext, createElement, FC, Fragment, ReactNode, useContext } from 'react';
 import { FieldState } from 'final-form';
 import { Field, FieldRenderProps } from 'react-final-form';
+import { Path } from '@formily/path';
 import ConditionalField from '../conditional-field';
 
 export type ICondition = {
@@ -22,6 +23,7 @@ interface FinalFieldProps<
   DecoratorProps = any,
   ComponentProps = any,
 > {
+  baseName?: string;
   name?: string;
   type?: 'checkbox' | 'radio';
   title?: string;
@@ -37,7 +39,11 @@ type FieldValidator<FieldValue = any> = (
   meta?: FieldState<FieldValue>,
 ) => any | Promise<any>;
 
-const FieldContext = createContext<FieldRenderProps<any>>({} as any);
+interface FieldContextProps extends FieldRenderProps<any> {
+  baseName?: string;
+}
+
+const FieldContext = createContext<FieldContextProps>({} as any);
 
 const FinalField: FC<FinalFieldProps> = ({
   name,
@@ -49,26 +55,36 @@ const FinalField: FC<FinalFieldProps> = ({
   component,
   ...rest
 }) => {
+  const parent = useContext(FieldContext);
+  // console.log('parent', parent);
+  const getBaseName = () => {
+    // console.log('parent1', rest.baseName || parent?.name);
+    return rest.baseName || parent?.input?.name;
+  };
 
   const renderComponent = () => {
     if (component) {
       return (
         <FieldContext.Consumer>
           {({ input }) => {
-            return createElement(component[0], {
-              ...component[1],
-              ...input,
-            });
+            return createElement(
+              component[0],
+              {
+                ...component[1],
+                ...input,
+              },
+              rest.children,
+            );
           }}
         </FieldContext.Consumer>
       );
     }
 
-    return <Fragment />;
+    return <Fragment>{rest.children}</Fragment>;
   };
 
   const renderDecorator = (children: ReactNode) => {
-    if (decorator && decorator.length > 1) {
+    if (decorator && decorator.length > 0) {
       return (
         <FieldContext.Consumer>
           {({ meta }) => {
@@ -94,8 +110,12 @@ const FinalField: FC<FinalFieldProps> = ({
 
   const renderConditional = (children: ReactNode) => {
     if (conditions && conditions.length) {
+      const fieldName = Path.parse(getBaseName())
+        .concat(name as string)
+        .toString();
+
       return (
-        <ConditionalField name={name as string} conditions={conditions}>
+        <ConditionalField name={fieldName} conditions={conditions}>
           {children}
         </ConditionalField>
       );
@@ -105,10 +125,13 @@ const FinalField: FC<FinalFieldProps> = ({
   };
 
   const renderField = (children: ReactNode) => {
+    const fieldName = Path.parse(getBaseName())
+      .concat(name as string)
+      .toString();
     return (
       <Field
         type={type}
-        name={name as string}
+        name={fieldName as string}
         validate={validate}
         render={({ input, meta }) => {
           return <FieldContext.Provider value={{ input, meta }}>{children}</FieldContext.Provider>;

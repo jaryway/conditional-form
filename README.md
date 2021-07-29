@@ -6,7 +6,7 @@
 - [x] 2. 实现按条件显示；
 - [x] 3. 将 FormItem、Input、final-form.field 结合成一个组件；
 - [ ] 4. json-schema 实现实例化，具备父级、子级递归功能；
-- [ ] 5. 将 json-schema 属性转成 rrf 组件属性；
+- [ ] 5. 将 json-schema 属性转成 rff 组件属性；
 - [ ] 6. 完善数据验证；
 
 #### 生成 json-schema（表单设计器）

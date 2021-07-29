@@ -82,6 +82,7 @@ const App = () => {
   return (
     <>
       <Form
+        validateOnBlur={false}
         mutators={{
           setFieldData: (args: any[], state: MutableState<any>) => {
             const [name, data] = args;
@@ -156,7 +157,17 @@ const App = () => {
                 conditions={[{ when: 'giftMessage', is: 'xxx', visible: true }]}
               />
 
-              <Field
+              <Field name="XXXX">
+                <Field
+                  name="money2"
+                  title="money2"
+                  decorator={[FormItem, {}]}
+                  component={[FregataInput, {}]}
+                  conditions={[{ when: 'isMoney', is: true, visible: true }]}
+                />
+              </Field>
+
+              {/* <Field
                 decorator={[AntForm.Item, { wrapperCol: { offset: 6, span: 16 } }]}
                 component={[
                   () => {
@@ -186,7 +197,29 @@ const App = () => {
                   {},
                 ]}
                 conditions={[{ when: 'isGift', is: true, visible: true }]}
-              />
+              /> */}
+              <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
+                <Space>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={() => {
+                      form.submit();
+                    }}
+                    loading={submitting}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    htmlType="reset"
+                    onClick={() => {
+                      form.reset();
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </Space>
+              </AntForm.Item>
             </AntForm>
           );
         }}
