@@ -1,20 +1,10 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { MutableState } from 'final-form';
 import { FieldInputProps, FieldMetaState, Form } from 'react-final-form';
 import { Form as AntForm, Button, Space, Input, Checkbox } from 'antd';
 
 import Field from './components/field';
 import { getValidateState } from './utils';
-
-// const valid = new AsyncValidator({
-//   v2: [
-//     {
-//       validator(rule, value, callback) {
-//         callback();
-//       },
-//     },
-//   ],
-// });
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -89,104 +79,8 @@ const FregataInput = (props: any) => {
 };
 
 const App = () => {
-  const [state, setState] = useState<{ mode: string; descriptionMode?: string }>({
-    mode: 'normal',
-  });
-
-  const [schema, setSchema] = useState(
-    JSON.stringify(
-      {
-        engineVersion: '3.0.0',
-        version: '0.0.1',
-        componentName: 'Page',
-        id: 'page_id',
-        props: {},
-        children: [
-          {
-            componentName: 'Form',
-            id: 'form_id',
-            props: {
-              labelCol: { span: 6 },
-              wrapperCol: { span: 10 },
-            },
-            children: [
-              {
-                componentName: 'CheckboxField',
-                id: 'checkboxField_01',
-                props: {
-                  label: 'Fruit01',
-                  fieldId: 'fruit01',
-                  // conditions: [{ when: 'gift', is: ['Apple', 'Pear'], visible: true }],
-                  placeholder: '请输入',
-                  options: ['Apple', 'Pear', 'Orange'],
-                },
-              },
-              {
-                componentName: 'BooleanField',
-                id: 'booleanField_01',
-                props: {
-                  label: 'Is it a gift?',
-                  fieldId: 'gift_c',
-                  // conditions: [{ when: 'gift', is: ['Apple', 'Pear'], visible: true }],
-                  placeholder: '请输入',
-                  // options: ['Apple', 'Pear', 'Orange'],
-                },
-              },
-              {
-                componentName: 'TextField',
-                id: 'textField_000',
-                props: {
-                  label: 'Text1',
-                  fieldId: 'text1',
-                  conditions: [{ when: 'gift', is: ['Apple', 'Pear'], visible: true }],
-                  placeholder: '请输入',
-                },
-              },
-              {
-                componentName: 'TextField',
-                id: 'textField_001',
-                props: {
-                  label: 'Text1-1',
-                  fieldId: 'text1-1',
-                  conditions: [{ when: 'text1', is: '1', visible: true }],
-                  placeholder: '请输入',
-                },
-              },
-            ],
-          },
-        ],
-      },
-      null,
-      2,
-    ),
-  );
-
-  const [form1] = AntForm.useForm();
-  // const s = new Schema(ArrayTable);
-  // console.log('sssssssssssssssssss', s);
-
   return (
     <>
-      {/* <FormGrid maxColumns={3} minColumns={2}>
-        <GridColumn gridSpan={4}>
-          <Cell>1</Cell>
-        </GridColumn>
-        <GridColumn>
-          <Cell>2</Cell>
-        </GridColumn>
-        <GridColumn>
-          <Cell>3</Cell>
-        </GridColumn>
-        <GridColumn>
-          <Cell>4</Cell>
-        </GridColumn>
-        <GridColumn>
-          <Cell>5</Cell>
-        </GridColumn>
-        <GridColumn>
-          <Cell>6</Cell>
-        </GridColumn>
-      </FormGrid> */}
       <Form
         mutators={{
           setFieldData: (args: any[], state: MutableState<any>) => {
@@ -200,19 +94,11 @@ const App = () => {
         initialValues={{ isGift: true }}
         onSubmit={onSubmit || (() => {})}
         render={({ form, submitting }) => {
-          // form.mutators.setFieldData("")
-          // console.log(
-          //   'getRegisteredFields',
-          //   form.getState(),
-          //   form.getFieldState('giftMessage')?.data,
-          // );
-
           return (
             <AntForm
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 10 }}
               style={{ marginTop: 24 }}
-              initialValues={{ ...state, schema }}
               onValuesChange={(cv: any) => {}}
             >
               <Field
