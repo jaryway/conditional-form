@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "cross-env REACT_APP_API_BASE_URL=http://192.10.169.212:9191 react-app-rewired start --max_old_space_size=4096",
-    "build": "react-scripts build",
+    "build": "cross-env REACT_APP_API_BASE_URL=http://192.10.169.212:9191 react-app-rewired build --max_old_space_size=4096",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -1,3 +1,4 @@
+import { each, isFn, map } from '@formily/shared';
 import {
   ISchema,
   SchemaKey,
@@ -401,7 +402,6 @@ export class Schema<
     ) => T,
   ): T[] => {
     return Schema.getOrderProperties(this).map(({ schema, key }, index) => {
-     
       return (callback && callback(schema, key, index)) as T;
     });
   };
@@ -433,6 +433,39 @@ export class Schema<
 
   toFieldProps = (options?: ISchemaTransformerOptions): IFieldFactoryProps<any, any> => {
     return transformSchemaToFieldProps(this, options as any);
+  };
+
+  toJSON = (recursion = true) => {
+    const results: { [k: string]: any } = {};
+    each(this, (value: any, key) => {
+      if ((isFn(value) && !key.includes('x-')) || key === 'parent' || key === 'root') return;
+      if (key === 'properties' || key === 'patternProperties') {
+        if (!recursion) return;
+        results[key] = map(value, (item) => item?.toJSON?.());
+      } else if (key === 'additionalProperties' || key === 'additionalItems') {
+        if (!recursion) return;
+        results[key] = value?.toJSON?.();
+      } else if (key === 'items') {
+        if (!recursion) return;
+        if (Array.isArray(value)) {
+          results[key] = value.map((item) => item?.toJSON?.());
+        } else {
+          results[key] = value?.toJSON?.();
+        }
+      } else {
+        results[key] = value;
+      }
+    });
+    return results as ISchema<
+      Decorator,
+      Component,
+      DecoratorProps,
+      ComponentProps,
+      Pattern,
+      Display,
+      Validator,
+      Message
+    >;
   };
 
   static getOrderProperties = (

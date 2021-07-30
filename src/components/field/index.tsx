@@ -28,7 +28,9 @@ interface FinalFieldProps<
   type?: 'checkbox' | 'radio';
   // checkbox?: true;
   // checkbox?: true;
+  address?: string;
   title?: string;
+  schemaType?: string;
   conditions?: ICondition[];
   validate?: FieldValidator;
   decorator?: [Decorator, DecoratorProps];
@@ -51,10 +53,12 @@ const FinalField: FC<FinalFieldProps> = ({
   name,
   type,
   title,
+  address,
   validate,
   conditions,
   decorator,
   component,
+
   ...rest
 }) => {
   // const parent = useContext(FieldContext);
@@ -74,6 +78,7 @@ const FinalField: FC<FinalFieldProps> = ({
               {
                 ...component[1],
                 ...input,
+                'data-component': '1',
               },
               rest.children,
             );
@@ -99,6 +104,7 @@ const FinalField: FC<FinalFieldProps> = ({
                   ...decorator[1]?.style,
                 },
                 ...meta,
+                'data-decorator': '1',
               },
               children,
             );
@@ -135,8 +141,11 @@ const FinalField: FC<FinalFieldProps> = ({
       <Field
         type={type}
         name={name as string}
+        address={address}
+        // data={{ address }}
         validate={validate}
         render={({ input, meta }) => {
+          // console.log('name_address1', input.name);
           return <FieldContext.Provider value={{ input, meta }}>{children}</FieldContext.Provider>;
           // return (
           //   <AntForm.Item label={rest.title}>

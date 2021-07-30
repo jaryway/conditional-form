@@ -24,27 +24,27 @@ const {
 const isEnvDevelopment = process.env.NODE_ENV === 'development';
 const isEnvProduction = process.env.NODE_ENV === 'production';
 
-const antdThemeOptions = {
-  stylesDir: path.join(__dirname, './src/themes/less'),
-  antDir: path.join(__dirname, './node_modules/antd'),
-  varFile: path.join(__dirname, './src/themes/less/variables.less'),
-  mainLessFile: path.join(__dirname, './src/themes/less/index.less'),
-  themeVariables: [
-    '@btn-primary-bg',
-    '@primary-color',
-    '@secondary-color',
-    '@text-color',
-    '@text-color-secondary',
-    '@heading-color',
-    '@layout-body-background',
-    '@layout-header-height',
-    '@layout-header-background',
-    '@border-color-base',
-  ],
-  indexFileName: 'index.html',
-  lessUrl: '/libs/less.min.js',
-  generateOnce: false, // generate color.less on each compilation
-};
+// const antdThemeOptions = {
+//   stylesDir: path.join(__dirname, './src/themes/less'),
+//   antDir: path.join(__dirname, './node_modules/antd'),
+//   varFile: path.join(__dirname, './src/themes/less/variables.less'),
+//   mainLessFile: path.join(__dirname, './src/themes/less/index.less'),
+//   themeVariables: [
+//     '@btn-primary-bg',
+//     '@primary-color',
+//     '@secondary-color',
+//     '@text-color',
+//     '@text-color-secondary',
+//     '@heading-color',
+//     '@layout-body-background',
+//     '@layout-header-height',
+//     '@layout-header-background',
+//     '@border-color-base',
+//   ],
+//   indexFileName: 'index.html',
+//   lessUrl: '/libs/less.min.js',
+//   generateOnce: false, // generate color.less on each compilation
+// };
 
 module.exports = {
   webpack: override(
@@ -80,10 +80,13 @@ module.exports = {
       config.output.libraryTarget = 'umd';
       config.output.jsonpFunction = `webpackJsonp_${name}`;
       config.output.globalObject = 'window';
+      config.entry = {
+        polyfill: ['core-js/stable', 'regenerator-runtime/runtime'],
+        main: [paths.appIndexJs].filter(Boolean),
+      };
+      // config.optimization.minimize = false;
 
       return config;
-
-      // return config;
     },
   ),
   // paths: function (paths, env) {

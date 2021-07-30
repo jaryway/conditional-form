@@ -31,7 +31,7 @@ const compose = async (...promises: Promise<any>[]) => {
   // }, undefined as Promise<any> | undefined);
 };
 
-compose(Promise.resolve('true'), Promise.resolve('0')).then((t) => console.log('xxxxxxxxx', t));
+// compose(Promise.resolve('true'), Promise.resolve('0')).then((t) => console.log('xxxxxxxxx', t));
 
 const onSubmit = async (values: any) => {
   await sleep(300);
@@ -113,6 +113,7 @@ const App = () => {
                 name="isGift"
                 title="is gift"
                 type="checkbox"
+                // checkbox
                 decorator={[FormItem, {}]}
                 component={[Checkbox, {}]}
               />
@@ -121,6 +122,7 @@ const App = () => {
                 name="isMoney"
                 title="is money"
                 type="checkbox"
+                // checkbox
                 decorator={[FormItem, {}]}
                 component={[Checkbox, {}]}
               />
@@ -163,15 +165,17 @@ const App = () => {
                 component={[FregataInput, {}]}
                 conditions={[{ when: 'giftMessage', is: 'xxx', visible: true }]}
               />
-
-              <Field name="XXXX">
-                <Field
-                  name="money2"
-                  title="money2"
-                  decorator={[FormItem, {}]}
-                  component={[FregataInput, {}]}
-                  conditions={[{ when: 'isMoney', is: true, visible: true }]}
-                />
+              {/* @ts-ignore */}
+              <Field name="XXXX" value="">
+                <Card>
+                  <Field
+                    name="XXXX.money2"
+                    title="money2"
+                    decorator={[FormItem, {}]}
+                    component={[FregataInput, {}]}
+                    conditions={[{ when: 'isMoney', is: true, visible: true }]}
+                  />
+                </Card>
               </Field>
               <SchemaOptionsContext.Provider
                 value={{
@@ -205,22 +209,36 @@ const App = () => {
                           'x-index': 1,
                         },
                         umt0swqdbo6: {
-                          type: 'void',
+                          type: 'object',
                           'x-component': 'Card',
                           'x-component-props': {
                             title: 'Title',
                           },
                           properties: {
-                            dddddddddd: {
-                              title: 'Input0',
-                              type: 'string',
-                              'x-decorator': 'FormItem',
-                              'x-component': 'Input',
-                              'x-component-props': {},
-                              'x-decorator-props': {},
-                              required: true,
-                              _designableId: 'v7hxqah4mlg',
-                              'x-index': 0,
+                            type: 'object',
+                            'x-component': 'Card',
+                            'x-component-props': {
+                              title: 'Title',
+                            },
+                            '4opiooo': {
+                              type: 'object',
+                              'x-component': 'Card',
+                              'x-component-props': {
+                                title: 'Title',
+                              },
+                              properties: {
+                                dddddddddd: {
+                                  title: 'Input0',
+                                  type: 'string',
+                                  'x-decorator': 'FormItem',
+                                  'x-component': 'Input',
+                                  'x-component-props': {},
+                                  'x-decorator-props': {},
+                                  required: true,
+                                  _designableId: 'v7hxqah4mlg',
+                                  'x-index': 0,
+                                },
+                              },
                             },
                           },
                         },
@@ -541,7 +559,7 @@ const App = () => {
                   {},
                 ]}
                 conditions={[{ when: 'isGift', is: true, visible: true }]}
-              /> */}
+              />*/}
               <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
                 <Space>
                   <Button
