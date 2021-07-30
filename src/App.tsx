@@ -10,26 +10,26 @@ import { SchemaOptionsContext } from './context';
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const compose = async (...promises: Promise<any>[]) => {
-  return new Promise<void>(async (resolve, reject) => {
-    for (let index = 0; index < promises.length; index++) {
-      const promise = promises[index];
-      // console.log('vvvvvvvvvvvv');
-      const errors = await promise.catch((ex) => ex);
-      if (errors) {
-        reject(errors);
-        return;
-      }
-    }
+// const compose = async (...promises: Promise<any>[]) => {
+//   return new Promise<void>(async (resolve, reject) => {
+//     for (let index = 0; index < promises.length; index++) {
+//       const promise = promises[index];
+//       // console.log('vvvvvvvvvvvv');
+//       const errors = await promise.catch((ex) => ex);
+//       if (errors) {
+//         reject(errors);
+//         return;
+//       }
+//     }
 
-    return resolve();
-  }).catch((ex) => ex);
+//     return resolve();
+//   }).catch((ex) => ex);
 
-  // await promises.reduce(async (error, cur) => {
-  //   console.log('45454545');
-  //   return (await error) || (await cur);
-  // }, undefined as Promise<any> | undefined);
-};
+//   // await promises.reduce(async (error, cur) => {
+//   //   console.log('45454545');
+//   //   return (await error) || (await cur);
+//   // }, undefined as Promise<any> | undefined);
+// };
 
 // compose(Promise.resolve('true'), Promise.resolve('0')).then((t) => console.log('xxxxxxxxx', t));
 

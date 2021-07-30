@@ -1,7 +1,7 @@
 import { Schema } from './schema';
 import { IFieldFactoryProps, ISchemaFieldFactoryOptions } from './types';
 
-import { isBool, isStr, isArr, isValid, isEmpty } from '@formily/shared';
+import { isBool, isStr, isArr, isValid } from '@formily/shared';
 import { Path as FormPath, Pattern } from '@formily/path';
 import { RuleItem } from 'async-validator';
 // import { FieldValidator } from 'final-form';
