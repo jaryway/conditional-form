@@ -1,7 +1,7 @@
-import React, { createContext, createElement, FC, Fragment, ReactNode, useContext } from 'react';
+import React, { createContext, createElement, FC, Fragment, ReactNode } from 'react';
 import { FieldState } from 'final-form';
 import { Field, FieldRenderProps } from 'react-final-form';
-import { Path } from '@formily/path';
+// import { Path } from '@formily/path';
 import ConditionalField from '../conditional-field';
 
 export type ICondition = {
@@ -23,9 +23,11 @@ interface FinalFieldProps<
   DecoratorProps = any,
   ComponentProps = any,
 > {
-  baseName?: string;
+  // baseName?: string;
   name?: string;
   type?: 'checkbox' | 'radio';
+  // checkbox?: true;
+  // checkbox?: true;
   title?: string;
   conditions?: ICondition[];
   validate?: FieldValidator;
@@ -40,7 +42,7 @@ type FieldValidator<FieldValue = any> = (
 ) => any | Promise<any>;
 
 interface FieldContextProps extends FieldRenderProps<any> {
-  baseName?: string;
+  // baseName?: string;
 }
 
 const FieldContext = createContext<FieldContextProps>({} as any);
@@ -55,12 +57,12 @@ const FinalField: FC<FinalFieldProps> = ({
   component,
   ...rest
 }) => {
-  const parent = useContext(FieldContext);
+  // const parent = useContext(FieldContext);
   // console.log('parent', parent);
-  const getBaseName = () => {
-    // console.log('parent1', rest.baseName || parent?.name);
-    return rest.baseName || parent?.input?.name;
-  };
+  // const getBaseName = () => {
+  //   // console.log('parent1', rest.baseName || parent?.name);
+  //   return rest.baseName || parent?.input?.name;
+  // };
 
   const renderComponent = () => {
     if (component) {
@@ -110,12 +112,12 @@ const FinalField: FC<FinalFieldProps> = ({
 
   const renderConditional = (children: ReactNode) => {
     if (conditions && conditions.length) {
-      const fieldName = Path.parse(getBaseName())
-        .concat(name as string)
-        .toString();
+      // const fieldName = Path.parse(getBaseName())
+      //   .concat(name as string)
+      //   .toString();
 
       return (
-        <ConditionalField name={fieldName} conditions={conditions}>
+        <ConditionalField name={name as string} conditions={conditions}>
           {children}
         </ConditionalField>
       );
@@ -125,14 +127,14 @@ const FinalField: FC<FinalFieldProps> = ({
   };
 
   const renderField = (children: ReactNode) => {
-    const fieldName = Path.parse(getBaseName())
-      .concat(name as string)
-      .toString();
-      console.log('xxxxxxxxx',fieldName);
+    // const fieldName = Path.parse(getBaseName())
+    //   .concat(name as string)
+    //   .toString();
+
     return (
       <Field
         type={type}
-        name={fieldName as string}
+        name={name as string}
         validate={validate}
         render={({ input, meta }) => {
           return <FieldContext.Provider value={{ input, meta }}>{children}</FieldContext.Provider>;
