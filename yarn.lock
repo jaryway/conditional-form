@@ -1142,7 +1142,7 @@
 
 "@babel/runtime@^7.1.5", "@babel/runtime@^7.2.0":
   version "7.14.8"
-  resolved "http://192.10.169.216:4873/@babel%2fruntime/-/runtime-7.14.8.tgz#7119a56f421018852694290b9f9148097391b446"
+  resolved "https://registry.yarnpkg.com/@babel%2fruntime/-/runtime-7.14.8.tgz#7119a56f421018852694290b9f9148097391b446"
   integrity sha1-cRmlb0IQGIUmlCkLn5FICXORtEY=
   dependencies:
     regenerator-runtime "^0.13.4"
@@ -1238,7 +1238,7 @@
 
 "@formily/antd@^2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2fantd/-/antd-2.0.0-beta.81.tgz#a777218ec93117864d1225ec3ebcf7257bfd4454"
+  resolved "https://registry.yarnpkg.com/@formily%2fantd/-/antd-2.0.0-beta.81.tgz#a777218ec93117864d1225ec3ebcf7257bfd4454"
   integrity sha1-p3chjskxF4ZNEiXsPrz3JXv9RFQ=
   dependencies:
     "@ant-design/icons" "^4.0.0"
@@ -1255,7 +1255,7 @@
 
 "@formily/core@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2fcore/-/core-2.0.0-beta.81.tgz#745f98b0fda6a3e487016122754506b933d9a1bd"
+  resolved "https://registry.yarnpkg.com/@formily%2fcore/-/core-2.0.0-beta.81.tgz#745f98b0fda6a3e487016122754506b933d9a1bd"
   integrity sha1-dF+YsP2mo+SHAWEidUUGuTPZob0=
   dependencies:
     "@formily/reactive" "2.0.0-beta.81"
@@ -1273,7 +1273,7 @@
 
 "@formily/json-schema@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2fjson-schema/-/json-schema-2.0.0-beta.81.tgz#ede574bf3c74de8851b0de58eb4e1a5fe13fe45b"
+  resolved "https://registry.yarnpkg.com/@formily%2fjson-schema/-/json-schema-2.0.0-beta.81.tgz#ede574bf3c74de8851b0de58eb4e1a5fe13fe45b"
   integrity sha1-7eV0vzx03ohRsN5Y604aX+E/5Fs=
   dependencies:
     "@formily/core" "2.0.0-beta.81"
@@ -1291,7 +1291,7 @@
 
 "@formily/path@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2fpath/-/path-2.0.0-beta.81.tgz#54ecfe499daa8514d49f56d8cd2626bbbf8cb7e5"
+  resolved "https://registry.yarnpkg.com/@formily%2fpath/-/path-2.0.0-beta.81.tgz#54ecfe499daa8514d49f56d8cd2626bbbf8cb7e5"
   integrity sha1-VOz+SZ2qhRTUn1bYzSYmu7+Mt+U=
 
 "@formily/path@2.0.0-beta.83":
@@ -1301,12 +1301,12 @@
 
 "@formily/path@^2.0.0-beta.82":
   version "2.0.0-beta.82"
-  resolved "http://192.10.169.216:4873/@formily%2fpath/-/path-2.0.0-beta.82.tgz#f11632577d21d2cd98f6dfffe20f1ef5f03eaf56"
+  resolved "https://registry.yarnpkg.com/@formily%2fpath/-/path-2.0.0-beta.82.tgz#f11632577d21d2cd98f6dfffe20f1ef5f03eaf56"
   integrity sha1-8RYyV30h0s2Y9t//4g8e9fA+r1Y=
 
 "@formily/react@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2freact/-/react-2.0.0-beta.81.tgz#ff915f47b1aa370e0fbb0e1090c628512f3f025b"
+  resolved "https://registry.yarnpkg.com/@formily%2freact/-/react-2.0.0-beta.81.tgz#ff915f47b1aa370e0fbb0e1090c628512f3f025b"
   integrity sha1-/5FfR7GqNw4Puw4QkMYoUS8/Als=
   dependencies:
     "@formily/core" "2.0.0-beta.81"
@@ -1319,7 +1319,7 @@
 
 "@formily/reactive-react@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2freactive-react/-/reactive-react-2.0.0-beta.81.tgz#38cef48c2f04662af60d3bde042035e88be60fb9"
+  resolved "https://registry.yarnpkg.com/@formily%2freactive-react/-/reactive-react-2.0.0-beta.81.tgz#38cef48c2f04662af60d3bde042035e88be60fb9"
   integrity sha1-OM70jC8EZir2DTveBCA16IvmD7k=
   dependencies:
     "@formily/reactive" "2.0.0-beta.81"
@@ -1327,7 +1327,7 @@
 
 "@formily/reactive@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2freactive/-/reactive-2.0.0-beta.81.tgz#7f43e9d10812add1769cd0a6009c75c4ad91419e"
+  resolved "https://registry.yarnpkg.com/@formily%2freactive/-/reactive-2.0.0-beta.81.tgz#7f43e9d10812add1769cd0a6009c75c4ad91419e"
   integrity sha1-f0Pp0QgSrdF2nNCmAJx1xK2RQZ4=
 
 "@formily/reactive@2.0.0-beta.83":
@@ -1337,7 +1337,7 @@
 
 "@formily/shared@2.0.0-beta.81", "@formily/shared@^2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2fshared/-/shared-2.0.0-beta.81.tgz#0dd9515a963edf55294c135cc94f2b7ce5814de0"
+  resolved "https://registry.yarnpkg.com/@formily%2fshared/-/shared-2.0.0-beta.81.tgz#0dd9515a963edf55294c135cc94f2b7ce5814de0"
   integrity sha1-DdlRWpY+31UpTBNcyU8rfOWBTeA=
   dependencies:
     "@formily/path" "2.0.0-beta.81"
@@ -1363,7 +1363,7 @@
 
 "@formily/validator@2.0.0-beta.81":
   version "2.0.0-beta.81"
-  resolved "http://192.10.169.216:4873/@formily%2fvalidator/-/validator-2.0.0-beta.81.tgz#bd20ba4547da7aed90238e7db24525b13d6567bd"
+  resolved "https://registry.yarnpkg.com/@formily%2fvalidator/-/validator-2.0.0-beta.81.tgz#bd20ba4547da7aed90238e7db24525b13d6567bd"
   integrity sha1-vSC6RUfaeu2QI459skUlsT1lZ70=
   dependencies:
     "@formily/shared" "2.0.0-beta.81"
@@ -1596,7 +1596,7 @@
 
 "@juggle/resize-observer@^3.3.1":
   version "3.3.1"
-  resolved "http://192.10.169.216:4873/@juggle%2fresize-observer/-/resize-observer-3.3.1.tgz#b50a781709c81e10701004214340f25475a171a0"
+  resolved "https://registry.yarnpkg.com/@juggle%2fresize-observer/-/resize-observer-3.3.1.tgz#b50a781709c81e10701004214340f25475a171a0"
   integrity sha1-tQp4FwnIHhBwEAQhQ0DyVHWhcaA=
 
 "@nodelib/fs.scandir@2.1.4":
@@ -6175,7 +6175,7 @@ internal-slot@^1.0.3:
 
 invariant@^2.2.4:
   version "2.2.4"
-  resolved "http://192.10.169.216:4873/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
+  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha1-YQ88ksk1nOHbYW5TgAjSP/NRWOY=
   dependencies:
     loose-envify "^1.0.0"
@@ -9851,7 +9851,7 @@ react-error-overlay@^6.0.9:
 
 react-final-form-listeners@^1.0.3:
   version "1.0.3"
-  resolved "http://192.10.169.216:4873/react-final-form-listeners/-/react-final-form-listeners-1.0.3.tgz#88e0bd6af06edc9a74b81ddad2ce0ded53f3331e"
+  resolved "https://registry.yarnpkg.com/react-final-form-listeners/-/react-final-form-listeners-1.0.3.tgz#88e0bd6af06edc9a74b81ddad2ce0ded53f3331e"
   integrity sha1-iOC9avBu3Jp0uB3a0s4N7VPzMx4=
   dependencies:
     "@babel/runtime" "^7.12.5"
@@ -9975,7 +9975,7 @@ react-scripts@4.0.3:
 
 react-sortable-hoc@^1.11.0:
   version "1.11.0"
-  resolved "http://192.10.169.216:4873/react-sortable-hoc/-/react-sortable-hoc-1.11.0.tgz#fe4022362bbafc4b836f5104b9676608a40a278f"
+  resolved "https://registry.yarnpkg.com/react-sortable-hoc/-/react-sortable-hoc-1.11.0.tgz#fe4022362bbafc4b836f5104b9676608a40a278f"
   integrity sha1-/kAiNiu6/EuDb1EEuWdmCKQKJ48=
   dependencies:
     "@babel/runtime" "^7.2.0"
@@ -9984,7 +9984,7 @@ react-sortable-hoc@^1.11.0:
 
 react-sticky-box@^0.9.3:
   version "0.9.3"
-  resolved "http://192.10.169.216:4873/react-sticky-box/-/react-sticky-box-0.9.3.tgz#8450d4cef8e4fdd7b0351520365bc98c97da11af"
+  resolved "https://registry.yarnpkg.com/react-sticky-box/-/react-sticky-box-0.9.3.tgz#8450d4cef8e4fdd7b0351520365bc98c97da11af"
   integrity sha1-hFDUzvjk/dewNRUgNlvJjJfaEa8=
   dependencies:
     "@babel/runtime" "^7.1.5"
@@ -11728,7 +11728,7 @@ upath@^1.1.1, upath@^1.1.2, upath@^1.2.0:
 
 upper-case@^2.0.1:
   version "2.0.2"
-  resolved "http://192.10.169.216:4873/upper-case/-/upper-case-2.0.2.tgz#d89810823faab1df1549b7d97a76f8662bae6f7a"
+  resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-2.0.2.tgz#d89810823faab1df1549b7d97a76f8662bae6f7a"
   integrity sha1-2JgQgj+qsd8VSbfZenb4Ziuub3o=
   dependencies:
     tslib "^2.0.3"
