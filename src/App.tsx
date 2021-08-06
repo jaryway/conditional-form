@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import React, { ClassType, useEffect } from 'react';
 import { MutableState } from 'final-form';
 import { FieldInputProps, FieldMetaState, Form } from 'react-final-form';
 import { Form as AntForm, Button, Space, Input, Checkbox, Select, Card } from 'antd';
@@ -9,7 +9,13 @@ import { getValidateState } from './utils';
 import { SchemaOptionsContext } from './context';
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
-
+export enum CursorType {
+  Move = 'MOVE',
+  Selection = 'SELECTION',
+  Resize = 'RESIZE',
+  ResizeWidth = 'RESIZE_WIDTH',
+  ResizeHeight = 'RESIZE_HEIGHT',
+}
 // const compose = async (...promises: Promise<any>[]) => {
 //   return new Promise<void>(async (resolve, reject) => {
 //     for (let index = 0; index < promises.length; index++) {
@@ -85,9 +91,303 @@ const FregataSelect = (props: any) => {
   return <Select {...transformFieldState2FieldProps(props)} />;
 };
 
+// const events = {
+//   handle,
+// };
+const engine = {
+  cursor: {
+    type: '',
+  },
+};
+
+const GlobalState = {
+  dragging: false,
+  onMouseDownAt: 0,
+  startEvent: null as any,
+  moveEvent: null as any,
+};
+
+function pauseEvent(e: any) {
+  if (e.stopPropagation) e.stopPropagation();
+  if (e.preventDefault) e.preventDefault();
+  e.cancelBubble = true;
+  e.returnValue = false;
+  return false;
+}
+
+class DragDropDriver {
+  // constructor() {}
+  batchAddEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
+    document.addEventListener(type, listener, options);
+  };
+
+  batchRemoveEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
+    document.removeEventListener(type, listener, options);
+  };
+
+  onMouseDown = (e: MouseEvent) => {
+    console.log('onMouseDown');
+    if (e.button !== 0 || e.ctrlKey || e.metaKey) {
+      return;
+    }
+
+    const target = e.target as HTMLElement;
+
+    if (target?.['isContentEditable'] || target?.['contentEditable'] === 'true') {
+      return true;
+    }
+    if (target?.['closest']?.('.monaco-editor')) return;
+    GlobalState.startEvent = e;
+    GlobalState.dragging = false;
+    GlobalState.onMouseDownAt = Date.now();
+    this.batchAddEventListener('mouseup', this.onMouseUp);
+    this.batchAddEventListener('dragend', this.onMouseUp);
+    this.batchAddEventListener('dragstart', this.onStartDrag);
+    this.batchAddEventListener('mousemove', this.onDistanceChange);
+  };
+
+  onMouseUp = (e: MouseEvent) => {
+    console.log('onMouseUp');
+    if (GlobalState.dragging) {
+      // todo
+      // this.dispatch(
+      //   new DragStopEvent({
+      //     clientX: e.clientX,
+      //     clientY: e.clientY,
+      //     pageX: e.pageX,
+      //     pageY: e.pageY,
+      //     target: e.target,
+      //     view: e.view,
+      //   })
+      // )
+    }
+
+    this.batchRemoveEventListener('mouseup', this.onMouseUp);
+    this.batchRemoveEventListener('mousedown', this.onMouseDown);
+    this.batchRemoveEventListener('dragover', this.onMouseMove);
+    this.batchRemoveEventListener('mousemove', this.onMouseMove);
+    this.batchRemoveEventListener('mousemove', this.onDistanceChange);
+    GlobalState.dragging = false;
+  };
+
+  onStartDrag = (e: MouseEvent | DragEvent) => {
+    console.log('onStartDrag');
+    // pauseEvent(e);
+    if (GlobalState.dragging) return;
+    GlobalState.startEvent = GlobalState.startEvent || e;
+    this.batchAddEventListener('dragover', this.onMouseMove);
+    this.batchAddEventListener('mousemove', this.onMouseMove);
+    // this.batchAddEventListener('contextmenu', this.onContextMenuWhileDragging, true);
+    // this.dispatch(
+    //   new DragStartEvent({
+    //     clientX: GlobalState.startEvent.clientX,
+    //     clientY: GlobalState.startEvent.clientY,
+    //     pageX: GlobalState.startEvent.pageX,
+    //     pageY: GlobalState.startEvent.pageY,
+    //     target: GlobalState.startEvent.target,
+    //     view: GlobalState.startEvent.view,
+    //   }),
+    // );
+    GlobalState.dragging = true;
+  };
+  onDistanceChange = (e: MouseEvent) => {
+    // console.log('onDistanceChange');
+    const distance = Math.sqrt(
+      Math.pow(e.pageX - GlobalState.startEvent.pageX, 2) +
+        Math.pow(e.pageY - GlobalState.startEvent.pageY, 2),
+    );
+    const timeDelta = Date.now() - GlobalState.onMouseDownAt;
+    if (timeDelta > 10 && e !== GlobalState.startEvent && distance > 4) {
+      this.batchRemoveEventListener('mousemove', this.onDistanceChange);
+      this.onStartDrag(e);
+    }
+  };
+  onMouseMove = (e: MouseEvent | DragEvent) => {
+    console.log('onMouseMove');
+    pauseEvent(e);
+    if (
+      e.clientX === GlobalState.moveEvent?.clientX &&
+      e.clientY === GlobalState.moveEvent?.clientY
+    )
+      return;
+
+    // this.dispatch(
+    //   new DragMoveEvent({
+    //     clientX: e.clientX,
+    //     clientY: e.clientY,
+    //     pageX: e.pageX,
+    //     pageY: e.pageY,
+    //     target: e.target,
+    //     view: e.view,
+    //   }),
+    // );
+
+    GlobalState.moveEvent = e;
+  };
+
+  attach() {
+    this.batchAddEventListener('mousedown', this.onMouseDown, true);
+  }
+
+  detach() {
+    GlobalState.dragging = false;
+    GlobalState.moveEvent = null;
+    // GlobalState.onMouseDownAt = null;
+    GlobalState.startEvent = null;
+    this.batchRemoveEventListener('mousedown', this.onMouseDown, true);
+    this.batchRemoveEventListener('dragstart', this.onStartDrag);
+    this.batchRemoveEventListener('dragend', this.onMouseUp);
+    this.batchRemoveEventListener('dragover', this.onMouseMove);
+    this.batchRemoveEventListener('mouseup', this.onMouseUp);
+    this.batchRemoveEventListener('mousemove', this.onMouseMove);
+    this.batchRemoveEventListener('mousemove', this.onDistanceChange);
+    // this.batchRemoveEventListener('contextmenu', this.onContextMenuWhileDragging, true);
+  }
+}
+
+class HoverDriver {
+  batchAddEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
+    document.addEventListener(type, listener, options);
+  };
+
+  batchRemoveEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
+    document.removeEventListener(type, listener, options);
+  };
+
+  attach() {
+    this.batchAddEventListener('mousemove', this.onMouseMove, true);
+  }
+
+  detach() {
+    GlobalState.dragging = false;
+    GlobalState.moveEvent = null;
+    // GlobalState.onMouseDownAt = null;
+    GlobalState.startEvent = null;
+    // this.batchRemoveEventListener('mousedown', this.onMouseDown, true);
+    // this.batchRemoveEventListener('dragstart', this.onStartDrag);
+    // this.batchRemoveEventListener('dragend', this.onMouseUp);
+    // this.batchRemoveEventListener('dragover', this.onMouseMove);
+    // this.batchRemoveEventListener('mouseup', this.onMouseUp);
+    this.batchRemoveEventListener('mousemove', this.onMouseMove);
+    // this.batchRemoveEventListener('mousemove', this.onDistanceChange);
+    // this.batchRemoveEventListener('contextmenu', this.onContextMenuWhileDragging, true);
+  }
+
+  onMouseMove = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    const el = target?.closest?.(`*[data-designer-source-id]`);
+    if (!el?.getAttribute) {
+      return;
+    }
+
+    if (el) {
+      (el as HTMLDivElement).style.border = 'dashed 1px red';
+
+      // this.batchAddEventListener('mousemove', this.onDistanceChange);
+    }
+  };
+
+  onDistanceChange = (e: MouseEvent) => {
+    // console.log('onDistanceChange');
+    const distance = Math.sqrt(
+      Math.pow(e.pageX - GlobalState.startEvent.pageX, 2) +
+        Math.pow(e.pageY - GlobalState.startEvent.pageY, 2),
+    );
+    const timeDelta = Date.now() - GlobalState.onMouseDownAt;
+    if (timeDelta > 10 && e !== GlobalState.startEvent && distance > 4) {
+      this.batchRemoveEventListener('mousemove', this.onDistanceChange);
+      // this.onStartDrag(e);
+    }
+  };
+}
+
 const App = () => {
+  function handleMouseClick() {
+    console.log('handleMouseClickhandleMouseClickhandleMouseClick');
+  }
+
+  function handleMouseMove(e: MouseEvent) {
+    e.preventDefault();
+    const el = (e.target as HTMLElement)?.closest?.(`*[data-designer-source-id]`);
+    engine.cursor.type = CursorType.Move;
+    if (el) {
+      console.log('handleMouseMove', e);
+
+      // (el as HTMLDivElement).style.border = 'dashed 1px red';
+    }
+  }
+
+  function handleMouseUp(e: MouseEvent) {
+    const el = (e.target as HTMLElement)?.closest?.(`*[data-designer-source-id]`);
+    engine.cursor.type = '';
+    if (el) {
+      console.log('handleMouseUp', e);
+
+      // (el as HTMLDivElement).style.border = 'dashed 1px red';
+    }
+  }
+  function handleDragStart(e: MouseEvent) {
+    const el = (e.target as HTMLElement)?.closest?.(`*[data-designer-source-id]`);
+    engine.cursor.type = '';
+    if (el) {
+      console.log('handleDragStart', e);
+
+      // (el as HTMLDivElement).style.border = 'dashed 1px red';
+    }
+  }
+
+  function handleMouseOver(e: MouseEvent) {
+    const el = (e.target as HTMLElement)?.closest(`*[data-designer-source-id]`);
+
+    if (el) {
+      console.log('handleMouseOver', e);
+
+      (el as HTMLDivElement).style.border = 'dashed 1px red';
+    }
+  }
+
+  function handleMouseOut(e: MouseEvent) {
+    if (engine.cursor.type === CursorType.Move) return;
+    console.log('handleMouseOut', e);
+    const target = e.target as HTMLElement;
+    const el = target?.closest && target?.closest(`*[data-designer-source-id]`);
+
+    if (el) {
+      console.log('handleMouseOut', e);
+
+      (el as HTMLDivElement).style.border = '';
+    }
+  }
+
+  useEffect(() => {
+    // document.addEventListener('mousedown', handleMouseClick);
+    // document.addEventListener('mousemove', handleMouseMove);
+    // document.addEventListener('mouseover', handleMouseOver);
+    // document.addEventListener('mouseout', handleMouseOut);
+    // document.addEventListener('mouseup', handleMouseUp);
+    // document.addEventListener('dragstart', handleDragStart);
+    const driver = new DragDropDriver();
+    const driver1 = new HoverDriver();
+    driver.attach();
+    driver1.attach();
+
+    return () => {
+      driver.detach();
+      driver1.detach();
+    };
+  }, []);
+
   return (
     <>
+      <Button
+        // onMouseDown
+        onClick={(e) => {
+          document.removeEventListener('mousedown', handleMouseClick);
+        }}
+      >
+        RemoveEventListener
+      </Button>
       <Form
         validateOnBlur={false}
         mutators={{

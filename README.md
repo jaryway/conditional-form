@@ -5,16 +5,18 @@
 - [x] 1. rff 与 antd 结合，实现表单功能;
 - [x] 2. 实现按条件显示；
 - [x] 3. 将 FormItem、Input、final-form.field 结合成一个组件；
-- [ ] 4. json-schema 实现实例化，具备父级、子级递归功能；
-- [ ] 5. 将 json-schema 属性转成 rff 组件属性；
+- [x] 4. json-schema 实现实例化，具备父级、子级递归功能；
+- [x] 5. 将 json-schema 属性转成 rff 组件属性；
 - [ ] 6. 完善数据验证；
+- [ ] 7. 做成一个库 ；
+- [ ] 8. 拆成 SchemaField.String、bbject、array、number、boolean、void、date、datetime 等；
 
 #### 生成 json-schema（表单设计器）
 
 - 新版
 
-
 ### 引用
+
 - [understanding-json-schema](https://json-schema.org/understanding-json-schema/)
 
 ### 底层框架的实现逻
