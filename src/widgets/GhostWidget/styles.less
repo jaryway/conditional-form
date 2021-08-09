@@ -1,0 +1,21 @@
+// @import '../../variables.less';
+@prefix-cls: ~'dn';
+
+.@{prefix-cls}-ghost {
+  padding-left: 25px;
+  padding-right: 15px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  color: var(--dn-ghost-color);
+  font-size: 12px;
+  z-index: 9999;
+  border-radius: 50px;
+  background-color: rgb(30 167 253 / 50%);
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  transform: translate3d(0, 0, 0);
+}

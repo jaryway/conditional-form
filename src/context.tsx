@@ -20,3 +20,5 @@ export const FieldContext = createContext<IFieldContext>({} as any);
 
 export const SchemaMarkupContext = createContext<any>({});
 export const SchemaOptionsContext = createContext<ISchemaOptionsContext>({} as any);
+
+export const AppContext = createContext<any>({});
