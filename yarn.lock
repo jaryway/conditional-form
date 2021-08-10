@@ -1264,7 +1264,7 @@
 
 "@formily/core@2.0.0-beta.83":
   version "2.0.0-beta.83"
-  resolved "http://192.10.169.216:4873/@formily%2fcore/-/core-2.0.0-beta.83.tgz#4d90642a85013c1c52318bff35965eaa52a219f5"
+  resolved "https://registry.yarnpkg.com/@formily%2fcore/-/core-2.0.0-beta.83.tgz#4d90642a85013c1c52318bff35965eaa52a219f5"
   integrity sha1-TZBkKoUBPBxSMYv/NZZeqlKiGfU=
   dependencies:
     "@formily/reactive" "2.0.0-beta.83"
@@ -1282,7 +1282,7 @@
 
 "@formily/json-schema@^2.0.0-beta.83":
   version "2.0.0-beta.83"
-  resolved "http://192.10.169.216:4873/@formily%2fjson-schema/-/json-schema-2.0.0-beta.83.tgz#f271f3ba62c96bf89fd44148ae6613b9d265d7c4"
+  resolved "https://registry.yarnpkg.com/@formily%2fjson-schema/-/json-schema-2.0.0-beta.83.tgz#f271f3ba62c96bf89fd44148ae6613b9d265d7c4"
   integrity sha1-8nHzumLJa/if1EFIrmYTudJl18Q=
   dependencies:
     "@formily/core" "2.0.0-beta.83"
@@ -1296,7 +1296,7 @@
 
 "@formily/path@2.0.0-beta.83":
   version "2.0.0-beta.83"
-  resolved "http://192.10.169.216:4873/@formily%2fpath/-/path-2.0.0-beta.83.tgz#6108210519a41bfc9037228f8e69c039dccf422f"
+  resolved "https://registry.yarnpkg.com/@formily%2fpath/-/path-2.0.0-beta.83.tgz#6108210519a41bfc9037228f8e69c039dccf422f"
   integrity sha1-YQghBRmkG/yQNyKPjmnAOdzPQi8=
 
 "@formily/path@^2.0.0-beta.82":
@@ -1332,7 +1332,7 @@
 
 "@formily/reactive@2.0.0-beta.83":
   version "2.0.0-beta.83"
-  resolved "http://192.10.169.216:4873/@formily%2freactive/-/reactive-2.0.0-beta.83.tgz#d69d8cd05b6d45111efa816e4dd482e1339a0c57"
+  resolved "https://registry.yarnpkg.com/@formily%2freactive/-/reactive-2.0.0-beta.83.tgz#d69d8cd05b6d45111efa816e4dd482e1339a0c57"
   integrity sha1-1p2M0FttRREe+oFuTdSC4TOaDFc=
 
 "@formily/shared@2.0.0-beta.81", "@formily/shared@^2.0.0-beta.81":
@@ -1350,7 +1350,7 @@
 
 "@formily/shared@2.0.0-beta.83":
   version "2.0.0-beta.83"
-  resolved "http://192.10.169.216:4873/@formily%2fshared/-/shared-2.0.0-beta.83.tgz#95071ff42f6bf0feed061bb58415f09992e5a98d"
+  resolved "https://registry.yarnpkg.com/@formily%2fshared/-/shared-2.0.0-beta.83.tgz#95071ff42f6bf0feed061bb58415f09992e5a98d"
   integrity sha1-lQcf9C9r8P7tBhu1hBXwmZLlqY0=
   dependencies:
     "@formily/path" "2.0.0-beta.83"
@@ -1370,7 +1370,7 @@
 
 "@formily/validator@2.0.0-beta.83":
   version "2.0.0-beta.83"
-  resolved "http://192.10.169.216:4873/@formily%2fvalidator/-/validator-2.0.0-beta.83.tgz#c0dd5797b5bde108346e272364aea3024152c304"
+  resolved "https://registry.yarnpkg.com/@formily%2fvalidator/-/validator-2.0.0-beta.83.tgz#c0dd5797b5bde108346e272364aea3024152c304"
   integrity sha1-wN1Xl7W94Qg0bicjZK6jAkFSwwQ=
   dependencies:
     "@formily/shared" "2.0.0-beta.83"
