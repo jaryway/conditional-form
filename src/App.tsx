@@ -19,8 +19,13 @@ import SchemaField from './components/schema-field';
 import { getValidateState } from './utils';
 import { SchemaOptionsContext, AppContext } from './context';
 import { GhostWidget } from './widgets/GhostWidget';
-import { Subscrible } from './events/subscrible';
-import DragDropDriver from './drivers/DragDropDriver';
+import { Engine } from './core/models/Engine';
+import DragDropDriver from './core/drivers/DragDropDriver';
+import { MouseMoveDriver } from './core/drivers/MouseMoveDriver';
+import { AuxToolWidget } from './widgets/AuxToolWidget';
+import Provider from './Provider';
+// import { Subscrible } from './events/subscrible';
+// import DragDropDriver from './drivers/DragDropDriver';
 
 // const s = new Subscrible();
 // s.subscribeTo('xxx', (e) => {
@@ -141,81 +146,36 @@ function pauseEvent(e: any) {
   return false;
 }
 
-class HoverDriver {
-  batchAddEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
-    document.addEventListener(type, listener, options);
-  };
+// class Cursor {
+//   clientX: number;
+//   clientY: number;
+//   constructor(e: any) {
+//     this.clientX = e?.clientX;
+//     this.clientY = e?.clientY;
+//   }
+// }
 
-  batchRemoveEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
-    document.removeEventListener(type, listener, options);
-  };
+const engine = new Engine({
+  drivers: [DragDropDriver, MouseMoveDriver],
+  effects: [],
+});
 
-  attach() {
-    this.batchAddEventListener('mousemove', this.onMouseMove, true);
-  }
+const Test = () => {
+  // const { cursorStatus } = useContext(AppContext);
+  console.log('cursorStatus000-Test');
 
-  detach() {
-    GlobalState.dragging = false;
-    GlobalState.moveEvent = null;
-    // GlobalState.onMouseDownAt = null;
-    GlobalState.startEvent = null;
-    // this.batchRemoveEventListener('mousedown', this.onMouseDown, true);
-    // this.batchRemoveEventListener('dragstart', this.onStartDrag);
-    // this.batchRemoveEventListener('dragend', this.onMouseUp);
-    // this.batchRemoveEventListener('dragover', this.onMouseMove);
-    // this.batchRemoveEventListener('mouseup', this.onMouseUp);
-    this.batchRemoveEventListener('mousemove', this.onMouseMove);
-    // this.batchRemoveEventListener('mousemove', this.onDistanceChange);
-    // this.batchRemoveEventListener('contextmenu', this.onContextMenuWhileDragging, true);
-  }
-
-  onMouseMove = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-
-    const el = target?.closest?.(`*[data-designer-source-id]`);
-    if (!el?.getAttribute) {
-      return;
-    }
-
-    if (el) {
-      (el as HTMLDivElement).style.border = 'dashed 1px red';
-
-      // this.batchAddEventListener('mousemove', this.onDistanceChange);
-    }
-  };
-
-  onDistanceChange = (e: MouseEvent) => {
-    // console.log('onDistanceChange');
-    const distance = Math.sqrt(
-      Math.pow(e.pageX - GlobalState.startEvent.pageX, 2) +
-        Math.pow(e.pageY - GlobalState.startEvent.pageY, 2),
-    );
-    const timeDelta = Date.now() - GlobalState.onMouseDownAt;
-    if (timeDelta > 10 && e !== GlobalState.startEvent && distance > 4) {
-      this.batchRemoveEventListener('mousemove', this.onDistanceChange);
-      // this.onStartDrag(e);
-    }
-  };
-}
-class Cursor {
-  clientX: number;
-  clientY: number;
-  constructor(e: any) {
-    this.clientX = e?.clientX;
-    this.clientY = e?.clientY;
-  }
-}
-
-const driver = new DragDropDriver();
+  return <div>Test</div>;
+};
 
 const App = () => {
   // useEffect(()=>{},[GlobalState.dragging])
   // console.log('dragging', GlobalState.dragging);
+  // const [cursorStatus, setCursorStatus] = useState('NORMAL');
   function handleMouseClick() {
     console.log('handleMouseClickhandleMouseClickhandleMouseClick');
   }
 
-  const cursorRef = useRef(new Cursor({}));
+  // const cursorRef = useRef(new Cursor({}));
 
   useEffect(() => {
     // document.addEventListener('mousedown', handleMouseClick);
@@ -226,12 +186,10 @@ const App = () => {
     // document.addEventListener('dragstart', handleDragStart);
 
     // const driver1 = new HoverDriver();
-    driver.attach();
-    // driver1.attach();
+    engine.mount();
 
     return () => {
-      driver.detach();
-      // driver1.detach();
+      engine.unmount();
     };
   }, []);
 
@@ -239,12 +197,15 @@ const App = () => {
 
   return (
     <>
-      <AppContext.Provider value={{ engine: driver }}>
-        {<GhostWidget />}
+      <Provider engine={engine}>
+        <Test />
+        <AuxToolWidget />
+        <GhostWidget />
         <Button
           // onMouseDown
           onClick={(e) => {
-            document.removeEventListener('mousedown', handleMouseClick);
+            // setCursorStatus(Math.random().toString());
+            // document.removeEventListener('mousedown', handleMouseClick);
           }}
         >
           RemoveEventListener
@@ -326,6 +287,7 @@ const App = () => {
                   component={[FregataInput, {}]}
                   conditions={[{ when: 'giftMessage', is: 'xxx', visible: true }]}
                 />
+
                 {/* @ts-ignore */}
                 <Field name="XXXX" value="">
                   <Card>
@@ -747,7 +709,7 @@ const App = () => {
             );
           }}
         />
-      </AppContext.Provider>
+      </Provider>
     </>
   );
 };

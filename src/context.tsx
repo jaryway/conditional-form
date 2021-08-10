@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { Engine } from './core/models/Engine';
 import { IFieldContext, IRegistryComponents, ISchemaFormContext } from './interface';
 
 interface ISchemaEngineContext {
@@ -21,4 +22,8 @@ export const FieldContext = createContext<IFieldContext>({} as any);
 export const SchemaMarkupContext = createContext<any>({});
 export const SchemaOptionsContext = createContext<ISchemaOptionsContext>({} as any);
 
-export const AppContext = createContext<any>({});
+export const AppContext = createContext<{
+  engine: Engine;
+  cursorStatus: string;
+  setCursorStatus: (v: string) => void;
+}>({} as any);

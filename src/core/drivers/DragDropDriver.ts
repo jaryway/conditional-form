@@ -1,4 +1,5 @@
-import { Subscrible } from '../events/subscrible';
+import { EventDriver } from '../../shared';
+import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../events';
 
 const GlobalState = {
   dragging: false,
@@ -15,14 +16,7 @@ function pauseEvent(e: any) {
   return false;
 }
 
-class DragDropDriver extends Subscrible {
-  // dispatch: ({ type: string, payload: any }: any) => void;
-  // constructor() {
-  //   super();
-  //   // this.dispatch = dispatch;
-  // }
-
-  // subscribers = {};
+class DragDropDriver extends EventDriver {
   batchAddEventListener = (type: keyof DocumentEventMap, listener: any, options?: any) => {
     document.addEventListener(type, listener, options);
   };
@@ -56,17 +50,17 @@ class DragDropDriver extends Subscrible {
     // console.log('onMouseUp');
     if (GlobalState.dragging) {
       // todo
-      this.dispatch?.({ type: 'drop:stop', payload: e });
-      // this.dispatch(
-      //   new DragStopEvent({
-      //     clientX: e.clientX,
-      //     clientY: e.clientY,
-      //     pageX: e.pageX,
-      //     pageY: e.pageY,
-      //     target: e.target,
-      //     view: e.view,
-      //   })
-      // )
+      // this.dispatch?.({ type: 'drop:stop', payload: e });
+      this.dispatch(
+        new DragStopEvent({
+          clientX: e.clientX,
+          clientY: e.clientY,
+          pageX: e.pageX,
+          pageY: e.pageY,
+          target: e.target,
+          view: e.view,
+        }),
+      );
     }
 
     this.batchRemoveEventListener('mousedown', this.onMouseDown);
@@ -85,17 +79,18 @@ class DragDropDriver extends Subscrible {
     this.batchAddEventListener('dragover', this.onMouseMove);
     this.batchAddEventListener('mousemove', this.onMouseMove);
     // this.batchAddEventListener('contextmenu', this.onContextMenuWhileDragging, true);
-    this.dispatch?.({ type: 'drop:start', payload: e });
-    // this.dispatch(
-    //   new DragStartEvent({
-    //     clientX: GlobalState.startEvent.clientX,
-    //     clientY: GlobalState.startEvent.clientY,
-    //     pageX: GlobalState.startEvent.pageX,
-    //     pageY: GlobalState.startEvent.pageY,
-    //     target: GlobalState.startEvent.target,
-    //     view: GlobalState.startEvent.view,
-    //   }),
-    // );
+    // this.dispatch?.({ type: 'drop:start', payload: e });
+
+    this.dispatch(
+      new DragStartEvent({
+        clientX: GlobalState.startEvent.clientX,
+        clientY: GlobalState.startEvent.clientY,
+        pageX: GlobalState.startEvent.pageX,
+        pageY: GlobalState.startEvent.pageY,
+        target: GlobalState.startEvent.target,
+        view: GlobalState.startEvent.view,
+      }),
+    );
     GlobalState.dragging = true;
   };
   onDistanceChange = (e: MouseEvent) => {
@@ -122,17 +117,17 @@ class DragDropDriver extends Subscrible {
     if (GlobalState.dragging) {
       // console.log('GlobalState.dragging', GlobalState.dragging);
     }
-    this.dispatch?.({ type: 'drop:move', payload: e });
-    // this.dispatch(
-    //   new DragMoveEvent({
-    //     clientX: e.clientX,
-    //     clientY: e.clientY,
-    //     pageX: e.pageX,
-    //     pageY: e.pageY,
-    //     target: e.target,
-    //     view: e.view,
-    //   }),
-    // );
+    // this.dispatch?.({ type: 'drop:move', payload: e });
+    this.dispatch(
+      new DragMoveEvent({
+        clientX: e.clientX,
+        clientY: e.clientY,
+        pageX: e.pageX,
+        pageY: e.pageY,
+        target: e.target,
+        view: e.view,
+      }),
+    );
 
     GlobalState.moveEvent = e;
   };
@@ -157,5 +152,4 @@ class DragDropDriver extends Subscrible {
   }
 }
 
-
-export default DragDropDriver
+export default DragDropDriver;

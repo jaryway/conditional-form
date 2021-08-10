@@ -1,36 +1,58 @@
-import React, { FC, Reducer, useReducer, useContext, useEffect } from 'react';
-import { AppContext } from '../context';
+import React, { FC, Reducer, useReducer, useContext, useEffect, useRef } from 'react';
+import { AppContext } from '../../context';
+import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../../core/events';
 // import { useCursor, usePrefix, useDesigner } from '../../hooks'
 // import { CursorStatus } from '@designable/core'
 // import { observer } from '@formily/reactive-react'
 // import { TextWidget } from '../TextWidget'
 import './styles.less';
+// interface Point {
+//   x: number;
+//   y: number;
+// }
+// const isEqualPosition=
+// const isEqualPoint = (point1: Point, point2: Point) => {
+//   return point1?.x === point2?.x && point1?.y === point2?.y;
+// };
 
 export const GhostWidget: FC<any> = () => {
   const initialState = { x: 0, y: 0 };
-  const reducer = (state: any, action: any) => {
-    const { payload } = action;
-    switch (action.type) {
-      case 'drop:start':
-        // const target = payload.target as HTMLElement;
-        // if (target?.closest?.('*[data-designer-source-id]')) {
-        // }
+  // const pointRef = useRef<{ x: number; y: number }>(initialState);
+  const { engine, setCursorStatus } = useContext(AppContext);
 
-        return { ...state, x: payload.clientX, y: payload.clientY, dragging: true };
-      case 'drop:move':
-        return { ...state, x: payload.clientX, y: payload.clientY };
-      case 'drop:stop':
+  const reducer = (state: any, action: DragMoveEvent | DragStartEvent | DragStopEvent) => {
+    const { data, type } = action;
+
+    // if (action instanceof DragStartEvent) {
+    //   return { ...state, x: data.clientX, y: data.clientY, dragging: true };
+    // }
+
+    switch (type) {
+      case 'drag:start':
+        return { ...state, x: data.clientX, y: data.clientY, dragging: true };
+      case 'drag:move': {
+        // const point = { x: data.clientX, y: data.clientY };
+        return { ...state, x: data.clientX, y: data.clientY };
+      }
+      case 'drag:stop':
         return { ...state, x: 0, y: 0, dragging: false };
+      default:
+        return state;
     }
   };
   const [{ x, y, dragging }, dispatch] = useReducer<Reducer<any, any>>(reducer, initialState);
-
-  const { engine } = useContext(AppContext);
-
+  // console.log('xxxxxxxxx-renader');
   useEffect(() => {
-    engine.subscribe((e: any) => dispatch(e));
+    engine.subscribeTo(DragStartEvent, (e) => dispatch(e));
+    engine.subscribeTo(DragMoveEvent, (e) => dispatch(e));
+    engine.subscribeTo(DragStopEvent, (e) => dispatch(e));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    // fix warning 
+    setCursorStatus(dragging ? 'DRAGGING' : 'NORMAL');
+  }, [setCursorStatus, dragging]);
 
   return dragging ? (
     <div

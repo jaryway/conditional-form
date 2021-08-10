@@ -1,14 +1,6 @@
-// import { isFn } from './types'
-
-import { isFn } from '@formily/shared';
+import { isFn } from '../utils/checker';
 
 const UNSUBSCRIBE_ID_SYMBOL = Symbol('UNSUBSCRIBE_ID_SYMBOL');
-
-export interface ICustomEvent<EventData = any, EventContext = any> {
-  type: string;
-  data?: EventData;
-  context?: EventContext;
-}
 
 export interface ISubscriber<Payload = any> {
   (payload: Payload): void | boolean;
@@ -16,7 +8,7 @@ export interface ISubscriber<Payload = any> {
 
 export class Subscrible<ExtendsType = any> {
   private subscribers: {
-    index: number;
+    index?: number;
     [key: number]: ISubscriber;
   } = {
     index: 0,
@@ -26,7 +18,7 @@ export class Subscrible<ExtendsType = any> {
     let interrupted = false;
     for (const key in this.subscribers) {
       if (isFn(this.subscribers[key])) {
-        (event as any)['context'] = context;
+        event['context'] = context;
         if (this.subscribers[key](event) === false) {
           interrupted = true;
         }
@@ -35,30 +27,17 @@ export class Subscrible<ExtendsType = any> {
     return interrupted ? false : true;
   }
 
-  // subscribeTo(type: string, subscriber: ISubscriber) {
-  //   // const [subscriber, type] = args.reverse();
-  //   // const subscriber = (args.length > 1 ? args[1] : args[0]) as ISubscriber;
-  //   // const type = args.length > 1 ? args[0] : undefined;
-
-  //   return this.subscribe((event) => {
-  //     // console.log('subscribeTo', type, event)
-  //     if (type && event.type === type) {
-  //       return subscriber(event);
-  //     }
-  //   });
-  // }
-
   subscribe(subscriber: ISubscriber) {
-    let id: number = 0;
+    let id: number;
     if (isFn(subscriber)) {
       id = this.subscribers.index + 1;
       this.subscribers[id] = subscriber;
       this.subscribers.index++;
     }
 
-    const unsubscribe = (() => {
+    const unsubscribe = () => {
       this.unsubscribe(id);
-    }) as (() => any) & { [UNSUBSCRIBE_ID_SYMBOL]: any };
+    };
 
     unsubscribe[UNSUBSCRIBE_ID_SYMBOL] = id;
 
@@ -73,9 +52,9 @@ export class Subscrible<ExtendsType = any> {
       return;
     }
     if (!isFn(id)) {
-      delete this.subscribers[id as number];
+      delete this.subscribers[id];
     } else {
-      delete this.subscribers[(id as any)[UNSUBSCRIBE_ID_SYMBOL]];
+      delete this.subscribers[id[UNSUBSCRIBE_ID_SYMBOL]];
     }
   };
 }
