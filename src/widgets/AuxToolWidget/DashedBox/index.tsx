@@ -1,19 +1,9 @@
-import React, { FC, Reducer, useContext, useEffect, useReducer, useRef } from 'react';
-import { AppContext } from '../../../context';
-import { MouseMoveEvent } from '../../../core/events';
+import React, { FC } from 'react';
 import { CursorStatus } from '../../../core/models';
 import { useCursor } from '../../../hooks/useCursor';
 // import { useHover, usePrefix, useValidNodeOffsetRect, useSelection } from '../../hooks';
 // import { TextWidget } from '../TextWidget';
 // import { observer } from '@formily/reactive-react';
-const isEqualRect = (rect1: DOMRect, rect2: DOMRect) => {
-  return (
-    rect1?.x === rect2?.x &&
-    rect1?.y === rect2?.y &&
-    rect1?.width === rect2?.width &&
-    rect1?.height === rect2?.height
-  );
-};
 
 export const DashedBox: FC<any> = () => {
   // const { engine, cursorStatus } = useContext(AppContext);
@@ -64,12 +54,9 @@ export const DashedBox: FC<any> = () => {
     return baseStyle;
   };
 
-
   // console.log('cursorStatus', rect);
   if (status !== CursorStatus.Normal) return null;
   if (!rect) return null;
-
-  
 
   // if (hover.node.hidden) return null;
   // if (selection.selected.includes(hover.node.id)) return null;

@@ -10,7 +10,7 @@ import { useCursor } from '../../hooks/useCursor';
 //   useOperation,
 // } from '../../hooks';
 // import { Insertion } from './Insertion';
-// import { Selection } from './Selection';
+import { Selection } from './Selection';
 // import { FreeSelection } from './FreeSelection';
 // import { Cover } from './Cover';
 import { DashedBox } from './DashedBox';
@@ -79,7 +79,7 @@ export const AuxToolWidget = () => {
     <div ref={ref} className={prefix}>
       {/* <Insertion /> */}
       <DashedBox />
-      {/* <Selection /> */}
+      <Selection />
       {/* <Cover /> */}
       {/* <FreeSelection /> */}
     </div>

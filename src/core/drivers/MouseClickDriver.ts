@@ -4,7 +4,7 @@
 import { EventDriver } from '../../shared';
 import { MouseClickEvent } from '../events';
 
-export class MouseMoveDriver extends EventDriver {
+export class MouseClickDriver extends EventDriver {
   onMouseClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target?.closest('*[data-click-stop-propagation]')) {
@@ -24,6 +24,7 @@ export class MouseMoveDriver extends EventDriver {
   };
 
   attach() {
+    console.log('attach-click');
     this.addEventListener('click', this.onMouseClick, {
       once: true, //防止对同一个container注册多次click
     });

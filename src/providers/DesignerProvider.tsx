@@ -3,6 +3,7 @@ import React, { FC, createContext } from 'react';
 // import { MouseClickEvent } from './core/events';
 import { Engine } from '../core/models/Engine';
 import CursorProvider from './CursorProvider';
+import SelectionProvider from './SelectionProvider';
 
 export const DesignerContext = createContext<{
   engine: Engine;
@@ -19,7 +20,9 @@ const DesignerProvider: FC<{ engine: Engine }> = ({ engine, children }) => {
 
   return (
     <DesignerContext.Provider value={{ engine, prefixCls: 'dn-' }}>
-      <CursorProvider>{children}</CursorProvider>
+      <CursorProvider>
+        <SelectionProvider>{children}</SelectionProvider>
+      </CursorProvider>
     </DesignerContext.Provider>
   );
 };
