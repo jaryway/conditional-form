@@ -101,7 +101,9 @@ export interface IEventProps<T = EventEngine> {
 /**
  * 事件驱动器基类，驱动某类事件
  */
-export class EventDriver<Engine extends EventEngine = EventEngine, Context = any> implements IEventDriver {
+export class EventDriver<Engine extends EventEngine = EventEngine, Context = any>
+  implements IEventDriver
+{
   engine: Engine;
 
   container: EventDriverContainer = document;
@@ -297,6 +299,7 @@ export class EventEngine extends Subscrible<ICustomEvent<any>> {
   }
 
   attachEvents(container: EventContainer, contentWindow: Window = window, context?: any) {
+    console.log('contextcontextcontextcontext',context);
     if (!container) return;
     if (isWindow(container)) {
       return this.attachEvents(container.document, container, context);

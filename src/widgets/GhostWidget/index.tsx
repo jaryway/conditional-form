@@ -1,6 +1,7 @@
 import React, { FC, Reducer, useReducer, useContext, useEffect, useRef } from 'react';
 import { AppContext } from '../../context';
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../../core/events';
+import useDesigner from '../../hooks/useDesigner';
 // import { useCursor, usePrefix, useDesigner } from '../../hooks'
 // import { CursorStatus } from '@designable/core'
 // import { observer } from '@formily/reactive-react'
@@ -18,7 +19,8 @@ import './styles.less';
 export const GhostWidget: FC<any> = () => {
   const initialState = { x: 0, y: 0 };
   // const pointRef = useRef<{ x: number; y: number }>(initialState);
-  const { engine, setCursorStatus } = useContext(AppContext);
+  // const { engine, setCursorStatus } = useContext(AppContext);
+  const engine = useDesigner();
 
   const reducer = (state: any, action: DragMoveEvent | DragStartEvent | DragStopEvent) => {
     const { data, type } = action;
@@ -49,10 +51,12 @@ export const GhostWidget: FC<any> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    // fix warning 
-    setCursorStatus(dragging ? 'DRAGGING' : 'NORMAL');
-  }, [setCursorStatus, dragging]);
+  // useEffect(() => {
+  //   // fix warning
+  //   setCursorStatus(dragging ? 'DRAGGING' : 'NORMAL');
+  // }, [setCursorStatus, dragging]);
+
+  // console.log('ssssssssssssss', dragging, x, y);
 
   return dragging ? (
     <div

@@ -10,6 +10,7 @@ export class MouseMoveDriver extends EventDriver {
     if (target?.closest('*[data-click-stop-propagation]')) {
       return;
     }
+
     this.dispatch(
       new MouseClickEvent({
         clientX: e.clientX,

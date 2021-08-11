@@ -80,11 +80,12 @@ export class Workspace {
       workbench: this.engine.workbench,
       workspace: this,
       engine: this.engine,
-      // viewport: this.viewport,
+      viewport: this.viewport,
     };
   }
 
   attachEvents(container: EventContainer, contentWindow: Window) {
+    // console.log('onMount', 5, this.getEventContext());
     this.engine.attachEvents(container, contentWindow, this.getEventContext());
   }
 

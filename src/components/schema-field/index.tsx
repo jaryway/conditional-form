@@ -22,7 +22,7 @@ const SchemaField: FC<any> = (props) => {
   const fieldProps = useMemo(() => {
     return fieldSchema?.toFieldProps(options) as any;
   }, [fieldSchema, options]);
-  console.log('fieldProps', fieldProps);
+  // console.log('fieldProps', fieldProps);
   // console.log(
   //   'fieldPropsfieldProps',
   //   fieldSchema,

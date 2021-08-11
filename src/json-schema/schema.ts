@@ -1,6 +1,6 @@
 import { each, isFn, map } from '@formily/shared';
 import {
-  ISchema,
+  ISchema as ISch,
   SchemaKey,
   SchemaTypes,
   SchemaEnum,
@@ -11,7 +11,25 @@ import {
 } from './types';
 import { transformSchemaToFieldProps } from './transformer';
 
-export { ISchema };
+export type ISchema<
+  Decorator = any,
+  Component = any,
+  DecoratorProps = any,
+  ComponentProps = any,
+  Pattern = any,
+  Display = any,
+  Validator = any,
+  Message = any,
+> = ISch<
+  Decorator,
+  Component,
+  DecoratorProps,
+  ComponentProps,
+  Pattern,
+  Display,
+  Validator,
+  Message
+>;
 
 export class Schema<
   Decorator = any,
@@ -195,7 +213,7 @@ export class Schema<
   }
 
   fromJSON = (
-    json: ISchema<
+    json: ISch<
       Decorator,
       Component,
       DecoratorProps,

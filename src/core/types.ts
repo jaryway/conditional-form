@@ -1,12 +1,12 @@
 import { EventEngine, IEventProps } from '../shared';
-import { Workspace, Workbench, Engine, TreeNode, ITreeNode } from './models';
+import { Workspace, Workbench, Engine, TreeNode, ITreeNode, Viewport } from './models';
 import { ISchema } from '../json-schema/schema';
 
 export type IEngineContext = {
   workspace: Workspace;
   workbench: Workbench;
   engine: Engine;
-  // viewport: Viewport
+  viewport: Viewport;
 };
 
 export type IEngineProps<T = EventEngine> = IEventProps<T> & {
@@ -14,7 +14,7 @@ export type IEngineProps<T = EventEngine> = IEventProps<T> & {
   nodeIdAttrName?: string; //节点Id的dom属性名
   outlineNodeIdAttrName?: string; //大纲树节点ID的dom属性名
   nodeHelpersIdAttrName?: string; //节点工具栏属性名
-    defaultComponentTree?: ITreeNode[]; //默认组件树
+  defaultComponentTree?: ITreeNode[]; //默认组件树
   //   defaultScreenType?: ScreenType;
   //   shortcuts?: Shortcut[];
 };

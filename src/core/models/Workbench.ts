@@ -1,6 +1,6 @@
 import { Engine } from './Engine';
 import { Workspace, IWorkspaceProps } from './Workspace';
-import { observable, define, action } from '@formily/reactive';
+// import { observable, define, action } from '@formily/reactive';
 import { AddWorkspaceEvent, RemoveWorkspaceEvent, SwitchWorkspaceEvent } from '../events';
 import { IEngineContext, WorkbenchTypes } from '../types';
 export class Workbench {
@@ -19,29 +19,29 @@ export class Workbench {
     this.workspaces = [];
     this.currentWorkspace = null;
     this.activeWorkspace = null;
-    this.makeObservable();
+    // this.makeObservable();
   }
 
-  makeObservable() {
-    define(this, {
-      currentWorkspace: observable.ref,
-      workspaces: observable.shallow,
-      activeWorkspace: observable.ref,
-      type: observable.ref,
-      switchWorkspace: action,
-      addWorkspace: action,
-      removeWorkspace: action,
-      setActiveWorkspace: action,
-      setWorkbenchType: action,
-    });
-  }
+  // makeObservable() {
+  //   define(this, {
+  //     currentWorkspace: observable.ref,
+  //     workspaces: observable.shallow,
+  //     activeWorkspace: observable.ref,
+  //     type: observable.ref,
+  //     switchWorkspace: action,
+  //     addWorkspace: action,
+  //     removeWorkspace: action,
+  //     setActiveWorkspace: action,
+  //     setWorkbenchType: action,
+  //   });
+  // }
 
   getEventContext(): IEngineContext {
     return {
       engine: this.engine,
       workbench: this.engine.workbench,
       workspace: null,
-      // viewport: null,
+      viewport: null,
     };
   }
 
@@ -73,7 +73,7 @@ export class Workbench {
     const findIndex = this.findWorkspaceIndexById(id);
     if (findIndex > -1 && findIndex < this.workspaces.length) {
       const findedWorkspace = this.workspaces[findIndex];
-      // findedWorkspace.viewport.detachEvents();
+      findedWorkspace.viewport.detachEvents();
       this.workspaces.splice(findIndex, 1);
       if (findedWorkspace === this.currentWorkspace) {
         if (this.workspaces.length && this.workspaces[findIndex]) {
@@ -90,6 +90,7 @@ export class Workbench {
     const workspace = this.findWorkspaceById(props.id);
     if (workspace) return workspace;
     this.addWorkspace(props);
+    // console.log('ensureWorkspaceensureWorkspace');
     return this.currentWorkspace;
   }
 

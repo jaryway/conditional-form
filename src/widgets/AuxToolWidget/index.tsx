@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useCursor } from '../../hooks/useCursor';
 // import { CursorStatus, CursorType, ClosestDirection } from '@designable/core';
 // import {
 //   useViewport,
@@ -30,7 +31,7 @@ export const AuxToolWidget = () => {
   //   const engine = useDesigner();
   //   const viewport = useViewport();
   //   const operation = useOperation();
-  //   const cursor = useCursor();
+  const cursor = useCursor();
   const prefix = 'dn-auxtool'; //usePrefix('auxtool');
   //   const viewportDragon = useDragon();
   const ref = useRef<HTMLDivElement>();
@@ -72,6 +73,7 @@ export const AuxToolWidget = () => {
   //   }, [engine, cursor, viewportDragon, viewport, operation]);
 
   //   if (!viewport) return null;
+  // console.log('cursor', cursor.status);
 
   return (
     <div ref={ref} className={prefix}>

@@ -41,6 +41,7 @@ export class Engine extends EventEngine {
     this.workbench = new Workbench(this);
     // this.screen = new Screen(this);
     this.cursor = new Cursor(this);
+    // console.log(this.cursor);
     // this.keyboard = new Keyboard(this);
   }
 

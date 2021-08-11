@@ -64,10 +64,12 @@ export const DashedBox: FC<any> = () => {
     return baseStyle;
   };
 
-  // console.log('cursorStatus', cursorStatus);
 
+  // console.log('cursorStatus', rect);
   if (status !== CursorStatus.Normal) return null;
   if (!rect) return null;
+
+  
 
   // if (hover.node.hidden) return null;
   // if (selection.selected.includes(hover.node.id)) return null;

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context';
 import { MouseClickEvent } from '../core/events';
-import useEngine from './useEngine';
+import useDesigner from './useDesigner';
 
 const useSelection = () => {
-  const engine = useEngine();
+  const engine = useDesigner();
   const { cursorStatus } = useContext(AppContext);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -18,12 +18,8 @@ const useSelection = () => {
 
       const nodeId = el.getAttribute('data-designer-node-id');
 
-      if(nodeId){
-        
+      if (nodeId) {
       }
-
-      
-
     });
   }, []);
 

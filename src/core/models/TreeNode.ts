@@ -460,7 +460,7 @@ export class TreeNode {
 
   insertBefore(...nodes: TreeNode[]) {
     const parent = this.parent;
-    console.log('insertBefore', nodes);
+    // console.log('insertBefore', nodes);
     if (nodes.some((node) => node.contains(this))) return [];
     if (parent?.children?.length) {
       const newNodes = this.resetNodesParent(nodes, parent);
