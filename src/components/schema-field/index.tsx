@@ -22,7 +22,7 @@ const SchemaField: FC<any> = (props) => {
   const fieldProps = useMemo(() => {
     return fieldSchema?.toFieldProps(options) as any;
   }, [fieldSchema, options]);
-  // console.log('fieldProps', fieldProps);
+  console.log('fieldProps', fieldProps);
   // console.log(
   //   'fieldPropsfieldProps',
   //   fieldSchema,
@@ -59,7 +59,7 @@ const SchemaField: FC<any> = (props) => {
   if (fieldSchema.type === 'object' || fieldSchema.type === 'void') {
     return (
       <SchemaMarkupContext.Provider value={{ schema: fieldSchema, name, address }}>
-        <Field {...fieldProps} name={undefined}>
+        <Field {...fieldProps} name={undefined} id={fieldProps.name}>
           {renderProperties()}
         </Field>
       </SchemaMarkupContext.Provider>
@@ -68,7 +68,7 @@ const SchemaField: FC<any> = (props) => {
 
   return (
     <SchemaMarkupContext.Provider value={{ schema: fieldSchema, name, address }}>
-      <Field {...fieldProps} name={name}>
+      <Field {...fieldProps} name={name} id={fieldProps.name}>
         {props.children}
       </Field>
     </SchemaMarkupContext.Provider>

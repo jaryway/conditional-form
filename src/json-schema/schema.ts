@@ -11,6 +11,8 @@ import {
 } from './types';
 import { transformSchemaToFieldProps } from './transformer';
 
+export { ISchema };
+
 export class Schema<
   Decorator = any,
   Component = any,

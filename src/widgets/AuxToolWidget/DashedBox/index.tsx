@@ -1,6 +1,8 @@
 import React, { FC, Reducer, useContext, useEffect, useReducer, useRef } from 'react';
 import { AppContext } from '../../../context';
 import { MouseMoveEvent } from '../../../core/events';
+import { CursorStatus } from '../../../core/models';
+import { useCursor } from '../../../hooks/useCursor';
 // import { useHover, usePrefix, useValidNodeOffsetRect, useSelection } from '../../hooks';
 // import { TextWidget } from '../TextWidget';
 // import { observer } from '@formily/reactive-react';
@@ -14,32 +16,35 @@ const isEqualRect = (rect1: DOMRect, rect2: DOMRect) => {
 };
 
 export const DashedBox: FC<any> = () => {
-  const { engine, cursorStatus } = useContext(AppContext);
+  // const { engine, cursorStatus } = useContext(AppContext);
+
+  const { status, rect } = useCursor();
+
   const prefix = 'dn-aux-dashed-box';
-  const rectRef = useRef<DOMRect>();
+  // const rectRef = useRef<DOMRect>();
 
-  const initialState = { x: 0, y: 0 };
-  const reducer = (state: any, e: MouseMoveEvent) => {
-    const target = e.data.target as HTMLElement;
+  // const initialState = { x: 0, y: 0 };
+  // const reducer = (state: any, e: MouseMoveEvent) => {
+  //   const target = e.data.target as HTMLElement;
 
-    const el = target?.closest?.(`*[data-designer-source-id]`);
+  //   const el = target?.closest?.(`*[${engine.props.nodeIdAttrName}]`);
+  //   if (!el) return state;
 
-    if (el) {
-      const rect = el.getBoundingClientRect?.();
-      if (!isEqualRect(rectRef.current, rect)) {
-        // 矩形发生变化的时候才更新 state
-        rectRef.current = rect;
-        return { ...state, rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height } };
-      }
-    }
-    return state;
-  };
-  const [{ rect }, dispatch] = useReducer<Reducer<any, any>>(reducer, initialState);
+  //   const rect = el.getBoundingClientRect?.();
+  //   if (!isEqualRect(rectRef.current, rect)) {
+  //     // 矩形发生变化的时候才更新 state
+  //     rectRef.current = rect;
+  //     return { ...state, rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height } };
+  //   }
 
-  useEffect(() => {
-    engine.subscribeTo(MouseMoveEvent, dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   return state;
+  // };
+  // const [{ rect }, dispatch] = useReducer<Reducer<any, any>>(reducer, initialState);
+
+  // useEffect(() => {
+  //   engine.subscribeTo(MouseMoveEvent, dispatch);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const createTipsStyle = () => {
     const baseStyle: React.CSSProperties = {
@@ -61,7 +66,7 @@ export const DashedBox: FC<any> = () => {
 
   // console.log('cursorStatus', cursorStatus);
 
-  if (cursorStatus !== 'NORMAL') return null;
+  if (status !== CursorStatus.Normal) return null;
   if (!rect) return null;
 
   // if (hover.node.hidden) return null;

@@ -1,7 +1,7 @@
 import React, { FC, createElement, Fragment, useContext } from 'react';
 import { Input, Checkbox } from 'antd';
 import { Field } from 'react-final-form';
-import ConditionalField  from './components/conditional-field';
+import ConditionalField from './components/conditional-field';
 // import FormControl from './components/form-control';
 import { RegistryComponentsContext, SchemaFormContext } from './context';
 import { ISchema } from './interface';
@@ -216,7 +216,7 @@ const SchemaField: FC<ISchemaFieldProps> = ({ children, schema, names = [], ...r
 
     if (isReadOnly) {
       if (descriptionMode === 'text') {
-        fieldComponent = ({ value, checked, ...props }: any) => {
+        fieldComponent = ({ value, checked, ...props }) => {
           const v = _formItemProps.type === 'checkbox' ? checked : value;
           const child = context?.valueRender?.(schema, v);
           return (

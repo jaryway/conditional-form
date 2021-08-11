@@ -1,11 +1,12 @@
 import { IEngineProps } from '../types';
 // import { ITreeNode, TreeNode } from './TreeNode';
-// import { Workbench } from './Workbench';
+import { Workbench } from './Workbench';
 // import { Cursor } from './Cursor';
 // import { DragSource, GlobalDragSource } from './DragSource';
 // import { Keyboard } from './Keyboard';
 // import { Screen, ScreenType } from './Screen';
 import { EventEngine, uid } from '../../shared';
+import { Cursor } from './Cursor';
 
 /**
  * 设计器引擎
@@ -18,13 +19,13 @@ export class Engine extends EventEngine {
 
   props: IEngineProps<Engine>;
 
-  //  cursor: Cursor;
+  cursor: Cursor;
 
-  //  workbench: Workbench;
+  workbench: Workbench;
 
   //  keyboard: Keyboard;
 
-  screen: Screen;
+  // screen: Screen;
 
   constructor(props: IEngineProps<Engine>) {
     super(props);
@@ -37,9 +38,9 @@ export class Engine extends EventEngine {
   }
 
   init() {
-    // this.workbench = new Workbench(this);
+    this.workbench = new Workbench(this);
     // this.screen = new Screen(this);
-    // this.cursor = new Cursor(this);
+    this.cursor = new Cursor(this);
     // this.keyboard = new Keyboard(this);
   }
 

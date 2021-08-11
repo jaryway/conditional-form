@@ -24,6 +24,7 @@ export const SchemaOptionsContext = createContext<ISchemaOptionsContext>({} as a
 
 export const AppContext = createContext<{
   engine: Engine;
+  selection?: any;
   cursorStatus: string;
   setCursorStatus: (v: string) => void;
 }>({} as any);

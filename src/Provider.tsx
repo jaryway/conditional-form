@@ -1,12 +1,15 @@
 import React, { FC, useState } from 'react';
 import { AppContext } from './context';
+// import { MouseClickEvent } from './core/events';
+import { Engine } from './core/models/Engine';
+import CursorProvider from './providers/CursorProvider';
 
-const Provider: FC<any> = ({ engine, children }) => {
+const Provider: FC<{ engine: Engine }> = ({ engine, children }) => {
   const [cursorStatus, setCursorStatus] = useState('NORMAL');
-  console.log('cursorStatus-provider');
+
   return (
     <AppContext.Provider value={{ engine, cursorStatus, setCursorStatus }}>
-      {children}
+      <CursorProvider>{children}</CursorProvider>
     </AppContext.Provider>
   );
 };

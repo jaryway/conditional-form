@@ -80,6 +80,10 @@ interface IDecoratorProps extends FieldMetaState<any> {
   label?: string;
   title?: string;
 }
+const engine = new Engine({
+  drivers: [DragDropDriver, MouseMoveDriver],
+  effects: [],
+});
 
 const transformFieldState2FormItemProps = (props: IDecoratorProps) => {
   const validateStatus = getValidateState(props);
@@ -89,6 +93,9 @@ const transformFieldState2FormItemProps = (props: IDecoratorProps) => {
     // required: true,
     label: props.label || props.title,
     validateStatus,
+    [engine.props.nodeIdAttrName]: props[engine.props.nodeIdAttrName],
+    // [engine.props.sourceIdAttrName]: props[engine.props.sourceIdAttrName],
+    [engine.props.outlineNodeIdAttrName]: props[engine.props.outlineNodeIdAttrName],
     ...(hasError ? { help: props.error } : {}),
   } as any;
 };
@@ -102,6 +109,9 @@ const transformFieldState2FieldProps = (props: IComponentProps) => {
     onFocus: props.onFocus,
     onBlur: props.onBlur,
     multiple: props.multiple,
+    // [engine.props.nodeIdAttrName]: props[engine.props.nodeIdAttrName],
+    // [engine.props.sourceIdAttrName]: props[engine.props.sourceIdAttrName],
+    // [engine.props.outlineNodeIdAttrName]: props[engine.props.outlineNodeIdAttrName],
   };
 };
 
@@ -154,11 +164,6 @@ function pauseEvent(e: any) {
 //     this.clientY = e?.clientY;
 //   }
 // }
-
-const engine = new Engine({
-  drivers: [DragDropDriver, MouseMoveDriver],
-  effects: [],
-});
 
 const Test = () => {
   // const { cursorStatus } = useContext(AppContext);
