@@ -1,4 +1,4 @@
-import React, { FC, createContext, useEffect } from 'react';
+import React, { FC, createContext, useEffect, useState } from 'react';
 import {
   AddWorkspaceEvent,
   AppendNodeEvent,
@@ -17,14 +17,16 @@ export const TreeContext = createContext<TreeNode>({} as any);
 
 export const TreeProvider: FC<any> = ({ children }) => {
   const designer = useDesigner();
+  //   const [, _forceUpdate] = useState(1111);
   const forceUpdate = useForceUpdate();
+  //   const forceUpdate = (e) => {
+  //     console.log('useTree.TreeProvider1', e, designer.workbench?.currentWorkspace?.operation?.tree);
+  //     _forceUpdate();
+  //   };
 
   useEffect(() => {
     console.log('useTree-useEffect');
-    designer.subscribeTo(AddWorkspaceEvent, () => {
-      console.log('useTree-AddWorkspaceEvent');
-      forceUpdate();
-    });
+    designer.subscribeTo(AddWorkspaceEvent, forceUpdate);
     designer.subscribeTo(InsertAfterEvent, forceUpdate);
     designer.subscribeTo(InsertBeforeEvent, forceUpdate);
     designer.subscribeTo(InsertChildrenEvent, forceUpdate);
@@ -37,11 +39,8 @@ export const TreeProvider: FC<any> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('useTree.TreeProvider', designer.workbench?.currentWorkspace?.operation?.tree);
+  const tree = designer.workbench?.currentWorkspace?.operation?.tree;
+  //   console.log('useTree.TreeProvider', tree);
 
-  return (
-    <TreeContext.Provider value={designer.workbench?.currentWorkspace?.operation?.tree}>
-      {children}
-    </TreeContext.Provider>
-  );
+  return <TreeContext.Provider value={Object.assign({}, tree)}>{children}</TreeContext.Provider>;
 };

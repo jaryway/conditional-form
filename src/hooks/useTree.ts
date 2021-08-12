@@ -15,10 +15,12 @@ import {
 import { TreeContext } from '../providers';
 
 export const useTree = (workspaceId?: string) => {
+  const designer = useDesigner();
   const tree = useContext(TreeContext);
 
-  console.log('useTree-useTree', tree);
-  return tree;
+  console.log('useTree-useTree', tree, workspaceId);
+
+  return tree || designer.workbench.currentWorkspace?.operation?.tree;
   // const operation = useOperation(workspaceId);
   // const designer = useDesigner();
   // const forceUpdate = useForceUpdate();

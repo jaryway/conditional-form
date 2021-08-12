@@ -50,15 +50,15 @@ export const Selection: FC<any> = () => {
   const designer = useDesigner();
 
   const selection = useSelection();
-  const tree = useTree();
+  const tree = useTree("Selection");
   const status = useCursorStatus();
-  console.log('vvvvvvv-b', tree);
+  console.log('useTree-Selection', tree);
   //   const viewportDragon = useDragon();
   if (status !== 'NORMAL') return null;
   return (
     <Fragment>
       {selection.selected.map((id) => {
-        const node = tree?.findById(id);
+        // const node = tree?.findById(id);
         // console.log('xxxxxxxxxxxxxxxxxx', node);
         // if (!node) return null;
         // if (node.hidden) return null;
