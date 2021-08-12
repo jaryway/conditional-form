@@ -65,6 +65,7 @@ export class Workbench {
     if (!this.findWorkspaceById(props.id)) {
       this.currentWorkspace = new Workspace(this.engine, props);
       this.workspaces.push(this.currentWorkspace);
+      console.log('useTree-caddWorkspace')
       this.engine.dispatch(new AddWorkspaceEvent(this.currentWorkspace));
     }
   }

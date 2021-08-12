@@ -2,7 +2,7 @@ import React, { FC, createContext, useEffect, useState, useRef } from 'react';
 import { DragMoveEvent, DragStartEvent, DragStopEvent, MouseMoveEvent } from '../core/events';
 import { CursorStatus, ICursorPosition } from '../core/models';
 import { Hover } from '../core/models/Hover';
-import { useDesigner } from '../hooks';
+import { useDesigner, useForceUpdate } from '../hooks';
 import { requestIdle } from '../shared/request-idle';
 
 // export interface ICursorContext {
@@ -44,13 +44,12 @@ const isEqualRect = (rect1: DOMRect, rect2: DOMRect) => {
 export const CursorStatusProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
   const oldStatus = useRef<CursorStatus>();
-
-  const [status, setStatus] = useState<CursorStatus>(engine.cursor.status);
+  const forceUpdate = useForceUpdate();
 
   const updateStatus = (status) => {
     if (oldStatus.current === status) return;
-    setStatus(status);
     engine.cursor.setStatus(status);
+    forceUpdate();
   };
 
   useEffect(() => {
@@ -87,7 +86,11 @@ export const CursorStatusProvider: FC<any> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <CursorStatusContext.Provider value={status}>{children}</CursorStatusContext.Provider>;
+  return (
+    <CursorStatusContext.Provider value={engine.cursor.status}>
+      {children}
+    </CursorStatusContext.Provider>
+  );
 };
 
 export const CursorHoverProvider: FC<any> = ({ children }) => {
@@ -151,12 +154,11 @@ export const CursorHoverProvider: FC<any> = ({ children }) => {
 
 export const CursorPostionProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
-
-  const [position, setPosition] = useState<ICursorPosition>(engine.cursor.position);
+  const forceUpdate = useForceUpdate();
 
   const updatePosition = (data) => {
     engine.cursor.setPosition(data);
-    setPosition(data);
+    forceUpdate();
   };
 
   useEffect(() => {
@@ -168,28 +170,24 @@ export const CursorPostionProvider: FC<any> = ({ children }) => {
   }, []);
 
   return (
-    <CursorPositionContext.Provider value={{ position }}>{children}</CursorPositionContext.Provider>
+    <CursorPositionContext.Provider value={{ position: engine.cursor.position }}>
+      {children}
+    </CursorPositionContext.Provider>
   );
 };
 
 export const CursorDragPostionProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
-
-  const [dragStartPosition, setDragStartPosition] = useState<ICursorPosition>(
-    engine.cursor.dragStartPosition,
-  );
-  const [dragEndPosition, setDragEndPosition] = useState<ICursorPosition>(
-    engine.cursor.dragEndPosition,
-  );
+  const forceUpdate = useForceUpdate();
 
   const updateDragStartPosition = (data) => {
     engine.cursor.setDragStartPosition(data);
-    setDragStartPosition(data);
+    forceUpdate();
   };
 
   const updateDragEndPosition = (data) => {
     engine.cursor.setDragEndPosition(data);
-    setDragEndPosition(data);
+    forceUpdate();
   };
 
   useEffect(() => {
@@ -205,7 +203,12 @@ export const CursorDragPostionProvider: FC<any> = ({ children }) => {
   }, []);
 
   return (
-    <CursorDragPositionContext.Provider value={{ dragStartPosition, dragEndPosition }}>
+    <CursorDragPositionContext.Provider
+      value={{
+        dragStartPosition: engine.cursor.dragStartPosition,
+        dragEndPosition: engine.cursor.dragEndPosition,
+      }}
+    >
       {children}
     </CursorDragPositionContext.Provider>
   );

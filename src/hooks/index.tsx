@@ -7,3 +7,7 @@ export * from './useSelection';
 export * from './useOperation';
 export * from './useTree';
 export * from './useRegistry';
+export * from './useTreeNode';
+export * from './useViewportDragon';
+export * from './useForceUpdate';
+export * from './useTest'

@@ -28,8 +28,12 @@ import { MouseClickDriver } from './core/drivers/MouseClickDriver';
 // import AppProvider from './providers/DesignerProvider';
 import { Designer, Workspace } from './react/containers';
 import { Viewport } from './react/containers/Viewport';
-import { ComponentTreeWidget } from './widgets/ComponentTreeWidget';
-
+// import { ComponentTreeWidget } from './widgets/ComponentTreeWidget';
+// import { useTreeNode } from './hooks';
+import { Content } from './Content';
+import { TreeNode } from './core/models';
+import { InsertBeforeEvent } from './core/events';
+// import useTest from './hooks/useTest';
 // import { uid } from './shared';
 // import { Subscrible } from './events/subscrible';
 // import DragDropDriver from './drivers/DragDropDriver';
@@ -45,6 +49,7 @@ import { ComponentTreeWidget } from './widgets/ComponentTreeWidget';
 // s.dispatch({ type: 'xxx' });
 
 // const AppContext = createContext<any>({});
+const AntCard = Card;
 
 const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
 export enum CursorType {
@@ -96,6 +101,20 @@ const engine = new Engine({
       id: 'xo9dc80d7bn',
       props: {
         title: 'xo9dc80d7bn',
+      },
+    },
+    {
+      componentName: 'Field',
+      id: 'xo9dc80d7bo',
+      props: {
+        title: 'xo9dc80d7bo',
+      },
+    },
+    {
+      componentName: 'Card',
+      id: 'xo9dc80d7br',
+      props: {
+        title: 'xo9dc80d7br',
       },
     },
   ],
@@ -181,59 +200,15 @@ function pauseEvent(e: any) {
 //   }
 // }
 
-const Test = () => {
-  // const { cursorStatus } = useContext(AppContext);
-  console.log('cursorStatus000-Test');
-
-  return <div>Test</div>;
-};
-
 const App = () => {
-  // useEffect(()=>{},[GlobalState.dragging])
-  // console.log('dragging', GlobalState.dragging);
-  // const [cursorStatus, setCursorStatus] = useState('NORMAL');
-  function handleMouseClick() {
-    console.log('handleMouseClickhandleMouseClickhandleMouseClick');
-  }
 
-  // const cursorRef = useRef(new Cursor({}));
+  useEffect(() => {
+    engine.subscribeTo(InsertBeforeEvent, (e) => {
+      console.log('InsertBeforeEvent');
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   // document.addEventListener('mousedown', handleMouseClick);
-  //   // document.addEventListener('mousemove', handleMouseMove);
-  //   // document.addEventListener('mouseover', handleMouseOver);
-  //   // document.addEventListener('mouseout', handleMouseOut);
-  //   // document.addEventListener('mouseup', handleMouseUp);
-  //   // document.addEventListener('dragstart', handleDragStart);
-
-  //   // const driver1 = new HoverDriver();
-  //   engine.mount();
-
-  //   return () => {
-  //     engine.unmount();
-  //   };
-  // }, []);
-
-  // useEffect(()=>{})
-  // console.log('engine', engine);
-  // useEffect(() => {
-  //   engine.mount();
-
-  //   const workspace = {
-  //     id: 'form',
-  //     title: undefined,
-  //     description: undefined,
-  //   };
-  //   // engine.workbench.ensureWorkspace(workspace);
-
-  //   console.log('engine1', engine);
-
-  //   return () => {
-  //     engine.unmount();
-  //   };
-  // }, []);
-
-  // return <>s[][][]][][]</>;
+  // console.log('useTest-app', s);
 
   return (
     <>
@@ -333,118 +308,7 @@ const App = () => {
                         />
                       </Card>
                     </Field>
-
-                    <ComponentTreeWidget
-                      components={{
-                        Field: (props) => {
-                          // const s= useTree();
-                          // const node = useTreeNode();
-                          // console.log('xxxx', props, node.props);
-                          // if (node.props.type == 'void') {
-                          //   return (
-                          //     <div
-                          //       {...props}
-                          //       style={{
-                          //         background: '#eee',
-                          //         border: '1px solid #ddd',
-                          //         display: 'flex',
-                          //         padding: 10,
-                          //         height: props.children ? 'auto' : 150,
-                          //         justifyContent: 'center',
-                          //         alignItems: 'center',
-                          //       }}
-                          //     >
-                          //       {props.children ? (
-                          //         props.children
-                          //       ) : (
-                          //         <span>拖拽字段进入该区域</span>
-                          //       )}
-                          //     </div>
-                          //   )
-                          // }
-                          // return (
-                          //   <Field
-                          //     name="phone"
-                          //     title="手机号"
-                          //     required
-                          //     validator="phone"
-                          //     decorator={[FormItem]}
-                          //     component={[Input]}
-                          //   />
-                          // )
-
-                          return (
-                            <span
-                              {...props}
-                              style={{
-                                background: '#eee',
-                                display: 'inline-block',
-                                ...props.style,
-                                padding: '10px 20px',
-                                border: '1px solid #ddd',
-                              }}
-                            >
-                              {/* {node.props.title} */}
-                              {props.children}
-                            </span>
-                          );
-                        },
-                        Card: (props) => {
-                          return (
-                            <Card
-                              {...props}
-                              style={{
-                                background: '#eee',
-                                border: '1px solid #ddd',
-                                display: 'flex',
-                                padding: 10,
-                                height: props.children ? 'auto' : 150,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}
-                            >
-                              {props.children ? props.children : <span>拖拽字段进入该区域</span>}
-                            </Card>
-                          );
-                        },
-                        Section: (props) => {
-                          return (
-                            <div
-                              {...props}
-                              style={{
-                                background: '#eee',
-                                border: '1px solid #ddd',
-                                display: 'flex',
-                                padding: 10,
-                                height: props.children ? 'auto' : 150,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}
-                            >
-                              {props.children ? props.children : <span>拖拽字段进入该区域</span>}
-                            </div>
-                          );
-                        },
-                        Checkbox: (props) => {
-                          return (
-                            <div
-                              {...props}
-                              style={{
-                                background: '#eee',
-                                border: '1px solid #ddd',
-                                display: 'flex',
-                                padding: 10,
-                                height: props.children ? 'auto' : 150,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}
-                            >
-                              {props.children ? props.children : <span>拖拽字段进入该区域</span>}
-                            </div>
-                          );
-                        },
-                      }}
-                    />
+                    <Content />
 
                     <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
                       <Space>
@@ -452,7 +316,30 @@ const App = () => {
                           type="primary"
                           htmlType="submit"
                           onClick={() => {
-                            form.submit();
+                            // form.submit();
+                            const { firstChild } =
+                              engine.workbench.currentWorkspace?.operation.tree;
+
+                            const res = firstChild.insertBefore(
+                              new TreeNode({
+                                componentName: 'Field',
+                                props: {},
+                                // operation: undefined as any,
+                                id: 'sss' + Math.random(),
+                              } as any),
+                            );
+
+                            console.log(
+                              'vvvv-a',
+                              engine.workbench.currentWorkspace?.operation.tree,
+                            );
+
+                            // console.log(
+                            //   'engine.workbench.currentWorkspace?.operation.tree001',
+                            //   res,
+                            //   firstChild,
+                            //   engine.workbench.currentWorkspace?.operation.tree,
+                            // );
                           }}
                           loading={submitting}
                         >

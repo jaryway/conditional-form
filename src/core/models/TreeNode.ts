@@ -242,9 +242,10 @@ export class TreeNode {
 
   triggerMutation<T>(event: any, callback?: () => T, defaults?: T): T {
     if (this.root?.operation) {
-      // const result = this.root.operation.dispatch(event, callback) || defaults;
+      const result = this.root.operation.dispatch(event, callback) || defaults;
       this.takeSnapshot();
-      // return result;
+      console.log('triggerMutation', result);
+      return result;
     } else if (isFn(callback)) {
       return callback();
     }
@@ -460,11 +461,12 @@ export class TreeNode {
 
   insertBefore(...nodes: TreeNode[]) {
     const parent = this.parent;
-    // console.log('insertBefore', nodes);
+
     if (nodes.some((node) => node.contains(this))) return [];
     if (parent?.children?.length) {
       const newNodes = this.resetNodesParent(nodes, parent);
       if (!newNodes.length) return [];
+
       return this.triggerMutation(
         new InsertBeforeEvent({
           target: this,
@@ -478,6 +480,7 @@ export class TreeNode {
               return buf.concat([node]);
             }
           }, []);
+          console.log('insertBefore-c', parent, newNodes);
           return newNodes;
         },
         [],

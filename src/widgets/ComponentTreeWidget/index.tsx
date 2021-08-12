@@ -5,8 +5,6 @@ import { TreeNode } from '../../core//models';
 import cls from 'classnames';
 import './styles.less';
 
-
-
 const ComponentsContext = createContext<IComponents>({});
 export interface IComponents {
   [key: string]: React.JSXElementConstructor<any>;
@@ -27,12 +25,16 @@ export const TreeNodeWidget: React.FC<ITreeNodeWidgetProps> = (props: ITreeNodeW
   const designer = useDesigner();
   const components = useContext(ComponentsContext);
   const node = props.node;
+
   const renderChildren = () => {
     if (node?.designerProps?.selfRenderChildren) return [];
     return node?.children?.map((child) => {
+      // console.log('renderChildren', child);
+
       return <TreeNodeWidget key={child.id} node={child} />;
     });
   };
+
   const renderProps = (extendsProps: any = {}) => {
     if (node?.designerProps?.getComponentProps) {
       return {
@@ -42,6 +44,7 @@ export const TreeNodeWidget: React.FC<ITreeNodeWidgetProps> = (props: ITreeNodeW
     }
     return { ...extendsProps, ...node.props };
   };
+
   const renderComponent = () => {
     const componentName = node.componentName;
     const Component = components[componentName];
@@ -50,6 +53,7 @@ export const TreeNodeWidget: React.FC<ITreeNodeWidgetProps> = (props: ITreeNodeW
       if (designer) {
         dataId[designer?.props?.nodeIdAttrName] = node.id;
       }
+
       return React.createElement(Component, renderProps(dataId), ...renderChildren());
     } else {
       if (node?.children?.length) {
@@ -84,14 +88,14 @@ export const ComponentTreeWidget: React.FC<IComponentTreeWidgetProps> = (
   }, []);
 
   if (designer) {
-    dataId[designer?.props?.nodeIdAttrName] = tree.id;
+    dataId[designer?.props?.nodeIdAttrName] = tree?.id;
   }
   return (
     <div
       style={props.style}
       className={cls(prefix, props.className)}
       {...dataId}
-      data-xxxxxxxxxxxxxxxx={4}
+      // data-xxxxxxxxxxxxxxxx={4}
     >
       <ComponentsContext.Provider value={props.components}>
         <TreeNodeWidget node={tree} />

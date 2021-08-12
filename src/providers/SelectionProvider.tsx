@@ -6,7 +6,7 @@ import { Point } from '../shared';
 
 export const SelectionContext = createContext<{}>({} as any);
 
-const SelectionProvider: FC<any> = ({ children }) => {
+export const SelectionProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
   const [selected, setSelected] = useState<any>();
 
@@ -76,6 +76,7 @@ const SelectionProvider: FC<any> = ({ children }) => {
     // return () => {
     //   cleanup
     // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log('selected', selected);
@@ -83,4 +84,4 @@ const SelectionProvider: FC<any> = ({ children }) => {
   return <SelectionContext.Provider value={{ selected }}>{children}</SelectionContext.Provider>;
 };
 
-export default SelectionProvider;
+// export default SelectionProvider;

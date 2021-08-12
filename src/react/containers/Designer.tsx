@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import cls from 'classnames';
-import DesignerProvider from '../../providers/DesignerProvider';
-// import { IDesignerProps } from '../types'
-// import { GhostWidget } from '../widgets'
-// import { useDesigner } from '../hooks';
+import { DesignerProvider } from '../../providers';
+
 import { GhostWidget } from '../../widgets/GhostWidget';
 import { useDesigner } from '../../hooks';
 

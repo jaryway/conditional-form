@@ -1,7 +1,7 @@
 import React, { FC, Reducer, useReducer, useContext, useEffect, useRef } from 'react';
 
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../../core/events';
-import { useDesigner } from '../../hooks';
+import { useDesigner, useTest } from '../../hooks';
 // import { useCursor, usePrefix, useDesigner } from '../../hooks'
 // import { CursorStatus } from '@designable/core'
 // import { TextWidget } from '../TextWidget'
@@ -16,6 +16,8 @@ import './styles.less';
 // };
 
 export const GhostWidget: FC<any> = () => {
+  // const s = useTest('app');
+
   const initialState = { x: 0, y: 0 };
   // const pointRef = useRef<{ x: number; y: number }>(initialState);
   // const { engine, setCursorStatus } = useContext(AppContext);
@@ -47,6 +49,7 @@ export const GhostWidget: FC<any> = () => {
     engine.subscribeTo(DragStartEvent, (e) => dispatch(e));
     engine.subscribeTo(DragMoveEvent, (e) => dispatch(e));
     engine.subscribeTo(DragStopEvent, (e) => dispatch(e));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
