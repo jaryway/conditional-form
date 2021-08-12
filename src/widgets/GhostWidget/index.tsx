@@ -1,10 +1,9 @@
 import React, { FC, Reducer, useReducer, useContext, useEffect, useRef } from 'react';
-import { AppContext } from '../../context';
+
 import { DragMoveEvent, DragStartEvent, DragStopEvent } from '../../core/events';
-import useDesigner from '../../hooks/useDesigner';
+import { useDesigner } from '../../hooks';
 // import { useCursor, usePrefix, useDesigner } from '../../hooks'
 // import { CursorStatus } from '@designable/core'
-// import { observer } from '@formily/reactive-react'
 // import { TextWidget } from '../TextWidget'
 import './styles.less';
 // interface Point {

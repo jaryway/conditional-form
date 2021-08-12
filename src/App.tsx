@@ -28,6 +28,7 @@ import { MouseClickDriver } from './core/drivers/MouseClickDriver';
 // import AppProvider from './providers/DesignerProvider';
 import { Designer, Workspace } from './react/containers';
 import { Viewport } from './react/containers/Viewport';
+import { ComponentTreeWidget } from './widgets/ComponentTreeWidget';
 
 // import { uid } from './shared';
 // import { Subscrible } from './events/subscrible';
@@ -89,6 +90,15 @@ interface IDecoratorProps extends FieldMetaState<any> {
 const engine = new Engine({
   drivers: [DragDropDriver, MouseMoveDriver, MouseClickDriver],
   effects: [],
+  defaultComponentTree: [
+    {
+      componentName: 'Field',
+      id: 'xo9dc80d7bn',
+      props: {
+        title: 'xo9dc80d7bn',
+      },
+    },
+  ],
 });
 
 const transformFieldState2FormItemProps = (props: IDecoratorProps) => {
@@ -230,19 +240,8 @@ const App = () => {
       <Designer engine={engine}>
         <Workspace id={'form'}>
           <Viewport>
-            {/* <Test />
-            <AuxToolWidget />*/}
             <GhostWidget />
 
-            <Button
-              // onMouseDown
-              onClick={(e) => {
-                // setCursorStatus(Math.random().toString());
-                // document.removeEventListener('mousedown', handleMouseClick);
-              }}
-            >
-              RemoveEventListener
-            </Button>
             <Form
               validateOnBlur={false}
               mutators={{
@@ -257,6 +256,7 @@ const App = () => {
               initialValues={{ isGift: true }}
               onSubmit={onSubmit || (() => {})}
               render={({ form, submitting }) => {
+                console.log('tree', engine.workbench.currentWorkspace.operation.tree);
                 return (
                   <AntForm
                     labelCol={{ span: 6 }}
@@ -269,8 +269,8 @@ const App = () => {
                       title="is gift"
                       type="checkbox"
                       // checkbox
-                      decorator={[FormItem, {}]}
-                      component={[Checkbox, {}]}
+                      decorator={[FormItem, { [engine?.props?.nodeIdAttrName]: 'checkbox-w' }]}
+                      component={[Checkbox, { [engine?.props?.nodeIdAttrName]: 'checkbox' }]}
                     />
 
                     <Field
@@ -278,7 +278,7 @@ const App = () => {
                       title="is money"
                       type="checkbox"
                       // checkbox
-                      decorator={[FormItem, {}]}
+                      decorator={[FormItem, { [engine?.props?.nodeIdAttrName]: 'checkbox2' }]}
                       component={[Checkbox, {}]}
                     />
 
@@ -333,389 +333,119 @@ const App = () => {
                         />
                       </Card>
                     </Field>
-                    <SchemaOptionsContext.Provider
-                      value={{
-                        components: { FormItem, Input: FregataInput, Select: FregataSelect, Card },
+
+                    <ComponentTreeWidget
+                      components={{
+                        Field: (props) => {
+                          // const s= useTree();
+                          // const node = useTreeNode();
+                          // console.log('xxxx', props, node.props);
+                          // if (node.props.type == 'void') {
+                          //   return (
+                          //     <div
+                          //       {...props}
+                          //       style={{
+                          //         background: '#eee',
+                          //         border: '1px solid #ddd',
+                          //         display: 'flex',
+                          //         padding: 10,
+                          //         height: props.children ? 'auto' : 150,
+                          //         justifyContent: 'center',
+                          //         alignItems: 'center',
+                          //       }}
+                          //     >
+                          //       {props.children ? (
+                          //         props.children
+                          //       ) : (
+                          //         <span>拖拽字段进入该区域</span>
+                          //       )}
+                          //     </div>
+                          //   )
+                          // }
+                          // return (
+                          //   <Field
+                          //     name="phone"
+                          //     title="手机号"
+                          //     required
+                          //     validator="phone"
+                          //     decorator={[FormItem]}
+                          //     component={[Input]}
+                          //   />
+                          // )
+
+                          return (
+                            <span
+                              {...props}
+                              style={{
+                                background: '#eee',
+                                display: 'inline-block',
+                                ...props.style,
+                                padding: '10px 20px',
+                                border: '1px solid #ddd',
+                              }}
+                            >
+                              {/* {node.props.title} */}
+                              {props.children}
+                            </span>
+                          );
+                        },
+                        Card: (props) => {
+                          return (
+                            <Card
+                              {...props}
+                              style={{
+                                background: '#eee',
+                                border: '1px solid #ddd',
+                                display: 'flex',
+                                padding: 10,
+                                height: props.children ? 'auto' : 150,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              {props.children ? props.children : <span>拖拽字段进入该区域</span>}
+                            </Card>
+                          );
+                        },
+                        Section: (props) => {
+                          return (
+                            <div
+                              {...props}
+                              style={{
+                                background: '#eee',
+                                border: '1px solid #ddd',
+                                display: 'flex',
+                                padding: 10,
+                                height: props.children ? 'auto' : 150,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              {props.children ? props.children : <span>拖拽字段进入该区域</span>}
+                            </div>
+                          );
+                        },
+                        Checkbox: (props) => {
+                          return (
+                            <div
+                              {...props}
+                              style={{
+                                background: '#eee',
+                                border: '1px solid #ddd',
+                                display: 'flex',
+                                padding: 10,
+                                height: props.children ? 'auto' : 150,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              {props.children ? props.children : <span>拖拽字段进入该区域</span>}
+                            </div>
+                          );
+                        },
                       }}
-                    >
-                      <SchemaField
-                        schema={
-                          {
-                            type: 'object',
-                            properties: {
-                              v7hxqah4mlg: {
-                                title: 'Input',
-                                type: 'string',
-                                'x-decorator': 'FormItem',
-                                'x-component': 'Input',
-                                'x-component-props': {},
-                                'x-decorator-props': {},
-                                required: true,
-                                _designableId: 'v7hxqah4mlg',
-                                'x-index': 0,
-                              },
-                              fw13hnhvyyu: {
-                                title: 'Select',
-                                'x-decorator': 'FormItem',
-                                'x-component': 'Select',
-                                'x-component-props': {},
-                                'x-decorator-props': {},
-                                conditions: [{ when: 'v7hxqah4mlg', is: 'xxx', visible: true }],
-                                _designableId: 'fw13hnhvyyu',
-                                'x-index': 1,
-                              },
-                              umt0swqdbo6: {
-                                type: 'object',
-                                'x-component': 'Card',
-                                'x-component-props': {
-                                  title: 'Title',
-                                },
-                                properties: {
-                                  type: 'object',
-                                  'x-component': 'Card',
-                                  'x-component-props': {
-                                    title: 'Title',
-                                  },
-                                  '4opiooo': {
-                                    type: 'object',
-                                    'x-component': 'Card',
-                                    'x-component-props': {
-                                      title: 'Title',
-                                    },
-                                    properties: {
-                                      dddddddddd: {
-                                        title: 'Input0',
-                                        type: 'string',
-                                        'x-decorator': 'FormItem',
-                                        'x-component': 'Input',
-                                        'x-component-props': {},
-                                        'x-decorator-props': {},
-                                        required: true,
-                                        _designableId: 'v7hxqah4mlg',
-                                        'x-index': 0,
-                                      },
-                                    },
-                                  },
-                                },
-                              },
-                              yf28v6y6pmh: {
-                                type: 'void',
-                                'x-component': 'Card',
-                                'x-component-props': {
-                                  title: 'Title',
-                                },
-                                _designableId: 'yf28v6y6pmh',
-                                'x-index': 2,
-                                name: 'yf28v6y6pmh',
-                                properties: {
-                                  v2cvcuh9p3f: {
-                                    title: 'Input',
-                                    type: 'string',
-                                    'x-decorator': 'FormItem',
-                                    'x-component': 'Input',
-                                    'x-validator': [],
-                                    'x-component-props': {},
-                                    'x-decorator-props': {},
-                                    _designableId: 'v2cvcuh9p3f',
-                                    'x-index': 0,
-                                    name: 'v2cvcuh9p3f',
-                                  },
-                                },
-                              },
-                              // zffe7kcvdcz: {
-                              //   type: 'void',
-                              //   'x-component': 'FormGrid',
-                              //   'x-component-props': {},
-                              //   _designableId: 'zffe7kcvdcz',
-                              //   conditions: [{ when: 'v7hxqah4mlg', is: 'xxx', visible: true }],
-                              //   properties: {
-                              //     umt0swqdbo6: {
-                              //       type: 'void',
-                              //       'x-component': 'Card',
-                              //       'x-component-props': {
-                              //         title: 'Title',
-                              //       },
-                              //       _designableId: 'umt0swqdbo6',
+                    />
 
-                              //       properties: {
-                              //         '32rm69l1m1j': {
-                              //           type: 'void',
-                              //           'x-component': 'FormGrid',
-                              //           'x-component-props': {
-                              //             style: {
-                              //               display: 'flex',
-                              //             },
-                              //           },
-                              //           _designableId: '32rm69l1m1j',
-                              //           properties: {
-                              //             DDDDDDDD: {
-                              //               type: '[string,string]',
-                              //               title: 'DateRangePicker',
-                              //               'x-decorator': 'FormItem',
-                              //               'x-component': 'DatePicker.RangePicker',
-                              //               'x-component-props': {},
-                              //               'x-decorator-props': {},
-                              //               name: 'DDDDDDDD',
-                              //               _designableId: 'hiswn0ljl3x',
-                              //               'x-index': 0,
-                              //             },
-                              //             si6lgjx9eag: {
-                              //               title: 'Select',
-                              //               'x-decorator': 'FormItem',
-                              //               'x-component': 'Select',
-                              //               'x-component-props': {},
-                              //               'x-decorator-props': {},
-                              //               enum: [
-                              //                 {
-                              //                   children: [],
-                              //                   label: '选项 1',
-                              //                   value: '5bdhyv2dzd6',
-                              //                   c: 'xcxcx',
-                              //                   ddd: 'dd',
-                              //                 },
-                              //               ],
-                              //               _designableId: 'si6lgjx9eag',
-                              //               'x-index': 1,
-                              //             },
-                              //           },
-                              //           'x-index': 0,
-                              //         },
-                              //         nrzni8sfhmn: {
-                              //           type: 'boolean',
-                              //           title: 'Switch',
-                              //           'x-decorator': 'FormItem',
-                              //           'x-component': 'Switch',
-                              //           'x-component-props': {},
-                              //           'x-decorator-props': {},
-                              //           _designableId: 'nrzni8sfhmn',
-                              //           'x-index': 1,
-                              //         },
-                              //         zfv2g7ri00x: {
-                              //           type: 'Array<object>',
-                              //           title: 'Upload',
-                              //           'x-decorator': 'FormItem',
-                              //           'x-component': 'Upload',
-                              //           'x-component-props': {
-                              //             textContent: 'Upload',
-                              //           },
-                              //           'x-decorator-props': {},
-                              //           _designableId: 'zfv2g7ri00x',
-                              //           'x-index': 2,
-                              //         },
-                              //         bbmqypy4ybb: {
-                              //           type: 'boolean',
-                              //           title: 'Switch',
-                              //           'x-decorator': 'FormItem',
-                              //           'x-component': 'Switch',
-                              //           'x-component-props': {},
-                              //           'x-decorator-props': {},
-                              //           _designableId: 'bbmqypy4ybb',
-                              //           'x-index': 3,
-                              //         },
-                              //       },
-                              //       'x-index': 0,
-                              //     },
-                              //   },
-                              //   'x-index': 2,
-                              // },
-                              // d4ca2w22oi6: {
-                              //   title: '手机号',
-                              //   type: 'string',
-                              //   'x-decorator': 'FormItem',
-                              //   'x-component': 'Input',
-                              //   'x-component-props': {},
-                              //   'x-decorator-props': {},
-                              //   _designableId: 'd4ca2w22oi6',
-                              //   'x-index': 3,
-                              // },
-                              // tpd8nt1fnby: {
-                              //   type: 'string | number',
-                              //   title: 'Radio Group',
-                              //   'x-decorator': 'FormItem',
-                              //   'x-component': 'Radio.Group',
-                              //   enum: [
-                              //     {
-                              //       children: [],
-                              //       label: '选项1',
-                              //       value: 1,
-                              //     },
-                              //     {
-                              //       children: [],
-                              //       label: '选项2',
-                              //       value: true,
-                              //     },
-                              //     {
-                              //       children: [],
-                              //     },
-                              //     {
-                              //       children: [],
-                              //       label: '选项 4',
-                              //       value: 'rm08xp81xro',
-                              //     },
-                              //     {
-                              //       children: [],
-                              //       label: '选项 5',
-                              //       value: 'qo89oct6hcj',
-                              //     },
-                              //   ],
-                              //   'x-component-props': {},
-                              //   'x-decorator-props': {},
-                              //   _designableId: 'tpd8nt1fnby',
-                              //   'x-index': 4,
-                              // },
-                              // '77k3tbbh7lu': {
-                              //   type: 'Array<string>',
-                              //   title: 'Transfer',
-                              //   'x-decorator': 'FormItem',
-                              //   'x-component': 'Transfer',
-                              //   'x-component-props': {
-                              //     oneWay: false,
-                              //     showSearch: true,
-                              //     showSearchAll: true,
-                              //   },
-                              //   'x-decorator-props': {
-                              //     tooltip: 'xcvzxcv',
-                              //     addonBefore: 'ddsdsd',
-                              //     addonAfter: 'ssdsdsd',
-                              //     labelCol: 7,
-                              //   },
-                              //   _designableId: '77k3tbbh7lu',
-                              //   'x-index': 5,
-                              // },
-                              // '4l24pvy2gra': {
-                              //   type: 'string',
-                              //   title: 'Select',
-                              //   'x-decorator': 'FormItem',
-                              //   'x-component': 'Select',
-                              //   'x-component-props': {},
-                              //   'x-decorator-props': {},
-                              //   _designableId: '4l24pvy2gra',
-                              //   'x-index': 6,
-                              // },
-                              // contacts: {
-                              //   type: 'array',
-                              //   required: true,
-                              //   title: '联系人信息',
-                              //   'x-decorator': 'FormItem',
-                              //   'x-component': 'ArrayItems',
-                              //   items: {
-                              //     type: 'object',
-                              //     'x-component': 'ArrayItems.Item',
-                              //     properties: {
-                              //       sort: {
-                              //         type: 'void',
-                              //         'x-decorator': 'FormItem',
-                              //         'x-component': 'ArrayItems.SortHandle',
-                              //       },
-                              //       popover: {
-                              //         type: 'void',
-                              //         title: '完善联系人信息',
-                              //         'x-decorator': 'Editable.Popover',
-                              //         'x-component': 'FormLayout',
-                              //         'x-component-props': {
-                              //           layout: 'vertical',
-                              //         },
-                              //         'x-reactions': [
-                              //           {
-                              //             fulfill: {
-                              //               schema: {
-                              //                 title: '{{$self.query(".name").value() }}',
-                              //               },
-                              //             },
-                              //           },
-                              //         ],
-                              //         properties: {
-                              //           name: {
-                              //             type: 'string',
-                              //             title: '姓名',
-                              //             required: true,
-                              //             'x-decorator': 'FormItem',
-                              //             'x-component': 'Input',
-                              //             'x-component-props': {
-                              //               style: {
-                              //                 width: 300,
-                              //               },
-                              //             },
-                              //           },
-                              //           email: {
-                              //             type: 'string',
-                              //             title: '邮箱',
-                              //             'x-decorator': 'FormItem',
-                              //             'x-component': 'Input',
-                              //             'x-validator': [{ required: true }, 'email'],
-                              //             'x-component-props': {
-                              //               style: {
-                              //                 width: 300,
-                              //               },
-                              //             },
-                              //           },
-                              //           phone: {
-                              //             type: 'string',
-                              //             title: '手机号',
-                              //             'x-decorator': 'FormItem',
-                              //             'x-component': 'Input',
-                              //             'x-validator': [{ required: true }, 'phone'],
-                              //             'x-component-props': {
-                              //               style: {
-                              //                 width: 300,
-                              //               },
-                              //             },
-                              //           },
-                              //         },
-                              //       },
-                              //       remove: {
-                              //         type: 'void',
-                              //         'x-decorator': 'FormItem',
-                              //         'x-component': 'ArrayItems.Remove',
-                              //       },
-                              //     },
-                              //   },
-                              //   properties: {
-                              //     addition: {
-                              //       type: 'void',
-                              //       title: '新增联系人',
-                              //       'x-component': 'ArrayItems.Addition',
-                              //     },
-                              //   },
-                              // },
-                            },
-                            _designableId: 'aevkxu4nwas',
-                          } as any
-                        }
-                      />
-                    </SchemaOptionsContext.Provider>
-
-                    {/* <Field
-                decorator={[AntForm.Item, { wrapperCol: { offset: 6, span: 16 } }]}
-                component={[
-                  () => {
-                    return (
-                      <Space>
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          onClick={() => {
-                            form.submit();
-                          }}
-                          loading={submitting}
-                        >
-                          Submit
-                        </Button>
-                        <Button
-                          htmlType="reset"
-                          onClick={() => {
-                            form.reset();
-                          }}
-                        >
-                          Reset
-                        </Button>
-                      </Space>
-                    );
-                  },
-                  {},
-                ]}
-                conditions={[{ when: 'isGift', is: true, visible: true }]}
-              />*/}
                     <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
                       <Space>
                         <Button

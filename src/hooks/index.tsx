@@ -6,3 +6,4 @@ export * from './useViewport';
 export * from './useSelection';
 export * from './useOperation';
 export * from './useTree';
+export * from './useRegistry';

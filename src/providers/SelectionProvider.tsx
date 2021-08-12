@@ -1,7 +1,7 @@
 import React, { FC, useState, createContext, useEffect } from 'react';
 import { MouseClickEvent } from '../core/events';
 import { CursorStatus } from '../core/models';
-import useDesigner from '../hooks/useDesigner';
+import { useDesigner } from '../hooks';
 import { Point } from '../shared';
 
 export const SelectionContext = createContext<{}>({} as any);

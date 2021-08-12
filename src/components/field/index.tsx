@@ -78,8 +78,8 @@ const FinalField: FC<FinalFieldProps> = ({
               {
                 ...component[1],
                 ...input,
-                'data-component': '1',
-                'data-designer-node-id': (rest as any).id,
+                // 'data-component': '1',
+                // 'data-designer-node-id': (rest as any).id,
               },
               rest.children,
             );
@@ -106,7 +106,7 @@ const FinalField: FC<FinalFieldProps> = ({
                 },
                 ...meta,
                 // 'data-decorator': '2',
-                'data-designer-node-id': (rest as any).id,
+                // 'data-designer-node-id': (rest as any).id,
               },
               children,
             );

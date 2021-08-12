@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { CursorStatus } from '../../../core/models';
-import { useCursor } from '../../../hooks/useCursor';
+import { useCursorStatus, useCursorHover } from '../../../hooks';
 // import { useHover, usePrefix, useValidNodeOffsetRect, useSelection } from '../../hooks';
 // import { TextWidget } from '../TextWidget';
-// import { observer } from '@formily/reactive-react';
 
 export const DashedBox: FC<any> = () => {
   // const { engine, cursorStatus } = useContext(AppContext);
 
-  const { status, rect } = useCursor();
+  const status = useCursorStatus();
+  const { rect } = useCursorHover();
 
   const prefix = 'dn-aux-dashed-box';
   // const rectRef = useRef<DOMRect>();

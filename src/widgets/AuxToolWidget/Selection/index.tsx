@@ -4,14 +4,13 @@ import {
   useSelection,
   //   useValidNodeOffsetRect,
   //   useTree,
-  useCursor,
+  useCursorStatus,
   //   useDragon,
   usePrefix,
   useTree,
 } from '../../../hooks';
-// import { observer } from '@formily/reactive-react';
 import { TreeNode } from '../../../core/models';
-import useDesigner from '../../../hooks/useDesigner';
+import { useDesigner } from '../../../hooks';
 export interface ISelectionBoxProps {
   node: TreeNode;
   showHelpers: boolean;
@@ -41,7 +40,7 @@ export const SelectionBox: React.FC<ISelectionBoxProps> = (props) => {
 
   return (
     <div className={prefix} style={createSelectionStyle()}>
-      asdafsd
+      selection
       {/* {props.showHelpers && <Helpers {...props} node={props.node} nodeRect={nodeRect} />} */}
     </div>
   );
@@ -49,18 +48,18 @@ export const SelectionBox: React.FC<ISelectionBoxProps> = (props) => {
 
 export const Selection: FC<any> = () => {
   const designer = useDesigner();
-  
+
   const selection = useSelection();
-    const tree = useTree();
-  const cursor = useCursor();
-  
+  const tree = useTree();
+  const status = useCursorStatus();
+
   //   const viewportDragon = useDragon();
-  if (cursor.status !== 'NORMAL') return null;
+  if (status !== 'NORMAL') return null;
   return (
     <Fragment>
       {selection.selected.map((id) => {
-        const node = tree.findById(id);
-        console.log('xxxxxxxxxxxxxxxxxx', node);
+        // const node = tree.findById(id);
+        // console.log('xxxxxxxxxxxxxxxxxx', node);
         // if (!node) return null;
         // if (node.hidden) return null;
         return (

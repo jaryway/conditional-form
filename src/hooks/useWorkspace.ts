@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import useDesigner from './useDesigner';
+import { useDesigner } from './useDesigner';
 import { WorkspaceContext } from '../providers/WorkspaceProvider';
 import { Workspace } from '../core/models';
 export const useWorkspace = (id?: string): Workspace => {

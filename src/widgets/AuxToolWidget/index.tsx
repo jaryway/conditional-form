@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useCursor } from '../../hooks/useCursor';
+// import { useCursor } from '../../hooks/useCursor';
 // import { CursorStatus, CursorType, ClosestDirection } from '@designable/core';
 // import {
 //   useViewport,
@@ -16,22 +16,11 @@ import { Selection } from './Selection';
 import { DashedBox } from './DashedBox';
 import './styles.less';
 
-const setCursorState = (contentWindow: Window, state: string) => {
-  const currentRoot = document?.getElementsByTagName?.('html')?.[0];
-  const root = contentWindow?.document?.getElementsByTagName('html')?.[0];
-  if (root) {
-    root.style.cursor = state;
-  }
-  if (currentRoot) {
-    currentRoot.style.cursor = state;
-  }
-};
-
 export const AuxToolWidget = () => {
   //   const engine = useDesigner();
   //   const viewport = useViewport();
   //   const operation = useOperation();
-  const cursor = useCursor();
+  // const cursor = useCursor();
   const prefix = 'dn-auxtool'; //usePrefix('auxtool');
   //   const viewportDragon = useDragon();
   const ref = useRef<HTMLDivElement>();

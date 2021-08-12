@@ -2,17 +2,35 @@ import React, { FC, createContext, useEffect, useState, useRef } from 'react';
 import { DragMoveEvent, DragStartEvent, DragStopEvent, MouseMoveEvent } from '../core/events';
 import { CursorStatus, ICursorPosition } from '../core/models';
 import { Hover } from '../core/models/Hover';
-import useDesigner from '../hooks/useDesigner';
+import { useDesigner } from '../hooks';
 import { requestIdle } from '../shared/request-idle';
 
-export interface ICursorContext {
+// export interface ICursorContext {
+//   rect: DOMRect;
+//   hover: Hover;
+//   status: CursorStatus;
+//   position: ICursorPosition;
+// }
+
+export interface ICursorHoverContext {
   rect: DOMRect;
   hover: Hover;
-  status: CursorStatus;
+}
+
+export interface ICursorPositionContext {
   position: ICursorPosition;
 }
 
-export const CursorContext = createContext<ICursorContext>({} as any);
+export interface ICursorDragPositionContext {
+  dragStartPosition: ICursorPosition;
+  dragEndPosition: ICursorPosition;
+}
+
+// export const CursorContext = createContext<ICursorContext>({} as any);
+export const CursorStatusContext = createContext<CursorStatus>({} as any);
+export const CursorHoverContext = createContext<ICursorHoverContext>({} as any);
+export const CursorPositionContext = createContext<ICursorPositionContext>({} as any);
+export const CursorDragPositionContext = createContext<ICursorDragPositionContext>({} as any);
 
 const isEqualRect = (rect1: DOMRect, rect2: DOMRect) => {
   return (
@@ -23,60 +41,63 @@ const isEqualRect = (rect1: DOMRect, rect2: DOMRect) => {
   );
 };
 
-export const CursorProvider: FC<any> = ({ children }) => {
+export const CursorStatusProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
-  const oldRect = useRef<DOMRect>();
+  const oldStatus = useRef<CursorStatus>();
 
-  const [rect, setRect] = useState<DOMRect>();
-  const [hover, setHover] = useState<Hover>();
   const [status, setStatus] = useState<CursorStatus>(engine.cursor.status);
-  const [position, setPosition] = useState<ICursorPosition>(engine.cursor.position);
 
-  const updateState = () => {
-    setStatus(engine.cursor.status);
-    setPosition(engine.cursor.position);
+  const updateStatus = (status) => {
+    if (oldStatus.current === status) return;
+    setStatus(status);
+    engine.cursor.setStatus(status);
   };
 
   useEffect(() => {
     engine.subscribeTo(MouseMoveEvent, (event) => {
-      engine.cursor.setStatus(
+      updateStatus(
         engine.cursor.status === CursorStatus.Dragging ||
           engine.cursor.status === CursorStatus.DragStart
           ? engine.cursor.status
           : CursorStatus.Normal,
       );
-      engine.cursor.setPosition(event.data);
-      updateState();
     });
 
     engine.subscribeTo(DragStartEvent, (event) => {
-      engine.cursor.setStatus(CursorStatus.DragStart);
-      engine.cursor.setDragStartPosition(event.data);
-      updateState();
+      updateStatus(CursorStatus.DragStart);
     });
 
     let cleanStatusRequest = null;
     engine.subscribeTo(DragMoveEvent, () => {
-      engine.cursor.setStatus(CursorStatus.Dragging);
+      updateStatus(CursorStatus.Dragging);
       clearTimeout(cleanStatusRequest);
       cleanStatusRequest = setTimeout(() => {
-        engine.cursor.setStatus(CursorStatus.Normal);
+        updateStatus(CursorStatus.Normal);
       }, 1000);
-
-      updateState();
     });
 
     engine.subscribeTo(DragStopEvent, (event) => {
       clearTimeout(cleanStatusRequest);
-      engine.cursor.setStatus(CursorStatus.DragStop);
-      engine.cursor.setDragEndPosition(event.data);
+      updateStatus(CursorStatus.DragStop);
       requestIdle(() => {
-        engine.cursor.setStatus(CursorStatus.Normal);
+        updateStatus(CursorStatus.Normal);
       });
-
-      updateState();
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <CursorStatusContext.Provider value={status}>{children}</CursorStatusContext.Provider>;
+};
+
+export const CursorHoverProvider: FC<any> = ({ children }) => {
+  const engine = useDesigner();
+  const oldRect = useRef<DOMRect>();
+
+  const [rect, setRect] = useState<DOMRect>();
+  const [hover, setHover] = useState<Hover>();
+
+  useEffect(() => {
     engine.subscribeTo(MouseMoveEvent, (event) => {
       const currentWorkspace = event?.context?.workspace;
       // console.log('onMount.el', event?.context);
@@ -92,7 +113,10 @@ export const CursorProvider: FC<any> = ({ children }) => {
         *[${engine.props.outlineNodeIdAttrName}]
       `);
 
-      if (!el) return;
+      if (!el) {
+        setRect(undefined);
+        return;
+      }
 
       const nextRect = el.getBoundingClientRect?.();
       if (!isEqualRect(oldRect.current, nextRect)) {
@@ -113,6 +137,7 @@ export const CursorProvider: FC<any> = ({ children }) => {
       } else {
         operation.hover.clear();
       }
+
       setHover(operation.hover);
     });
 
@@ -120,9 +145,81 @@ export const CursorProvider: FC<any> = ({ children }) => {
   }, []);
 
   return (
-    <CursorContext.Provider value={{ hover, rect, status, position }}>
+    <CursorHoverContext.Provider value={{ hover, rect }}>{children}</CursorHoverContext.Provider>
+  );
+};
+
+export const CursorPostionProvider: FC<any> = ({ children }) => {
+  const engine = useDesigner();
+
+  const [position, setPosition] = useState<ICursorPosition>(engine.cursor.position);
+
+  const updatePosition = (data) => {
+    engine.cursor.setPosition(data);
+    setPosition(data);
+  };
+
+  useEffect(() => {
+    engine.subscribeTo(MouseMoveEvent, (event) => {
+      updatePosition(event.data);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <CursorPositionContext.Provider value={{ position }}>{children}</CursorPositionContext.Provider>
+  );
+};
+
+export const CursorDragPostionProvider: FC<any> = ({ children }) => {
+  const engine = useDesigner();
+
+  const [dragStartPosition, setDragStartPosition] = useState<ICursorPosition>(
+    engine.cursor.dragStartPosition,
+  );
+  const [dragEndPosition, setDragEndPosition] = useState<ICursorPosition>(
+    engine.cursor.dragEndPosition,
+  );
+
+  const updateDragStartPosition = (data) => {
+    engine.cursor.setDragStartPosition(data);
+    setDragStartPosition(data);
+  };
+
+  const updateDragEndPosition = (data) => {
+    engine.cursor.setDragEndPosition(data);
+    setDragEndPosition(data);
+  };
+
+  useEffect(() => {
+    engine.subscribeTo(DragStartEvent, (event) => {
+      updateDragStartPosition(event.data);
+    });
+
+    engine.subscribeTo(DragStopEvent, (event) => {
+      updateDragEndPosition(event.data);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <CursorDragPositionContext.Provider value={{ dragStartPosition, dragEndPosition }}>
       {children}
-    </CursorContext.Provider>
+    </CursorDragPositionContext.Provider>
+  );
+};
+
+export const CursorProvider: FC<any> = ({ children }) => {
+  return (
+    <CursorStatusProvider>
+      <CursorHoverProvider>
+        <CursorDragPostionProvider>
+          <CursorPostionProvider>{children}</CursorPostionProvider>
+        </CursorDragPostionProvider>
+      </CursorHoverProvider>
+    </CursorStatusProvider>
   );
 };
 

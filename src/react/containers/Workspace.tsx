@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, Fragment } from 'react';
-import useDesigner from '../../hooks/useDesigner';
+import { useDesigner } from '../../hooks';
 import { WorkspaceContext } from '../../providers/WorkspaceProvider';
 import { uid } from '../../shared';
 export interface IWorkspaceProps {
@@ -12,7 +12,7 @@ export const Workspace: React.FC<IWorkspaceProps> = ({ id, title, description, .
   const oldId = useRef<string>();
   const designer = useDesigner();
   const workspace = useMemo(() => {
-    console.log('mount-workspace')
+    console.log('mount-workspace');
     if (oldId.current && oldId.current !== id) {
       const old = designer.workbench.findWorkspaceById(oldId.current);
       old.viewport.detachEvents();

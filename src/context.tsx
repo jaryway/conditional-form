@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { TreeNode } from './core/models';
 import { Engine } from './core/models/Engine';
 import { IFieldContext, IRegistryComponents, ISchemaFormContext } from './interface';
 
@@ -28,3 +29,5 @@ export const AppContext = createContext<{
   cursorStatus: string;
   setCursorStatus: (v: string) => void;
 }>({} as any);
+
+export const TreeNodeContext = createContext<TreeNode>(null);

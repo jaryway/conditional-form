@@ -5,14 +5,14 @@ import DesignerProvider from '../../providers/DesignerProvider';
 // import { GhostWidget } from '../widgets'
 // import { useDesigner } from '../hooks';
 import { GhostWidget } from '../../widgets/GhostWidget';
-import useDesigner from '../../hooks/useDesigner';
+import { useDesigner } from '../../hooks';
 
 export const Designer: React.FC<any> = (props) => {
   const engine = useDesigner();
 
   useEffect(() => {
     if (props.engine) {
-      console.log('mount-engine')
+      console.log('mount-engine');
       props.engine.mount();
     }
     return () => {
