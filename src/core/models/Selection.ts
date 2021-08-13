@@ -3,6 +3,7 @@
 // import { SelectNodeEvent, UnSelectNodeEvent } from '../events';
 // import { TreeNode } from './TreeNode';
 import { isStr, isArr } from '../../utils/checker';
+import { SelectNodeEvent, UnSelectNodeEvent } from '../events';
 import { Operation } from './Operation';
 interface TreeNode {
   parent?: TreeNode;
@@ -22,9 +23,9 @@ export class Selection {
     if (props.selected) {
       this.selected = props.selected;
     }
-    // if (props.operation) {
-    //   this.operation = props.operation;
-    // }
+    if (props.operation) {
+      this.operation = props.operation;
+    }
     // this.makeObservable();
   }
 
@@ -40,14 +41,14 @@ export class Selection {
   //     });
   //   }
 
-  //   trigger(type = SelectNodeEvent) {
-  //     return this.operation.dispatch(
-  //       new type({
-  //         target: this.operation.tree,
-  //         source: this.operation.getSelectedNodes(),
-  //       }),
-  //     );
-  //   }
+  trigger(type = SelectNodeEvent) {
+    return this.operation.dispatch(
+      new type({
+        target: this.operation.tree,
+        source: this.operation.getSelectedNodes(),
+      }),
+    );
+  }
 
   select(id: string | TreeNode) {
     if (isStr(id)) {
@@ -100,7 +101,7 @@ export class Selection {
         this.add(id?.id);
       }
     });
-    // this.trigger();
+    this.trigger();
   }
 
   //   crossAddTo(node: TreeNode) {
@@ -135,7 +136,7 @@ export class Selection {
         this.remove(id?.id);
       }
     });
-    // this.trigger(UnSelectNodeEvent);
+    this.trigger(UnSelectNodeEvent);
   }
 
   has(...ids: string[] | TreeNode[]) {

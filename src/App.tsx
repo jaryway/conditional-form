@@ -38,6 +38,8 @@ import { InsertBeforeEvent } from './core/events';
 // import { Subscrible } from './events/subscrible';
 // import DragDropDriver from './drivers/DragDropDriver';
 
+import './App.less';
+
 // const s = new Subscrible();
 // s.subscribeTo('xxx', (e) => {
 //   // if (e?.type === 'xxx') {
@@ -235,6 +237,7 @@ const App = () => {
                     wrapperCol={{ span: 10 }}
                     style={{ marginTop: 24 }}
                     onValuesChange={(cv: any) => {}}
+                    className="dn-designable-form"
                   >
                     <Field
                       name="isGift"
@@ -307,7 +310,10 @@ const App = () => {
                     </Field>
                     <Content />
 
-                    <AntForm.Item wrapperCol={{ offset: 6, span: 16 }}>
+                    <AntForm.Item
+                      wrapperCol={{ offset: 6, span: 16 }}
+                      // {...{ [engine.props.nodeHelpersIdAttrName]: 'xxxxxxxx' }}
+                    >
                       <Space>
                         <Button
                           type="primary"

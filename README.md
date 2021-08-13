@@ -1,7 +1,7 @@
 ### TODO
 
 - 解决 Hover 根据 node 来获取定位
-- 
+- 解决 Selected 根据 node 来获取定位
 
 #### 解析 json-schema
 

@@ -1,18 +1,20 @@
 import React, { FC, useState, createContext, useEffect } from 'react';
 import { MouseClickEvent } from '../core/events';
-import { CursorStatus } from '../core/models';
-import { useDesigner } from '../hooks';
+import { CursorStatus, Selection } from '../core/models';
+import { useDesigner, useForceUpdate } from '../hooks';
 import { Point } from '../shared';
 
-export const SelectionContext = createContext<{}>({} as any);
+export const SelectionContext = createContext<Selection>({} as any);
 
 export const SelectionProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
-  const [selected, setSelected] = useState<any>();
+  const forceUpdate = useForceUpdate();
+  const [selection, setSelection] = useState<Selection>();
+  
 
   useEffect(() => {
     engine.subscribeTo(MouseClickEvent, (event) => {
-      console.log('CursorStatus.Selection', engine.cursor.status);
+      // console.log('CursorStatus.Selection', engine.cursor.status);
       if (engine.cursor.status !== CursorStatus.Normal) return;
       const target: HTMLElement = event.data.target as any;
       const el = target?.closest?.(`
@@ -35,6 +37,7 @@ export const SelectionProvider: FC<any> = ({ children }) => {
           const selection = operation.selection;
           const tree = operation.tree;
           selection.select(tree);
+          setSelection(Object.assign({}, selection));
         }
         return;
       }
@@ -71,19 +74,18 @@ export const SelectionProvider: FC<any> = ({ children }) => {
       } else {
         selection.select(tree);
       }
-
-      setSelected(selection.selected);
+      setSelection(Object.assign({}, selection));
+      // setSelected(selection.selected);
     });
 
-    // return () => {
-    //   cleanup
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log('selected', selected);
+  console.log('selection', selection);
 
-  return <SelectionContext.Provider value={{ selected }}>{children}</SelectionContext.Provider>;
+  return (
+    <SelectionContext.Provider value={new Selection({ ...selection })}>
+      {children}
+    </SelectionContext.Provider>
+  );
 };
-
-// export default SelectionProvider;

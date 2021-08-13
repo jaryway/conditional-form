@@ -23,6 +23,7 @@ export const TreeProvider: FC<any> = ({ children }) => {
 
   useEffect(() => {
     const forceUpdate = () => {
+      // console.log('TreeProvider');
       _forceUpdate();
     };
 
@@ -39,5 +40,5 @@ export const TreeProvider: FC<any> = ({ children }) => {
 
   const { tree } = workspace?.operation || {};
 
-  return <TreeContext.Provider value={{ ...tree } as TreeNode}>{children}</TreeContext.Provider>;
+  return <TreeContext.Provider value={new TreeNode({ ...tree })}>{children}</TreeContext.Provider>;
 };

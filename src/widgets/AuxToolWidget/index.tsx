@@ -9,7 +9,7 @@ import React, { useEffect, useRef } from 'react';
 //   usePrefix,
 //   useOperation,
 // } from '../../hooks';
-// import { Insertion } from './Insertion';
+import { Insertion } from './Insertion';
 import { Selection } from './Selection';
 // import { FreeSelection } from './FreeSelection';
 // import { Cover } from './Cover';
@@ -66,7 +66,7 @@ export const AuxToolWidget = () => {
 
   return (
     <div ref={ref} className={prefix}>
-      {/* <Insertion /> */}
+      <Insertion />
       <DashedBox />
       <Selection />
       {/* <Cover /> */}

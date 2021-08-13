@@ -8,6 +8,5 @@ import { TreeContext } from '../providers';
 
 export const useTree = (workspaceId?: string) => {
   const tree = useContext(TreeContext);
-
   return tree;
 };
