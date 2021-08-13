@@ -1,8 +1,8 @@
-import React, { FC, createContext, useEffect, useState, useRef } from 'react';
+import React, { FC, createContext, useEffect, useRef } from 'react';
 import { DragMoveEvent, DragStartEvent, DragStopEvent, MouseMoveEvent } from '../core/events';
 import { CursorStatus, ICursorPosition } from '../core/models';
 import { Hover } from '../core/models/Hover';
-import { useDesigner, useForceUpdate } from '../hooks';
+import { useDesigner, useForceUpdate, useWorkspace } from '../hooks';
 import { requestIdle } from '../shared/request-idle';
 
 // export interface ICursorContext {
@@ -13,7 +13,7 @@ import { requestIdle } from '../shared/request-idle';
 // }
 
 export interface ICursorHoverContext {
-  rect: DOMRect;
+  // rect: DOMRect;
   hover: Hover;
 }
 
@@ -32,14 +32,14 @@ export const CursorHoverContext = createContext<ICursorHoverContext>({} as any);
 export const CursorPositionContext = createContext<ICursorPositionContext>({} as any);
 export const CursorDragPositionContext = createContext<ICursorDragPositionContext>({} as any);
 
-const isEqualRect = (rect1: DOMRect, rect2: DOMRect) => {
-  return (
-    rect1?.x === rect2?.x &&
-    rect1?.y === rect2?.y &&
-    rect1?.width === rect2?.width &&
-    rect1?.height === rect2?.height
-  );
-};
+// const isEqualHovr = (rect1: DOMRect, rect2: DOMRect) => {
+//   return (
+//     rect1?.x === rect2?.x &&
+//     rect1?.y === rect2?.y &&
+//     rect1?.width === rect2?.width &&
+//     rect1?.height === rect2?.height
+//   );
+// };
 
 export const CursorStatusProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
@@ -87,8 +87,6 @@ export const CursorStatusProvider: FC<any> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('CursorStatus', engine.cursor.status);
-
   return (
     <CursorStatusContext.Provider value={engine.cursor.status}>
       {children}
@@ -97,21 +95,26 @@ export const CursorStatusProvider: FC<any> = ({ children }) => {
 };
 
 export const CursorHoverProvider: FC<any> = ({ children }) => {
+  const oldNode = useRef<Node>();
   const engine = useDesigner();
+  const workspace = useWorkspace();
+  const forceUpdate = useForceUpdate();
 
-  const oldRect = useRef<DOMRect>();
-
-  const [rect, setRect] = useState<DOMRect>();
-  const [hover, setHover] = useState<Hover>();
+  const updateNode = (node) => {
+    if (oldNode.current === node) return;
+    oldNode.current = node;
+    forceUpdate();
+  };
 
   useEffect(() => {
     engine.subscribeTo(MouseMoveEvent, (event) => {
       const currentWorkspace = event?.context?.workspace;
-      // console.log('onMount.el', event?.context);
+
       if (!currentWorkspace) return;
       const operation = currentWorkspace.operation;
       if (engine.cursor.status !== CursorStatus.Normal) {
         operation.hover.clear();
+        updateNode(operation.hover.node);
         return;
       }
       const target = event.data.target as HTMLElement;
@@ -120,18 +123,6 @@ export const CursorHoverProvider: FC<any> = ({ children }) => {
         *[${engine.props.outlineNodeIdAttrName}]
       `);
 
-      if (!el) {
-        setRect(undefined);
-        return;
-      }
-
-      const nextRect = el.getBoundingClientRect?.();
-      if (!isEqualRect(oldRect.current, nextRect)) {
-        // 矩形发生变化的时候才更新 state
-        oldRect.current = nextRect;
-      }
-      setRect(nextRect);
-
       if (!el?.getAttribute) {
         return;
       }
@@ -139,23 +130,21 @@ export const CursorHoverProvider: FC<any> = ({ children }) => {
       const nodeId = el.getAttribute(engine.props.nodeIdAttrName);
       const outlineNodeId = el.getAttribute(engine.props.outlineNodeIdAttrName);
       const node = operation.tree.findById(nodeId || outlineNodeId);
+
       if (node) {
         operation.hover.setHover(node);
       } else {
         operation.hover.clear();
       }
-
-      setHover(operation.hover);
+      updateNode(operation.hover.node);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('hover', hover?.node);
+  const hover = { ...workspace?.operation?.hover } as Hover;
 
-  return (
-    <CursorHoverContext.Provider value={{ hover, rect }}>{children}</CursorHoverContext.Provider>
-  );
+  return <CursorHoverContext.Provider value={{ hover }}>{children}</CursorHoverContext.Provider>;
 };
 
 export const CursorPostionProvider: FC<any> = ({ children }) => {

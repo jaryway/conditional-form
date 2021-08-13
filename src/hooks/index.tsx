@@ -11,4 +11,5 @@ export * from './useTreeNode';
 export * from './useViewportDragon';
 export * from './useForceUpdate';
 export * from './useWorkspace';
+export * from './useValidNodeOffsetRect';
 export * from './useTest';

@@ -12,7 +12,7 @@ export const SelectionProvider: FC<any> = ({ children }) => {
 
   useEffect(() => {
     engine.subscribeTo(MouseClickEvent, (event) => {
-      // console.log('mount-MouseClickEvent');
+      console.log('CursorStatus.Selection', engine.cursor.status);
       if (engine.cursor.status !== CursorStatus.Normal) return;
       const target: HTMLElement = event.data.target as any;
       const el = target?.closest?.(`
@@ -21,6 +21,7 @@ export const SelectionProvider: FC<any> = ({ children }) => {
       `);
       const isHelpers = target?.closest?.(`*[${engine.props.nodeHelpersIdAttrName}]`);
       const currentWorkspace = event?.context?.workspace;
+
       if (!currentWorkspace) return;
       if (!el?.getAttribute) {
         const point = new Point(event.data.topClientX, event.data.topClientY);
@@ -70,6 +71,7 @@ export const SelectionProvider: FC<any> = ({ children }) => {
       } else {
         selection.select(tree);
       }
+
       setSelected(selection.selected);
     });
 

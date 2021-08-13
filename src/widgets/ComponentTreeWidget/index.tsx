@@ -75,7 +75,7 @@ export const ComponentTreeWidget: React.FC<IComponentTreeWidgetProps> = (props) 
   const registry = useRegistry();
   const dataId = {};
 
-  // console.log('mount-ComponentTreeWidget-render', tree);
+  console.log('omponentTreeWidget-render', tree);
 
   useEffect(() => {
     if (designer) {
