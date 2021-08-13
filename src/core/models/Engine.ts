@@ -7,6 +7,8 @@ import { Workbench } from './Workbench';
 // import { Screen, ScreenType } from './Screen';
 import { EventEngine, uid } from '../../shared';
 import { Cursor } from './Cursor';
+import { ITreeNode, TreeNode } from './TreeNode';
+import { DragSource, GlobalDragSource } from './DragSource';
 
 /**
  * 设计器引擎
@@ -15,7 +17,7 @@ import { Cursor } from './Cursor';
 export class Engine extends EventEngine {
   id: string;
 
-  //  source: DragSource = GlobalDragSource;
+  source: DragSource = GlobalDragSource;
 
   props: IEngineProps<Engine>;
 
@@ -45,50 +47,50 @@ export class Engine extends EventEngine {
     // this.keyboard = new Keyboard(this);
   }
 
-  //  setCurrentTree(tree?: ITreeNode) {
-  //    if (this.workbench.currentWorkspace) {
-  //      this.workbench.currentWorkspace.operation.tree.from(tree);
-  //    }
-  //  }
+  setCurrentTree(tree?: ITreeNode) {
+    if (this.workbench.currentWorkspace) {
+      this.workbench.currentWorkspace.operation.tree.from(tree);
+    }
+  }
 
-  //  getCurrentTree() {
-  //    return this.workbench?.currentWorkspace?.operation?.tree;
-  //  }
+  getCurrentTree() {
+    return this.workbench?.currentWorkspace?.operation?.tree;
+  }
 
-  //  getAllSelectedNodes() {
-  //    let results: TreeNode[] = [];
-  //    for (let i = 0; i < this.workbench.workspaces.length; i++) {
-  //      const workspace = this.workbench.workspaces[i];
-  //      results = results.concat(workspace.operation.getSelectedNodes());
-  //    }
-  //    return results;
-  //  }
+  getAllSelectedNodes() {
+    let results: TreeNode[] = [];
+    for (let i = 0; i < this.workbench.workspaces.length; i++) {
+      const workspace = this.workbench.workspaces[i];
+      results = results.concat(workspace.operation.getSelectedNodes());
+    }
+    return results;
+  }
 
-  //  findNodeById(id: string) {
-  //    for (let i = 0; i < this.workbench.workspaces.length; i++) {
-  //      const workspace = this.workbench.workspaces[i];
-  //      const node = workspace.operation.tree.findById(id);
-  //      if (node) {
-  //        return node;
-  //      }
-  //    }
-  //  }
+  findNodeById(id: string) {
+    for (let i = 0; i < this.workbench.workspaces.length; i++) {
+      const workspace = this.workbench.workspaces[i];
+      const node = workspace.operation.tree.findById(id);
+      if (node) {
+        return node;
+      }
+    }
+  }
 
-  //  findSourceNodeById(id: string) {
-  //    return this.source.tree.findById(id);
-  //  }
+  findSourceNodeById(id: string) {
+    return this.source.tree.findById(id);
+  }
 
-  //  findDraggingNodes(): TreeNode[] {
-  //    const results = [];
-  //    this.workbench.eachWorkspace((workspace) => {
-  //      workspace.operation.viewportDragon.dragNodes?.forEach((node) => {
-  //        if (!results.includes(node)) {
-  //          results.push(node);
-  //        }
-  //      });
-  //    });
-  //    return results;
-  //  }
+  findDraggingNodes(): TreeNode[] {
+    const results = [];
+    this.workbench.eachWorkspace((workspace) => {
+      workspace.operation.viewportDragon.dragNodes?.forEach((node) => {
+        if (!results.includes(node)) {
+          results.push(node);
+        }
+      });
+    });
+    return results;
+  }
 
   //  createNode(node: ITreeNode, parent?: TreeNode) {
   //    return new TreeNode(node, parent);

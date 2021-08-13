@@ -1,11 +1,33 @@
-import React from 'react';
-import { useDragon, usePrefix } from '../../hooks';
+import React, { createContext, FC, useContext, useEffect } from 'react';
+import { useCursorPosition, useDesigner, useDragon, usePrefix } from '../../hooks';
 import { ClosestDirection } from '../../core/models';
+import { AddWorkspaceEvent } from '../../core/events';
+import { InsertionContenxt, InsertionProvider } from '../../providers/InsertionProvider';
 // import { observer } from '@formily/reactive-react';
 
-export const Insertion = () => {
-  const viewportDragon = useDragon();
+export const Insertion: FC<any> = () => {
+  return (
+    <InsertionProvider>
+      <InternalInsertion />
+    </InsertionProvider>
+  );
+};
+
+export const InternalInsertion = () => {
+  const designer = useDesigner();
+  // const s = useCursorPosition();
+
+  const viewportDragon = useContext(InsertionContenxt);
   const prefix = usePrefix('aux-insertion');
+
+  useEffect(() => {
+    // designer.subscribeTo(AddWorkspaceEvent, () => {
+    //   console.log('Insertion.subscribeTo');
+    // });
+  }, []);
+
+  console.log('Insertion', viewportDragon);
+
   const createInsertionStyle = (): React.CSSProperties => {
     const closestDirection = viewportDragon.closestDirection;
     const closestRect = viewportDragon.closestOffsetRect;

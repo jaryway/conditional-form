@@ -22,8 +22,8 @@ export const TreeProvider: FC<any> = ({ children }) => {
   const _forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    const forceUpdate = () => {
-      // console.log('TreeProvider');
+    const forceUpdate = (e) => {
+      console.log('TreeProvider', workspace?.operation.tree);
       _forceUpdate();
     };
 
