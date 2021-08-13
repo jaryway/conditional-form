@@ -16,6 +16,7 @@ export const Viewport: React.FC<IViewportProps> = ({ placeholder, ...props }) =>
   const isFrameRef = useRef(false);
 
   useEffect(() => {
+    // console.log('mount-viewport')
     const frameElement = ref.current.querySelector('iframe');
     if (!viewport) return;
     if (frameElement) {
@@ -28,7 +29,7 @@ export const Viewport: React.FC<IViewportProps> = ({ placeholder, ...props }) =>
       });
     } else {
       viewport.onMount(ref.current, window);
-      console.log('mount-viewport')
+   
       requestIdle(() => {
         isFrameRef.current = false;
         setLoaded(true);
@@ -38,6 +39,7 @@ export const Viewport: React.FC<IViewportProps> = ({ placeholder, ...props }) =>
       viewport.onUnmount();
     };
   }, []);
+
   return (
     <div
       {...props}

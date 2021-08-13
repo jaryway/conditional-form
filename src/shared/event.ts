@@ -299,7 +299,6 @@ export class EventEngine extends Subscrible<ICustomEvent<any>> {
   }
 
   attachEvents(container: EventContainer, contentWindow: Window = window, context?: any) {
-    console.log('contextcontextcontextcontext',context);
     if (!container) return;
     if (isWindow(container)) {
       return this.attachEvents(container.document, container, context);

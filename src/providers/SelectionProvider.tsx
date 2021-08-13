@@ -12,7 +12,7 @@ export const SelectionProvider: FC<any> = ({ children }) => {
 
   useEffect(() => {
     engine.subscribeTo(MouseClickEvent, (event) => {
-      console.log('mount-MouseClickEvent');
+      // console.log('mount-MouseClickEvent');
       if (engine.cursor.status !== CursorStatus.Normal) return;
       const target: HTMLElement = event.data.target as any;
       const el = target?.closest?.(`
@@ -79,7 +79,7 @@ export const SelectionProvider: FC<any> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('selected', selected);
+  // console.log('selected', selected);
 
   return <SelectionContext.Provider value={{ selected }}>{children}</SelectionContext.Provider>;
 };

@@ -1,4 +1,4 @@
-import React, { FC, createContext, useEffect, useState } from 'react';
+import React, { FC, createContext, useEffect } from 'react';
 import {
   AddWorkspaceEvent,
   AppendNodeEvent,
@@ -11,21 +11,21 @@ import {
   UpdateNodePropsEvent,
 } from '../core/events';
 import { TreeNode } from '../core/models';
-import { useDesigner, useForceUpdate } from '../hooks';
+import { useDesigner, useForceUpdate, useWorkspace } from '../hooks';
+// import { useWorkspace } from '../hooks/useWorkspace';
 
 export const TreeContext = createContext<TreeNode>({} as any);
 
 export const TreeProvider: FC<any> = ({ children }) => {
   const designer = useDesigner();
-  //   const [, _forceUpdate] = useState(1111);
-  const forceUpdate = useForceUpdate();
-  //   const forceUpdate = (e) => {
-  //     console.log('useTree.TreeProvider1', e, designer.workbench?.currentWorkspace?.operation?.tree);
-  //     _forceUpdate();
-  //   };
+  const workspace = useWorkspace();
+  const _forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    console.log('useTree-useEffect');
+    const forceUpdate = () => {
+      _forceUpdate();
+    };
+
     designer.subscribeTo(AddWorkspaceEvent, forceUpdate);
     designer.subscribeTo(InsertAfterEvent, forceUpdate);
     designer.subscribeTo(InsertBeforeEvent, forceUpdate);
@@ -35,12 +35,9 @@ export const TreeProvider: FC<any> = ({ children }) => {
     designer.subscribeTo(UpdateChildrenEvent, forceUpdate);
     designer.subscribeTo(UpdateNodePropsEvent, forceUpdate);
     designer.subscribeTo(AppendNodeEvent, forceUpdate);
+  }, [_forceUpdate, designer]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { tree } = workspace?.operation || {};
 
-  const tree = designer.workbench?.currentWorkspace?.operation?.tree;
-  //   console.log('useTree.TreeProvider', tree);
-
-  return <TreeContext.Provider value={Object.assign({}, tree)}>{children}</TreeContext.Provider>;
+  return <TreeContext.Provider value={{ ...tree } as TreeNode}>{children}</TreeContext.Provider>;
 };

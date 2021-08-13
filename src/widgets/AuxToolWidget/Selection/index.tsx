@@ -50,9 +50,9 @@ export const Selection: FC<any> = () => {
   const designer = useDesigner();
 
   const selection = useSelection();
-  const tree = useTree("Selection");
+  // const tree = useTree("Selection");
   const status = useCursorStatus();
-  console.log('useTree-Selection', tree);
+  // console.log('useTree-Selection', tree);
   //   const viewportDragon = useDragon();
   if (status !== 'NORMAL') return null;
   return (

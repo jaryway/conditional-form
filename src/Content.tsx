@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { Card as AntCard } from 'antd';
 import 'antd/dist/antd.css';
 import { ComponentTreeWidget } from './widgets/ComponentTreeWidget';
-import { useTreeNode, useTest } from './hooks';
+import { useTreeNode } from './hooks';
 
-export const Content = () => {
-  const s = useTest('content');
+export const Content: FC<any> = () => {
+  // const s = useTest('content');
 
-  console.log('useTest-content', s);
+  // console.log('useTree-Content', s);
 
   return (
     <ComponentTreeWidget
@@ -16,7 +16,7 @@ export const Content = () => {
         Field: (props) => {
           // const s= useTree();
           const node = useTreeNode();
-          console.log('xxxx', props, node.props);
+          // console.log('xxxx', props, node.props);
 
           return (
             <span

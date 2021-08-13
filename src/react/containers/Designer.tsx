@@ -9,8 +9,8 @@ export const Designer: React.FC<any> = (props) => {
   const engine = useDesigner();
 
   useEffect(() => {
+    // console.log('mount-engine.mount.attchevent');
     if (props.engine) {
-      console.log('mount-engine');
       props.engine.mount();
     }
     return () => {

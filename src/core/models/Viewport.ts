@@ -163,13 +163,11 @@ export class Viewport {
     const engine = this.engine;
     cancelIdle(this.attachRequest);
     this.attachRequest = requestIdle(() => {
-      // console.log('onMount', 1);
       if (!engine) return;
-      // console.log('onMount', 2);
+
       if (this.isIframe) {
         this.workspace.attachEvents(this.contentWindow, this.contentWindow);
       } else if (isHTMLElement(this.viewportElement)) {
-        // console.log('onMount', 3);
         this.workspace.attachEvents(this.viewportElement, this.contentWindow);
       }
     });

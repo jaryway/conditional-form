@@ -24,7 +24,7 @@ export class MouseClickDriver extends EventDriver {
   };
 
   attach() {
-    console.log('attach-click');
+
     this.addEventListener('click', this.onMouseClick, {
       once: true, //防止对同一个container注册多次click
     });

@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, Fragment } from 'react';
 import { useDesigner } from '../../hooks';
+import { CursorProvider, SelectionProvider, TreeProvider } from '../../providers';
 import { WorkspaceContext } from '../../providers/WorkspaceProvider';
 import { uid } from '../../shared';
 export interface IWorkspaceProps {
@@ -12,7 +13,6 @@ export const Workspace: React.FC<IWorkspaceProps> = ({ id, title, description, .
   const oldId = useRef<string>();
   const designer = useDesigner();
   const workspace = useMemo(() => {
-    console.log('mount-workspace');
     if (oldId.current && oldId.current !== id) {
       const old = designer.workbench.findWorkspaceById(oldId.current);
       old.viewport.detachEvents();
@@ -28,9 +28,17 @@ export const Workspace: React.FC<IWorkspaceProps> = ({ id, title, description, .
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  // console.log('workspace', workspace);
+
   return (
     <Fragment>
-      <WorkspaceContext.Provider value={workspace}>{props.children}</WorkspaceContext.Provider>
+      <WorkspaceContext.Provider value={workspace}>
+        <CursorProvider>
+          <TreeProvider>
+            <SelectionProvider>{props.children}</SelectionProvider>
+          </TreeProvider>
+        </CursorProvider>
+      </WorkspaceContext.Provider>
     </Fragment>
   );
 };

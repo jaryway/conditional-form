@@ -2,9 +2,6 @@ import React, { FC, createContext } from 'react';
 // import { AppContext } from './context';
 // import { MouseClickEvent } from './core/events';
 import { Engine } from '../core/models/Engine';
-import CursorProvider from './CursorProvider';
-import { SelectionProvider } from './SelectionProvider';
-import { TreeProvider } from './TreeProvider';
 
 export const DesignerContext = createContext<{
   engine: Engine;
@@ -17,15 +14,9 @@ export const DesignerContext = createContext<{
 export const DesignerProvider: FC<{ engine: Engine }> = ({ engine, children }) => {
   // const [cursorStatus, setCursorStatus] = useState('NORMAL');
 
-  // console.log('DesignerProvider', engine);
-
   return (
     <DesignerContext.Provider value={{ engine, prefixCls: 'dn-' }}>
-      <CursorProvider>
-        <TreeProvider>
-          <SelectionProvider>{children}</SelectionProvider>
-        </TreeProvider>
-      </CursorProvider>
+      {children}
     </DesignerContext.Provider>
   );
 };

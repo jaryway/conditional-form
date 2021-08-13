@@ -4,7 +4,7 @@ import { TreeNodeContext } from '../../context';
 import { TreeNode } from '../../core//models';
 import cls from 'classnames';
 import './styles.less';
-import { TreeContext } from '../../providers';
+// import { TreeContext } from '../../providers';
 
 const ComponentsContext = createContext<IComponents>({});
 export interface IComponents {
@@ -68,14 +68,14 @@ export const TreeNodeWidget: React.FC<ITreeNodeWidgetProps> = (props: ITreeNodeW
   return React.createElement(TreeNodeContext.Provider, { value: node }, renderComponent());
 };
 
-export const ComponentTreeWidget: React.FC<IComponentTreeWidgetProps> = (
-  props: IComponentTreeWidgetProps,
-) => {
-  const tree = useContext(TreeContext);
+export const ComponentTreeWidget: React.FC<IComponentTreeWidgetProps> = (props) => {
+  const tree = useTree();
   const prefix = usePrefix('component-tree');
   const designer = useDesigner();
   const registry = useRegistry();
   const dataId = {};
+
+  // console.log('mount-ComponentTreeWidget-render', tree);
 
   useEffect(() => {
     if (designer) {

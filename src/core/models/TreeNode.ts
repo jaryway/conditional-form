@@ -244,7 +244,7 @@ export class TreeNode {
     if (this.root?.operation) {
       const result = this.root.operation.dispatch(event, callback) || defaults;
       this.takeSnapshot();
-      console.log('triggerMutation', result);
+
       return result;
     } else if (isFn(callback)) {
       return callback();
@@ -480,7 +480,7 @@ export class TreeNode {
               return buf.concat([node]);
             }
           }, []);
-          console.log('insertBefore-c', parent, newNodes);
+
           return newNodes;
         },
         [],

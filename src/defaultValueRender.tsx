@@ -5,7 +5,7 @@ import { ISchema, IDateField, ICascadeDateField, ICheckboxField } from './interf
 const defaultDateFormat = 'YYYY-MM-DD';
 
 export function defaultValueRender(schema: ISchema, value: any) {
-  console.log('fdfdfdf', value);
+  // console.log('fdfdfdf', value);
   if (value === undefined || value === null) return '-';
   if (schema.componentName === 'DateField') {
     return value && moment(value).format((schema.props as IDateField).format || defaultDateFormat);

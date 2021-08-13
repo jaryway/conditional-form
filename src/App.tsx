@@ -201,14 +201,11 @@ function pauseEvent(e: any) {
 // }
 
 const App = () => {
-
-  useEffect(() => {
-    engine.subscribeTo(InsertBeforeEvent, (e) => {
-      console.log('InsertBeforeEvent');
-    });
-  }, []);
-
-  // console.log('useTest-app', s);
+  // useEffect(() => {
+  //   engine.subscribeTo(InsertBeforeEvent, (e) => {
+  //     console.log('InsertBeforeEvent');
+  //   });
+  // }, []);
 
   return (
     <>
@@ -231,7 +228,7 @@ const App = () => {
               initialValues={{ isGift: true }}
               onSubmit={onSubmit || (() => {})}
               render={({ form, submitting }) => {
-                console.log('tree', engine.workbench.currentWorkspace.operation.tree);
+                // console.log('tree', engine.workbench.currentWorkspace.operation.tree);
                 return (
                   <AntForm
                     labelCol={{ span: 6 }}
@@ -323,7 +320,7 @@ const App = () => {
                             const res = firstChild.insertBefore(
                               new TreeNode({
                                 componentName: 'Field',
-                                props: {},
+                                props: { title: '' + Math.random() },
                                 // operation: undefined as any,
                                 id: 'sss' + Math.random(),
                               } as any),
@@ -331,19 +328,49 @@ const App = () => {
 
                             console.log(
                               'vvvv-a',
+                              firstChild.children,
+                              res,
                               engine.workbench.currentWorkspace?.operation.tree,
                             );
-
-                            // console.log(
-                            //   'engine.workbench.currentWorkspace?.operation.tree001',
-                            //   res,
-                            //   firstChild,
-                            //   engine.workbench.currentWorkspace?.operation.tree,
-                            // );
                           }}
                           loading={submitting}
                         >
                           Submit
+                        </Button>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          onClick={() => {
+                            // form.submit();
+                            const { firstChild } =
+                              engine.workbench.currentWorkspace?.operation.tree;
+
+                            let node = firstChild;
+                            while (node.firstChild) {
+                              node = node.firstChild;
+                            }
+
+                            const res = node.appendNode(
+                              new TreeNode({
+                                componentName: 'Field',
+                                props: {
+                                  title: '' + Math.random(),
+                                },
+                                // operation: undefined as any,
+                                id: 'sss' + Math.random(),
+                              } as any),
+                            );
+
+                            console.log(
+                              'vvvv-a',
+                              firstChild,
+                              res,
+                              engine.workbench.currentWorkspace?.operation.tree,
+                            );
+                          }}
+                          loading={submitting}
+                        >
+                          Submit2
                         </Button>
                         <Button
                           htmlType="reset"

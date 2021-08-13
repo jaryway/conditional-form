@@ -10,4 +10,5 @@ export * from './useRegistry';
 export * from './useTreeNode';
 export * from './useViewportDragon';
 export * from './useForceUpdate';
-export * from './useTest'
+export * from './useWorkspace';
+export * from './useTest';

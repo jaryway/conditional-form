@@ -65,7 +65,7 @@ export class Workbench {
     if (!this.findWorkspaceById(props.id)) {
       this.currentWorkspace = new Workspace(this.engine, props);
       this.workspaces.push(this.currentWorkspace);
-      console.log('useTree-caddWorkspace')
+      // console.log('useTree-caddWorkspace')
       this.engine.dispatch(new AddWorkspaceEvent(this.currentWorkspace));
     }
   }
@@ -91,7 +91,7 @@ export class Workbench {
     const workspace = this.findWorkspaceById(props.id);
     if (workspace) return workspace;
     this.addWorkspace(props);
-    // console.log('ensureWorkspaceensureWorkspace');
+    // console.log('mount-addWorkspace');
     return this.currentWorkspace;
   }
 
