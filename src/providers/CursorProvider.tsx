@@ -48,6 +48,7 @@ export const CursorStatusProvider: FC<any> = ({ children }) => {
 
   const updateStatus = (status) => {
     if (oldStatus.current === status) return;
+    oldStatus.current = status;
     engine.cursor.setStatus(status);
     forceUpdate();
   };
@@ -86,6 +87,8 @@ export const CursorStatusProvider: FC<any> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log('CursorStatus', engine.cursor.status);
+
   return (
     <CursorStatusContext.Provider value={engine.cursor.status}>
       {children}
@@ -95,6 +98,7 @@ export const CursorStatusProvider: FC<any> = ({ children }) => {
 
 export const CursorHoverProvider: FC<any> = ({ children }) => {
   const engine = useDesigner();
+
   const oldRect = useRef<DOMRect>();
 
   const [rect, setRect] = useState<DOMRect>();
@@ -146,6 +150,8 @@ export const CursorHoverProvider: FC<any> = ({ children }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log('hover', hover?.node);
 
   return (
     <CursorHoverContext.Provider value={{ hover, rect }}>{children}</CursorHoverContext.Provider>
